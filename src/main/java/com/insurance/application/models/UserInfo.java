@@ -28,7 +28,7 @@ public class UserInfo {
     private byte prevAccident;
 
     @Column(name = "soft_delete")
-    private byte softDelete;
+    private byte accountStat;
 
     @OneToMany(mappedBy = "userInfo")
     Set<Policy> policySet;
@@ -62,8 +62,8 @@ public class UserInfo {
         return prevAccident;
     }
 
-    public byte getSoftDelete() {
-        return softDelete;
+    public byte getAccountStat() {
+        return accountStat;
     }
 
     public Set<Policy> getPolicySet() {
@@ -98,8 +98,8 @@ public class UserInfo {
         this.prevAccident = prevAccident;
     }
 
-    public void setSoftDelete(byte softDelete) {
-        this.softDelete = softDelete;
+    public void setAccountStat(byte softDelete) {
+        this.accountStat = softDelete;
     }
 
     public void setPolicySet(Set<Policy> policySet) {

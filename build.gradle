@@ -21,6 +21,13 @@ dependencies {
 
     compileOnly("org.springframework.boot:spring-boot-devtools")
 
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.security:spring-security-web'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation('io.jsonwebtoken:jjwt:0.2')
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java'
 
