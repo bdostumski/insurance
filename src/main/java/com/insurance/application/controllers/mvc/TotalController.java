@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/total")
+public class TotalController {
 
     @GetMapping
-    public String getLogin() {
+    public String getTotal() {
 
-        return "login";
+        return "total";
     }
 
 }

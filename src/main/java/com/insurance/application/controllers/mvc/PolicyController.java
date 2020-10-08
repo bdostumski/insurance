@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/policy")
+public class PolicyController {
 
     @GetMapping
-    public String getLogin() {
+    public String getPolicy() {
 
-        return "login";
+        return "policy";
     }
 
 }
