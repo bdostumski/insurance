@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css}" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+    <link rel="stylesheet" th:href="@{../css/policy.css}" href="css/policy.css">
+
+    <title>Policy - Insurance Company</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light bg-primary">
+        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Insurance Company</a>
+
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-user"></i> My profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12 d-flex justify-content-center my-5">
+                <h1><i class="far fa-file-alt"></i> Request Policy</h1>
+            </div>
+        </div>
+        <form class="row">
+            <div class="col-lg-5 col-sm-12">
+                <p><strong>Request No</strong> 25768 / 09.08.2019</p>
+                <p><strong>Car Model</strong> Volvo XC90</p>
+                <p><strong>Driver's age</strong> 28 yrs</p>
+                <p><strong>Registration date:</strong> 09.07.2019</p>
+                <p><strong>Previous incdents</strong> No</p>
+            </div>
+            <div class="col-lg-7 col-sm-12">
+                <div class="row mb-4">
+                    <div class="col-lg-6 col-sm-12">
+                        <label>Start date</label>
+                        <input type="date">
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <label>Start time</label>
+                        <input type="time">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="file" name="file" class="custom-file-input" required>
+                        <label style="margin:0px 15px;" class="custom-file-label">Attach image of vehicle registration certificate</label>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <input type="text" placeholder="Firstname" class="form-control">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <input type="text" placeholder="Lastname" class="form-control">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <input type="text" placeholder="Phone" class="form-control">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <input type="text" placeholder="Postal Address" class="form-control">
+                    </div>
+                </div>
+                <hr/>
+                <div class="row mb-4">
+                    <div class="col-lg-6 col-sm-12">
+                        <h4>Total Premium</h4>
+                        <h3><strong>1100 BGN</strong></h3>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <br/>
+                        <button type="submit" style="width:100%;" class="btn btn-primary"><i class="far fa-file-alt"></i> Request Policy</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>
