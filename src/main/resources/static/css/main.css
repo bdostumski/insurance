@@ -21,3 +21,7 @@ h1 {
 .error {
     color: red;
 }
+
+.date_style {
+    padding: 8px 20px; 
+}
