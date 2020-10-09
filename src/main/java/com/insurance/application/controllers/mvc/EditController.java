@@ -5,18 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class IndexController {
+@RequestMapping("/edit")
+public class EditController {
 
     @GetMapping
-    public String getIndex() {
-
-        return "index";
-    }
-
-    @GetMapping("logout")
-    public String logoutForm() {
-
-        return "login";
+    public String getEditProfile() {
+        return "edit";
     }
 }

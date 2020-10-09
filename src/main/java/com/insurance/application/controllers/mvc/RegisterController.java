@@ -7,18 +7,14 @@ import com.insurance.application.services.EmailVerificationTokenService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.OnCreateAccountEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;

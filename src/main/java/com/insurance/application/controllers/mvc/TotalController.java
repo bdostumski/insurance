@@ -10,8 +10,6 @@ public class TotalController {
 
     @GetMapping
     public String getTotal() {
-
         return "total";
     }
-
 }

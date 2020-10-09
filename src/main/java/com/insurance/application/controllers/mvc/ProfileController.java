@@ -5,18 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class IndexController {
+@RequestMapping("/profile")
+public class ProfileController {
 
     @GetMapping
-    public String getIndex() {
-
-        return "index";
-    }
-
-    @GetMapping("logout")
-    public String logoutForm() {
-
-        return "login";
+    public String getProfile() {
+        return "profile";
     }
 }

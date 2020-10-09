@@ -10,8 +10,6 @@ public class PolicyController {
 
     @GetMapping
     public String getPolicy() {
-
         return "policy";
     }
-
 }
