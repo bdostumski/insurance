@@ -1,5 +1,6 @@
 package com.insurance.application.config;
 
+import com.insurance.application.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+
 
 //    @Order(1)
 //    @Configuration
@@ -97,13 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     public static class WebConfiguration extends WebSecurityConfigurerAdapter {
 
+        @Autowired
+        CustomUserDetailsService customUserDetailsService;
 
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth.inMemoryAuthentication()
-                    .withUser("user").password("{noop}user").roles("USER")
-                    .and()
-                    .withUser("admin").password("{noop}admin").roles("ADMIN");
+            auth.userDetailsService(customUserDetailsService);
 
         }
 
@@ -112,14 +115,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http
                     .authorizeRequests()
                     .antMatchers("/src/**", "/css/**", "/js/**").permitAll()
-                    .antMatchers("/").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/info").hasAnyRole("ADMIN")
+                    .antMatchers("/", "/sign-up", "/register/user", "/registrationconfirm").permitAll()
+                    .antMatchers("/policy").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/total").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin()
-                    .loginPage("/login").permitAll()
-                    .loginProcessingUrl("/authenticate")
-                    .and().logout().permitAll().logoutUrl("/gologout").logoutSuccessUrl("/login")
+                    .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate")
+                    .and()
+                    .logout().permitAll().logoutUrl("/gologout").logoutSuccessUrl("/login")
                     .and()
                     .httpBasic();
         }

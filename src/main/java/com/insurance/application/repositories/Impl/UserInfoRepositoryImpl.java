@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserInfoRepositoryImpl implements UserInfoRepository {
 
-    private static final Byte ACCOUNNT_STATUS_NOT_ACTIVE = 0;
+    private static final boolean ACCOUNNT_STATUS_NOT_ACTIVE = false;
 
     private final SessionFactory sessionFactory;
 
@@ -45,7 +45,7 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             UserInfo user = getById(id);
-            user.setAccountStat(ACCOUNNT_STATUS_NOT_ACTIVE);
+            user.setEnabled(ACCOUNNT_STATUS_NOT_ACTIVE);
             session.update(user);
             session.getTransaction().commit();
         }
@@ -55,7 +55,7 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
     public UserInfo getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             UserInfo user = session.get(UserInfo.class, id);
-            if (user == null || user.getAccountStat() == ACCOUNNT_STATUS_NOT_ACTIVE) {
+            if (user == null || user.isEnabled() == ACCOUNNT_STATUS_NOT_ACTIVE) {
                 throw new EntityNotFoundException(
                         String.format("User with id %d not found!", id));
             }

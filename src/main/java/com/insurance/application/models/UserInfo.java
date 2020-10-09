@@ -21,14 +21,18 @@ public class UserInfo {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "birthdate")
     private String birthdate;
 
     @Column(name = "prev_accident")
     private byte prevAccident;
 
-    @Column(name = "soft_delete")
-    private byte accountStat;
+    @Column(name = "enabled")
+    private boolean enabled;
+
 
     @OneToMany(mappedBy = "userInfo")
     Set<Policy> policySet;
@@ -54,6 +58,10 @@ public class UserInfo {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getBirthdate() {
         return birthdate;
     }
@@ -62,8 +70,8 @@ public class UserInfo {
         return prevAccident;
     }
 
-    public byte getAccountStat() {
-        return accountStat;
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public Set<Policy> getPolicySet() {
@@ -90,6 +98,10 @@ public class UserInfo {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
@@ -98,8 +110,8 @@ public class UserInfo {
         this.prevAccident = prevAccident;
     }
 
-    public void setAccountStat(byte softDelete) {
-        this.accountStat = softDelete;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void setPolicySet(Set<Policy> policySet) {
