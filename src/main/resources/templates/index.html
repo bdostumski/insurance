@@ -18,13 +18,13 @@
 
     <link rel="stylesheet" th:href="@{../css/main.css}" href="css/main.css">
 
-    <title>Insurance Company</title>
+    <title>Safety Car</title>
 </head>
 
 <body>
 
     <nav class="navbar navbar-light bg-primary">
-        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Insurance Company</a>
+        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
 
         <ul class="nav justify-content-end">
             <li class="nav-item">
@@ -40,7 +40,7 @@
     </nav>
 
     <form class="container">
-        <h1 class="mb-4"><i class="fas fa-car-crash"></i> Insurance Company</h1>
+        <h1 class="mb-4"><i class="far fa-file"></i> Get Offer</h1>
         <hr class="mb-4"/>
 
         <div class="row mb-5">
@@ -66,18 +66,26 @@
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Car Cubic</strong></label>
-                <input type="email" class="form-control">
+                <select class="form-control">
+                    <option>0 - 1047</option>
+                    <option>1048 - 1309</option>
+                    <option>1310 - 2356</option>
+                    <option>2357 - 2880</option>
+                    <option>2881 - 4188</option>
+                    <option>4189 - 5497</option>
+                    <option>5498 - 999999</option>
+                </select>
             </div>
         </div>
 
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12">
-                <label><strong>First registration date</strong></label>
-                <input type="date">
+                <label><strong>First registration date</strong></label><br/>
+                <input class="date_style" type="date">
             </div>
             <div class="col-lg-4 col-sm-12">
-                <label><strong>Driver birthdate</strong></label>
-                <input type="date">
+                <label><strong>Driver birthdate</strong></label><br/>
+                <input class="date_style" type="date">
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
