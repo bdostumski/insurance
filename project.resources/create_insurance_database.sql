@@ -44,6 +44,8 @@ create table user_info
     birthdate     datetime             null,
     prev_accident tinyint(1) default 0 not null,
     soft_delete   tinyint(1) default 0 null,
+    password      varchar(50)          not null,
+    enabled       tinyint(1) default 1 not null,
     constraint user_info_email_uindex
         unique (email)
 );
@@ -59,6 +61,17 @@ create table car_info
     constraint car_info_car_brand_id_fk
         foreign key (brand_id) references car_brand (id),
     constraint car_info_user_info_id_fk
+        foreign key (user_id) references user_info (id)
+);
+
+create table email_tokens
+(
+    id          int auto_increment
+        primary key,
+    token       varchar(100) not null,
+    expiry_date datetime     null,
+    user_id     int          not null,
+    constraint email_tokens_user_info_id_fk
         foreign key (user_id) references user_info (id)
 );
 
@@ -86,5 +99,23 @@ create table image_info
     policy_id int          null,
     constraint image_info_policy_info_id_fk
         foreign key (policy_id) references policy_info (id)
+);
+
+create table users
+(
+    username varchar(50) not null
+        primary key,
+    password varchar(70) not null,
+    enabled  tinyint     not null
+);
+
+create table authorities
+(
+    username  varchar(50) not null,
+    authority varchar(50) not null,
+    constraint uername_authority
+        unique (username, authority),
+    constraint authorities_fk
+        foreign key (username) references users (username)
 );
 
