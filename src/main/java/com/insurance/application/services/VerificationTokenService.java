@@ -1,11 +1,11 @@
 package com.insurance.application.services;
 
-import com.insurance.application.models.EmailVerificationToken;
+import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 
-public interface EmailVerificationTokenService {
+public interface VerificationTokenService {
 
-    EmailVerificationToken findByToken(String token);
+    Token findByToken(String token);
 
     void saveToken(String token, UserInfo user);
 

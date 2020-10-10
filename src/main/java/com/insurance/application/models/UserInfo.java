@@ -1,6 +1,7 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -39,6 +40,12 @@ public class UserInfo {
 
     @OneToMany(mappedBy = "userInfo")
     Set<Car> carSet;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    UserRole userRole;
+
+
 
     public UserInfo() {}
 
@@ -82,6 +89,10 @@ public class UserInfo {
         return carSet;
     }
 
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -120,5 +131,29 @@ public class UserInfo {
 
     public void setCarSet(Set<Car> carSet) {
         this.carSet = carSet;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserInfo userInfo = (UserInfo) o;
+        return id == userInfo.id &&
+                prevAccident == userInfo.prevAccident &&
+                enabled == userInfo.enabled &&
+                firstname.equals(userInfo.firstname) &&
+                lastname.equals(userInfo.lastname) &&
+                email.equals(userInfo.email) &&
+                password.equals(userInfo.password) &&
+                birthdate.equals(userInfo.birthdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, lastname, email, password, birthdate, prevAccident, enabled);
     }
 }

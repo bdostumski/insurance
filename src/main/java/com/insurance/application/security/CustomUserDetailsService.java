@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                user.isEnabled(), true, true, true, getAuthorities("ROLE_USER"));
+                user.isEnabled(), true, true, true, getAuthorities(user.getUserRole().getAuthority()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String userRole) {

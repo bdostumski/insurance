@@ -1,18 +1,15 @@
-package com.insurance.application.controllers.mvc;
+package com.insurance.application.controllers.mvc.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class IndexController {
+@RequestMapping("/gologout")
+public class LogoutController {
 
     @GetMapping
-    public String getIndex() {
-
-        return "index";
+    public String logoutForm() {
+        return "login";
     }
-
-
 }

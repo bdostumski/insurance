@@ -5,10 +5,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "email_tokens")
-public class EmailVerificationToken {
+public class Token {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,7 @@ public class EmailVerificationToken {
     @JoinColumn(name = "user_id")
     private UserInfo user;
 
-    public EmailVerificationToken() {
+    public Token() {
     }
 
 
@@ -59,5 +60,20 @@ public class EmailVerificationToken {
 
     public void setUser(UserInfo user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token1 = (Token) o;
+        return id == token1.id &&
+                token.equals(token1.token) &&
+                expiryDate.equals(token1.expiryDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, token, expiryDate);
     }
 }

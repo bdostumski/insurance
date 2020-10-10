@@ -1,3 +1,12 @@
+create table authorities
+(
+    id        int auto_increment
+        primary key,
+    authority varchar(50) not null,
+    constraint uername_authority
+        unique (id, authority)
+);
+
 create table base_amount_details
 (
     cc_min      int    null,
@@ -46,8 +55,11 @@ create table user_info
     soft_delete   tinyint(1) default 0 null,
     password      varchar(50)          not null,
     enabled       tinyint(1) default 1 not null,
+    role_id       int                  not null,
     constraint user_info_email_uindex
-        unique (email)
+        unique (email),
+    constraint user_info_authorities_id_fk
+        foreign key (role_id) references authorities (id)
 );
 
 create table car_info
@@ -99,23 +111,5 @@ create table image_info
     policy_id int          null,
     constraint image_info_policy_info_id_fk
         foreign key (policy_id) references policy_info (id)
-);
-
-create table users
-(
-    username varchar(50) not null
-        primary key,
-    password varchar(70) not null,
-    enabled  tinyint     not null
-);
-
-create table authorities
-(
-    username  varchar(50) not null,
-    authority varchar(50) not null,
-    constraint uername_authority
-        unique (username, authority),
-    constraint authorities_fk
-        foreign key (username) references users (username)
 );
 

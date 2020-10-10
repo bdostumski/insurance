@@ -7,12 +7,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Component;
 
-
-@Component
-public class CreateAccountListener implements ApplicationListener<OnCreateAccountEvent> {
-
+public class ResetPasswordListener implements ApplicationListener<OnResetPasswordEvent> {
 
     @Autowired
     private MailSender mailSender;
@@ -22,17 +18,18 @@ public class CreateAccountListener implements ApplicationListener<OnCreateAccoun
 //    MessageSource messages;
 
     @Override
-    public void onApplicationEvent(OnCreateAccountEvent event) {
-        this.confirmRegistration(event);
+    public void onApplicationEvent(OnResetPasswordEvent event) {
+        this.resetPassword(event);
     }
 
-    private void confirmRegistration(OnCreateAccountEvent event) {
+    private void resetPassword(OnResetPasswordEvent event) {
         UserInfo user = event.getUser();
 
         String recipient = user.getEmail();
-        String subject = "Registration Confirmation";
-        String url= event.getAppUrl() + "/registrationconfirm?token=" + event.getToken();
-        String message = "Please confirm your account";
+        String subject = "Password Change";
+        String url= event.getAppUrl() + "/passwordresetter?token=" + event.getToken();
+        String message = "This is an automatic email to change your password upon request. \n " +
+                "If you haven't requested a password change, please ignore the provided link and contact you administrator" ;
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipient);
