@@ -4,6 +4,7 @@ import com.insurance.application.exceptions.EmailExistsExeption;
 import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.UserRole;
+import com.insurance.application.models.dtos.AccountRegDto;
 import com.insurance.application.services.Impl.UserRoleServiceImpl;
 import com.insurance.application.services.UserRolesService;
 import com.insurance.application.services.VerificationTokenService;
@@ -43,19 +44,22 @@ public class RegisterController {
 
     @RequestMapping("/sign-up")
     public ModelAndView registrationForm() {
-        return new ModelAndView("register", "user", new UserInfo());
+        return new ModelAndView("register", "accountDto", new AccountRegDto());
     }
 
     @RequestMapping("/register/user")
-    public ModelAndView registerUser(@Valid final UserInfo user, final BindingResult result, final HttpServletRequest request) {
+    public ModelAndView registerUser(@Valid final AccountRegDto accountDto, final BindingResult result, final HttpServletRequest request) {
         if (result.hasErrors()) {
-            return new ModelAndView("register", "user", user);
+            return new ModelAndView("register", "accountDto", accountDto);
         }
         try {
+            UserInfo user = new UserInfo();
             user.setEnabled(false);
             UserRole role = rolesService.getByValue("ROLE_USER");
-            user.setPassword(encoder.encode(user.getPassword()));
+
             user.setUserRole(role);
+            user.setPassword(encoder.encode(accountDto.getPassword()));
+            user.setEmail(accountDto.getEmail());
             userInfoService.create(user);
 
             final String token = UUID.randomUUID().toString();
@@ -65,7 +69,7 @@ public class RegisterController {
             sendVerificationEmail(user, token, appURL);
         } catch (EmailExistsExeption e) {
             result.addError(new FieldError("user", "email", e.getMessage()));
-            return new ModelAndView("register", "user", user);
+            return new ModelAndView("register", "user", accountDto);
         }
         return new ModelAndView("redirect:/login");
     }

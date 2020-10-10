@@ -1,6 +1,7 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class Policy {
     private Double totalPrice;
 
     @Column(name = "is_approval")
-    private byte isApproval;
+    private byte approval;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -46,8 +47,8 @@ public class Policy {
         return totalPrice;
     }
 
-    public byte getIsApproval() {
-        return isApproval;
+    public byte getApproval() {
+        return approval;
     }
 
     public UserInfo getUserInfo() {
@@ -74,8 +75,8 @@ public class Policy {
         this.totalPrice = totalPrice;
     }
 
-    public void setIsApproval(byte isApproval) {
-        this.isApproval = isApproval;
+    public void setApproval(byte approval) {
+        this.approval = approval;
     }
 
     public void setUserInfo(UserInfo userInfo) {
@@ -88,5 +89,21 @@ public class Policy {
 
     public void setImageSet(Set<Image> imageSet) {
         this.imageSet = imageSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Policy policy = (Policy) o;
+        return id == policy.id &&
+                approval == policy.approval &&
+                startDateTime.equals(policy.startDateTime) &&
+                totalPrice.equals(policy.totalPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDateTime, totalPrice, approval);
     }
 }

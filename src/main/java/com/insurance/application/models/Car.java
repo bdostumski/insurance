@@ -1,6 +1,7 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "car_info")
@@ -17,7 +18,7 @@ public class Car {
     @Column(name = "cubic_cap")
     private double cubicCap;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private CarBrand carBrand;
 
@@ -65,5 +66,20 @@ public class Car {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id == car.id &&
+                Double.compare(car.cubicCap, cubicCap) == 0 &&
+                Objects.equals(regDate, car.regDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, regDate, cubicCap);
     }
 }

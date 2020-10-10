@@ -7,7 +7,7 @@ public interface UserInfoRepository {
 
     void update(UserInfo user);
 
-    void delete(int id);
+    void delete(UserInfo user);
 
     UserInfo getById(int id);
 
