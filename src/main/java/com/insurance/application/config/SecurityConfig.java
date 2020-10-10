@@ -27,6 +27,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 
 
@@ -107,7 +111,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
             auth.userDetailsService(customUserDetailsService);
-
         }
 
         @Override

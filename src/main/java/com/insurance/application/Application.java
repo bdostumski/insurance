@@ -8,6 +8,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Properties;
 
@@ -17,7 +19,6 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 
 
 }

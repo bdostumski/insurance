@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -36,11 +37,14 @@ public class PasswordResetController {
     UserInfoService userInfoService;
     VerificationTokenService tokenService;
     ApplicationEventPublisher eventPublisher;
+    PasswordEncoder encoder;
 
-    public PasswordResetController(UserInfoService userInfoService, VerificationTokenService tokenService, ApplicationEventPublisher eventPublisher) {
+    public PasswordResetController(UserInfoService userInfoService, VerificationTokenService tokenService,
+                                   ApplicationEventPublisher eventPublisher, PasswordEncoder encoder) {
         this.userInfoService = userInfoService;
         this.tokenService = tokenService;
         this.eventPublisher = eventPublisher;
+        this.encoder = encoder;
     }
 
     @GetMapping("/recoverpassword")
@@ -104,11 +108,12 @@ public class PasswordResetController {
             if (password.equals(confirmedPassword)) {
 
                 UserInfo user = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                user.setPassword(password);
+                user.setPassword(encoder.encode(password));
                 userInfoService.update(user);
                 redirectAttributes.addFlashAttribute("message", "Password changed successfully");
 //        tokenService.delete(token); TODO
             } else {
+                //TODO - show errors message on password mismatch
                 return "passress";
             }
         } catch (Exception e) {

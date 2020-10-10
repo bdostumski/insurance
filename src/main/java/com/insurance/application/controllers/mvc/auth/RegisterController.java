@@ -10,6 +10,7 @@ import com.insurance.application.services.VerificationTokenService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.OnCreateAccountEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -29,13 +30,15 @@ public class RegisterController {
     VerificationTokenService tokenService;
     ApplicationEventPublisher eventPublisher;
     UserRolesService rolesService;
+    PasswordEncoder encoder;
 
     public RegisterController(UserInfoService userInfoService, VerificationTokenService tokenService,
-                              ApplicationEventPublisher eventPublisher, UserRolesService rolesService) {
+                              ApplicationEventPublisher eventPublisher, UserRolesService rolesService, PasswordEncoder encoder) {
         this.userInfoService = userInfoService;
         this.tokenService = tokenService;
         this.eventPublisher = eventPublisher;
         this.rolesService = rolesService;
+        this.encoder = encoder;
     }
 
     @RequestMapping("/sign-up")
@@ -51,6 +54,7 @@ public class RegisterController {
         try {
             user.setEnabled(false);
             UserRole role = rolesService.getByValue("ROLE_USER");
+            user.setPassword(encoder.encode(user.getPassword()));
             user.setUserRole(role);
             userInfoService.create(user);
 
