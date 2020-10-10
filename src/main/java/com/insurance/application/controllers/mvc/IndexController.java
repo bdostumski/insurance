@@ -14,9 +14,8 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("logout")
+    @GetMapping("/gologout")
     public String logoutForm() {
-
         return "login";
     }
 }

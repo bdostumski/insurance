@@ -24,14 +24,13 @@
 <body>
 
     <nav class="navbar navbar-light bg-primary">
-        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
-
+        <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> Register</a>
+                <a th:href="@{/sign-up}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> Register</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a th:href="@{/login}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
             </li>
             <li class="nav-item">
                 <a th:href="@{/gologout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>

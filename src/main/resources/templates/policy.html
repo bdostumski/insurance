@@ -24,20 +24,19 @@
 <body>
 
     <nav class="navbar navbar-light bg-primary">
-        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
-
+        <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-user"></i> My profile</a>
+                <a th:href="@{profile}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user"></i> My profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
+                <a th:href="@{/}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                <a th:href="@{filters}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a th:href="@{/gologout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </li>
         </ul>
     </nav>

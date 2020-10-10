@@ -24,10 +24,10 @@
 <body>
 
     <nav class="navbar navbar-light bg-primary">
-        <a class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
+        <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
         <ul class="nav justify-content-end">
             <li class="nav-item">
-                <a class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a th:href="@{/gologout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </li>
         </ul>
     </nav>
