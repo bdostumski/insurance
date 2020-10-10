@@ -125,7 +125,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                     .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate")
                     .and()
-                    .logout().permitAll().logoutUrl("/gologout").logoutSuccessUrl("/login")
+                    .logout().logoutUrl("/logout").logoutSuccessUrl("/").clearAuthentication(true).invalidateHttpSession(true)
                     .and()
                     .httpBasic();
         }
