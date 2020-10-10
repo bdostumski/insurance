@@ -9,7 +9,7 @@ public class OnResetPasswordEvent extends ApplicationEvent {
     private UserInfo user;
     private String token;
 
-    public OnResetPasswordEvent(String appURL, UserInfo user, String token) {
+    public OnResetPasswordEvent(String appUrl, UserInfo user, String token) {
         super(user);
 
         this.appUrl = appUrl;

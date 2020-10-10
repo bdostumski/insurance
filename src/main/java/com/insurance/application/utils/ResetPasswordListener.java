@@ -7,15 +7,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class ResetPasswordListener implements ApplicationListener<OnResetPasswordEvent> {
 
     @Autowired
     private MailSender mailSender;
-
-//    @Qualifier("messageSource")
-//    @Autowired
-//    MessageSource messages;
 
     @Override
     public void onApplicationEvent(OnResetPasswordEvent event) {
@@ -27,9 +26,8 @@ public class ResetPasswordListener implements ApplicationListener<OnResetPasswor
 
         String recipient = user.getEmail();
         String subject = "Password Change";
-        String url= event.getAppUrl() + "/passwordresetter?token=" + event.getToken();
-        String message = "This is an automatic email to change your password upon request. \n " +
-                "If you haven't requested a password change, please ignore the provided link and contact you administrator" ;
+        String url= event.getAppUrl() + "/passwordreset/user?token=" + event.getToken();
+        String message = "This is an automatic email to change your password upon request. \n " + "If you haven't requested a password change, please ignore the provided link and contact you administrator" ;
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipient);

@@ -1,8 +1,6 @@
 package com.insurance.application.models;
 
 
-import com.insurance.application.utils.RoleNames;
-
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;

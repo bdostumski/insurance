@@ -17,10 +17,6 @@ public class CreateAccountListener implements ApplicationListener<OnCreateAccoun
     @Autowired
     private MailSender mailSender;
 
-//    @Qualifier("messageSource")
-//    @Autowired
-//    MessageSource messages;
-
     @Override
     public void onApplicationEvent(OnCreateAccountEvent event) {
         this.confirmRegistration(event);
