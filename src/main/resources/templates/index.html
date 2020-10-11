@@ -38,41 +38,41 @@
         </ul>
     </nav>
 
-    <form class="container">
+    <form class="container" th:action="@{/total}" th:object="${initialInfoDto}" action="#" method="post">
         <h1 class="mb-4"><i class="far fa-file"></i> Get Offer</h1>
         <hr class="mb-4"/>
 
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12 mb-4">
                 <label><strong>Car Brand</strong></label>
-                <select class="form-control">
-                    <option>Volvo</option>
-                    <option>Mercedes</option>
-                    <option>Audi</option>
-                    <option>BMW</option>
-                    <option>VW</option>
+                <select th:field="*{carBrand}" class="form-control">
+                    <option value="1">Volvo</option>
+                    <option value="2">Mercedes</option>
+                    <option value="3">Audi</option>
+                    <option value="4">BMW</option>
+                    <option value="5">VW</option>
                 </select>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Car Model</strong></label>
-                <select class="form-control">
-                    <option>XC90</option>
-                    <option>GLS</option>
-                    <option>Q8</option>
-                    <option>X5</option>
+                <select th:field="*{carModel}" class="form-control">
+                    <option value="1">XC90</option>
+                    <option value="2">GLS</option>
+                    <option value="3">Q8</option>
+                    <option value="4">X5</option>
                     <option>Touareg</option>
                 </select>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Car Cubic</strong></label>
-                <select class="form-control">
-                    <option>0 - 1047</option>
-                    <option>1048 - 1309</option>
-                    <option>1310 - 2356</option>
-                    <option>2357 - 2880</option>
-                    <option>2881 - 4188</option>
-                    <option>4189 - 5497</option>
-                    <option>5498 - 999999</option>
+                <select th:field="*{carCubics}" class="form-control">
+                    <option value="1">0 - 1047</option>
+                    <option value="2">1048 - 1309</option>
+                    <option value="3">1310 - 2356</option>
+                    <option value="4">2357 - 2880</option>
+                    <option value="5">2881 - 4188</option>
+                    <option value="6">4189 - 5497</option>
+                    <option value="7">5498 - 999999</option>
                 </select>
             </div>
         </div>
@@ -80,15 +80,15 @@
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12">
                 <label><strong>First registration date</strong></label><br/>
-                <input class="date_style" type="date">
+                <input th:field="*{registrationDate}" class="date_style" type="date">
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Driver birthdate</strong></label><br/>
-                <input class="date_style" type="date">
+                <input th:field="*{driverBirthDate}" class="date_style" type="date">
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
-                <input type="checkbox" value="0">
+                <input th:field="*{hasAccidents}" type="checkbox" value="0">
             </div>
         </div>
 

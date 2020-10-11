@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class InitialInfoDto {
 
-    String carBrand;
+    int carBrand;
 
-    String carModel;
+    int carModel;
 
     int carCubics;
 
@@ -19,19 +19,19 @@ public class InitialInfoDto {
     public InitialInfoDto() {
     }
 
-    public String getCarBrand() {
+    public int getCarBrand() {
         return carBrand;
     }
 
-    public void setCarBrand(String carBrand) {
+    public void setCarBrand(int carBrand) {
         this.carBrand = carBrand;
     }
 
-    public String getCarModel() {
+    public int getCarModel() {
         return carModel;
     }
 
-    public void setCarModel(String carModel) {
+    public void setCarModel(int carModel) {
         this.carModel = carModel;
     }
 
