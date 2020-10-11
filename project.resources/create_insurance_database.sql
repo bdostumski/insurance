@@ -9,11 +9,13 @@ create table authorities
 
 create table base_amount_details
 (
-    cc_min      int    null,
-    cc_max      int    null,
-    car_age_min int    null,
-    car_age_max int    null,
-    base_amount double null
+    id          int auto_increment
+        primary key,
+    cc_min      int    not null,
+    cc_max      int    not null,
+    car_age_min int    not null,
+    car_age_max int    not null,
+    base_amount double not null
 );
 
 create table car_brand
@@ -37,10 +39,13 @@ create table car_model
 
 create table coefficient
 (
-    accident   double null,
-    age_limit  int    null,
-    driver_age int    null,
-    tax_amount double null
+    id              int auto_increment
+        primary key,
+    name            varchar(20) null,
+    accident        double      not null,
+    age_limit       int         not null,
+    age_coefficient double      null,
+    tax_amount      double      null
 );
 
 create table user_info

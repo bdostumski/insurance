@@ -1,10 +1,17 @@
 package com.insurance.application.models;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "coefficient")
 public class Coefficient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "accident")
     private Double accident;
@@ -12,13 +19,19 @@ public class Coefficient {
     @Column(name = "age_limit")
     private int ageLimit;
 
-    @Column(name = "driver_age")
-    private int driverAge;
+    @Column(name = "age_coefficient")
+    private double ageCoefficient;
 
     @Column(name = "tax_amount")
     private double taxAmount;
 
-    public Coefficient() {}
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Double getAccident() {
         return accident;
@@ -28,22 +41,32 @@ public class Coefficient {
         return ageLimit;
     }
 
-    public int getDriverAge() {
-        return driverAge;
+    public double getAgeCoefficient() {
+        return ageCoefficient;
     }
 
     public double getTaxAmount() {
         return taxAmount;
     }
 
-    public void setAccident(Double accident) { this.accident = accident; }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAccident(Double accident) {
+        this.accident = accident;
+    }
 
     public void setAgeLimit(int ageLimit) {
         this.ageLimit = ageLimit;
     }
 
-    public void setDriverAge(int driverAge) {
-        this.driverAge = driverAge;
+    public void setAgeCoefficient(double ageCoefficient) {
+        this.ageCoefficient = ageCoefficient;
     }
 
     public void setTaxAmount(double taxAmount) {

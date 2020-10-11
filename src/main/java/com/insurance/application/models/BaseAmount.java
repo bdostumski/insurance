@@ -1,10 +1,15 @@
 package com.insurance.application.models;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+@Entity
 @Table(name = "base_amount_details")
 public class BaseAmount {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "cc_min")
     private int ccMin;
@@ -22,6 +27,10 @@ public class BaseAmount {
     private double baseAmount;
 
     public BaseAmount(){}
+
+    public int getId() {
+        return id;
+    }
 
     public int getCcMin() {
         return ccMin;
@@ -41,6 +50,10 @@ public class BaseAmount {
 
     public double getBaseAmount() {
         return baseAmount;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCcMin(int ccMin) {
