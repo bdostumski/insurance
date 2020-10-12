@@ -32,7 +32,7 @@
         </ul>
     </nav>
 
-    <form class="container" th:object="${initialInfoDto}">
+    <div class="container form_style" th:object="${initialInfoDto}">
         <h1 class="mb-4"><i class="far fa-check-circle"></i> Total Price</h1>
         <hr class="mb-4"/>
 
@@ -80,14 +80,18 @@
                 <h3><strong th:text="*{totalPrice}">1100 </strong> BGN</h3>
             </div>
             <div class="col-lg-12 col-sm-12 d-flex justify-content-around">
-                <a th:href="@{register}"  class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</a>
-                <a th:href="@{login}"  class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</a>
-                <button type="submit" class="btn btn-success"><i class="fas fa-arrow-circle-right"></i> Continue</button>
+                <form th:action="@{/register/user}" th:object="${initialInfoDto}" method="post">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</button>
+                </form>
+                <form>
+                    <button th:href="@{login}" type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </form>
+                <form th:action="@{/policy}" th:object="${initialInfoDto}" method="post">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-arrow-circle-right"></i> Continue</button>
+                </form>
             </div>
         </div>
-
-    </form>
-    
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

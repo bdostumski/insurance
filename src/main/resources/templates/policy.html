@@ -47,13 +47,14 @@
                 <h1><i class="far fa-file-alt"></i> Request Policy</h1>
             </div>
         </div>
-        <form class="row">
+        <form class="row" th:object="${initialInfoStringDto}">
             <div class="col-lg-5 col-sm-12">
                 <p><strong>Request No</strong> 25768 / 09.08.2019</p>
-                <p><strong>Car Model</strong> Volvo XC90</p>
+                <p><strong>Car Model</strong> <span th:text="*{carModel}">Volvo XC90</span></p>
+                <p th:text="*{token}">token</p>
                 <p><strong>Driver's age</strong> 28 yrs</p>
                 <p><strong>Registration date:</strong> 09.07.2019</p>
-                <p><strong>Previous incdents</strong> No</p>
+                <p><strong>Previous incidents</strong> No</p>
             </div>
             <div class="col-lg-7 col-sm-12">
                 <div class="row mb-4">

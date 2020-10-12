@@ -48,6 +48,20 @@ create table coefficient
     tax_amount      double      null
 );
 
+create table info_dto
+(
+    id                int auto_increment
+        primary key,
+    car_brand         varchar(100) null,
+    car_model         varchar(100) null,
+    car_cubic         varchar(100) null,
+    registration_date varchar(100) null,
+    driver_birthdate  varchar(100) null,
+    accident          varchar(100) null,
+    total_price       varchar(100) null,
+    user_token        varchar(200) null
+);
+
 create table user_info
 (
     id            int auto_increment
@@ -58,7 +72,7 @@ create table user_info
     birthdate     datetime             null,
     prev_accident tinyint(1) default 0 not null,
     soft_delete   tinyint(1) default 0 null,
-    password      varchar(50)          not null,
+    password      varchar(200)         not null,
     enabled       tinyint(1) default 1 not null,
     role_id       int                  not null,
     constraint user_info_email_uindex

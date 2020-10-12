@@ -5,6 +5,7 @@ import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.UserRole;
 import com.insurance.application.models.dtos.AccountRegDto;
+import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.Impl.UserRoleServiceImpl;
 import com.insurance.application.services.UserRolesService;
 import com.insurance.application.services.VerificationTokenService;
@@ -13,8 +14,10 @@ import com.insurance.application.utils.OnCreateAccountEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,8 +50,14 @@ public class RegisterController {
         return new ModelAndView("register", "accountDto", new AccountRegDto());
     }
 
+//    @PostMapping
     @RequestMapping("/register/user")
-    public ModelAndView registerUser( @Valid final AccountRegDto accountDto, final BindingResult result, final HttpServletRequest request) {
+    public ModelAndView registerUser(
+            @RequestParam(required = false) InitialInfoStringDto initialInfoStringDto,
+            @Valid final AccountRegDto accountDto,
+            final BindingResult result,
+            final HttpServletRequest request
+    ) {
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
         }
@@ -62,8 +71,16 @@ public class RegisterController {
             user.setEmail(accountDto.getEmail());
             userInfoService.create(user);
 
-            final String token = UUID.randomUUID().toString();
+            final String token;
+
+            if(initialInfoStringDto == null) {
+                token = UUID.randomUUID().toString();
+            } else {
+                token = initialInfoStringDto.getUserToken();
+            }
+
             tokenService.saveToken(token, user);
+
 
             final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
             sendVerificationEmail(user, token, appURL);

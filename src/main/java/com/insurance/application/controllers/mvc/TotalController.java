@@ -42,8 +42,10 @@ public class TotalController {
         this.userService = userService;
     }
 
-
-
+    @GetMapping
+    public String getTotalPage() {
+        return "redirect:/";
+    }
 
     @PostMapping
     public String createOffer(

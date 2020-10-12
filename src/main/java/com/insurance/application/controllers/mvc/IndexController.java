@@ -12,6 +12,7 @@ public class IndexController {
 
     @GetMapping
     public String getIndex(Model model) {
+
         model.addAttribute("initialInfoDto", new InitialInfoDto());
 
         return "index";

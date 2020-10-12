@@ -1,26 +1,45 @@
 package com.insurance.application.models.dtos;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "info_dto")
 public class InitialInfoStringDto {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "car_brand")
     private String carBrand;
 
+    @Column(name = "car_model")
     private String carModel;
 
+    @Column(name = "car_cubic")
     private String carCubic;
 
+    @Column(name = "registration_date")
     private String registrationDate;
 
+    @Column(name = "driver_birthdate")
     private String driverBirthDate;
 
+    @Column(name = "accident")
     private String hasAccidents;
 
+    @Column(name = "total_price")
     private double totalPrice;
 
-    private String tokenValue;
-
-
+    @Column(name = "user_token")
+    private String userToken;
 
     public InitialInfoStringDto() {}
+
+    public int getId() {
+        return id;
+    }
 
     public String getCarBrand() {
         return carBrand;
@@ -50,8 +69,12 @@ public class InitialInfoStringDto {
         return totalPrice;
     }
 
-    public String getTokenValue() {
-        return tokenValue;
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCarBrand(String carBrand) {
@@ -82,7 +105,7 @@ public class InitialInfoStringDto {
         this.totalPrice = totalPrice;
     }
 
-    public void setTokenValue(String tokenValue) {
-        this.tokenValue = tokenValue;
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 }

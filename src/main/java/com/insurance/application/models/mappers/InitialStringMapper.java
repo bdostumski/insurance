@@ -32,7 +32,7 @@ public class InitialStringMapper {
         infoStringDto.setCarBrand(carBrandService.getById(initialInfoDto.getCarBrand()).getBrand());
         infoStringDto.setCarModel(carModelService.getById(initialInfoDto.getCarModel()).getModel());
         infoStringDto.setCarCubic(initialInfoDto.getCarCubic());
-        infoStringDto.setTokenValue(tokenValue);
+        infoStringDto.setUserToken(tokenValue);
 
         String registrationDate = convertDate(initialInfoDto.getRegistrationDate());
         infoStringDto.setRegistrationDate(registrationDate);
