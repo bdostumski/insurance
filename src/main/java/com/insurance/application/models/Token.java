@@ -1,8 +1,5 @@
 package com.insurance.application.models;
 
-import com.insurance.application.models.CarBrand;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +14,7 @@ public class Token {
     private long id;
 
     @Column(name = "token")
-    private String token;
+    private String tokenValue;
 
     @Column(name = "expiry_date")
     private Date expiryDate;
@@ -38,12 +35,12 @@ public class Token {
         this.id = id;
     }
 
-    public String getToken() {
-        return token;
+    public String getTokenValue() {
+        return tokenValue;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setTokenValue(String tokenValue) {
+        this.tokenValue = tokenValue;
     }
 
     public Date getExpiryDate() {
@@ -68,12 +65,12 @@ public class Token {
         if (o == null || getClass() != o.getClass()) return false;
         Token token1 = (Token) o;
         return id == token1.id &&
-                token.equals(token1.token) &&
+                tokenValue.equals(token1.tokenValue) &&
                 expiryDate.equals(token1.expiryDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, token, expiryDate);
+        return Objects.hash(id, tokenValue, expiryDate);
     }
 }

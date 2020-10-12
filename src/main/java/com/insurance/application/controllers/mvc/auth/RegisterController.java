@@ -53,7 +53,7 @@ public class RegisterController {
 //    @PostMapping
     @RequestMapping("/register/user")
     public ModelAndView registerUser(
-            @RequestParam(required = false) InitialInfoStringDto initialInfoStringDto,
+            @RequestParam(required = false) String tokenValue,
             @Valid final AccountRegDto accountDto,
             final BindingResult result,
             final HttpServletRequest request
@@ -73,10 +73,10 @@ public class RegisterController {
 
             final String token;
 
-            if(initialInfoStringDto == null) {
+            if(tokenValue == null) {
                 token = UUID.randomUUID().toString();
             } else {
-                token = initialInfoStringDto.getUserToken();
+                token = tokenValue;
             }
 
             tokenService.saveToken(token, user);

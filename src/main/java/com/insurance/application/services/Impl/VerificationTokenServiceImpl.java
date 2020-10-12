@@ -22,7 +22,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     public void saveToken(String token, UserInfo user) {
         Token emailVerificationToken = new Token();
-        emailVerificationToken.setToken(token);
+        emailVerificationToken.setTokenValue(token);
         emailVerificationToken.setUser(user);
         repository.create(emailVerificationToken);
     }
