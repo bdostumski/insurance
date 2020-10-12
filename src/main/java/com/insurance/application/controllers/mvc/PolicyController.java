@@ -2,6 +2,8 @@ package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
+import com.insurance.application.services.InfoDtoService;
+import com.insurance.application.services.UserInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,25 +22,24 @@ import static com.insurance.application.models.mappers.InitialStringMapper.initi
 @RequestMapping("/policy")
 public class PolicyController {
 
-    @GetMapping
-    public String getPolicy() {
-        return "policy";
+    InfoDtoService infoDtoService;
+    UserInfoService userService;
+
+    public PolicyController(InfoDtoService infoDtoService, UserInfoService userService) {
+        this.infoDtoService = infoDtoService;
+        this.userService = userService;
     }
 
-    @PostMapping
-    public String createPolicy(
-            InitialInfoStringDto initialInfoStringDto,
-            BindingResult bindingResult,
+    @GetMapping
+    public String getPolicy(
             Model model,
             Principal principal
     ) {
 
-        if (bindingResult.hasErrors()) {
-            return "redirect:/";
-        }
+        InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(
+                userService.getByEmail(principal.getName()).getToken().getTokenValue());
 
-
-        model.addAttribute("initialInfoStringDto", initialInfoStringDto);
+        model.addAttribute("infoDto", infoDto);
 
         return "policy";
     }

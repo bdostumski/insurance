@@ -86,9 +86,9 @@
                 <form>
                     <button th:href="@{login}" type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
                 </form>
-                <form th:action="@{/policy}" th:object="${initialInfoDto}" method="post">
-                    <button type="submit" class="btn btn-success"><i class="fas fa-arrow-circle-right"></i> Continue</button>
-                </form>
+<!--                <form th:action="@{/policy}" th:object="${initialInfoDto}" method="post">-->
+                    <a th:href="@{policy}" type="submit" class="btn btn-success"><i class="fas fa-arrow-circle-right"></i> Continue</a>
+<!--                </form>-->
             </div>
         </div>
     </div>
