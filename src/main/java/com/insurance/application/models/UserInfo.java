@@ -45,6 +45,9 @@ public class UserInfo {
     @JoinColumn(name = "role_id")
     UserRole userRole;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    private Token token;
+
 
 
     public UserInfo() {}

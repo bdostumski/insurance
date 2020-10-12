@@ -26,9 +26,6 @@ public class BaseAmountRepositoryImpl implements BaseAmountRepository {
             query.setParameter("cc", car_cubic);
             query.setParameter("ca", car_age);
 
-            for(Double x : query.list())
-                System.out.println(x);
-
             return query.list().stream().mapToDouble(d -> d).max().orElseThrow(() -> new EntityNotFoundException("Entity not found"));
         }
     }

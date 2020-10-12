@@ -122,7 +122,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/policy").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate")
+                    .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate").defaultSuccessUrl("/")
                     .and()
                     .logout().logoutUrl("/logout").logoutSuccessUrl("/").clearAuthentication(true).invalidateHttpSession(true)
                     .and()

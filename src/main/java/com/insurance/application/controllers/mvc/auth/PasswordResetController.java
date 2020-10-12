@@ -64,11 +64,11 @@ public class PasswordResetController {
 
             UserInfo user = userInfoService.getByEmail(userEmail);
 
-            final String token = UUID.randomUUID().toString();
-            tokenService.saveToken(token, user);
+            final String tokenValue = UUID.randomUUID().toString();
+            tokenService.saveToken(tokenValue, user);
 
             final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
-            sendPasswordChangedMail(user, token, appURL);
+            sendPasswordChangedMail(user, tokenValue, appURL);
         } catch (EmailExistsExeption e) {
 //            result.addError(new FieldError("user", "email", e.getMessage()));
             return "register";

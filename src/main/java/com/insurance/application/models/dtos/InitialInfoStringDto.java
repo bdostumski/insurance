@@ -16,6 +16,10 @@ public class InitialInfoStringDto {
 
     private double totalPrice;
 
+    private String tokenValue;
+
+
+
     public InitialInfoStringDto() {}
 
     public String getCarBrand() {
@@ -46,6 +50,10 @@ public class InitialInfoStringDto {
         return totalPrice;
     }
 
+    public String getTokenValue() {
+        return tokenValue;
+    }
+
     public void setCarBrand(String carBrand) {
         this.carBrand = carBrand;
     }
@@ -72,5 +80,9 @@ public class InitialInfoStringDto {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setTokenValue(String tokenValue) {
+        this.tokenValue = tokenValue;
     }
 }

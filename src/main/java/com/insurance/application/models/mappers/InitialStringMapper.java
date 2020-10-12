@@ -25,12 +25,14 @@ public class InitialStringMapper {
             CarModelService carModelService,
             BaseAmountService baseAmountService,
             CoefficientService coefficientService,
-            InitialInfoDto initialInfoDto
+            InitialInfoDto initialInfoDto,
+            String tokenValue
     ) throws ParseException {
 
         infoStringDto.setCarBrand(carBrandService.getById(initialInfoDto.getCarBrand()).getBrand());
         infoStringDto.setCarModel(carModelService.getById(initialInfoDto.getCarModel()).getModel());
         infoStringDto.setCarCubic(initialInfoDto.getCarCubic());
+        infoStringDto.setTokenValue(tokenValue);
 
         String registrationDate = convertDate(initialInfoDto.getRegistrationDate());
         infoStringDto.setRegistrationDate(registrationDate);
@@ -43,7 +45,7 @@ public class InitialStringMapper {
         String hasAccidents = isHasAccidents ? "Yes" : "No";
         infoStringDto.setHasAccidents(hasAccidents);
 
-        infoStringDto.setTotalPrice(baseAmount(
+        infoStringDto.setTotalPrice(calculateTotalPremium(
                 initialInfoDto.getCarCubic(),
                 initialInfoDto.getRegistrationDate(),
                 initialInfoDto.getDriverBirthDate(),
@@ -56,12 +58,12 @@ public class InitialStringMapper {
         return infoStringDto;
     }
 
-    public static double baseAmount(String carCubic,
-                                    String registrationDate,
-                                    String driverBirthdate,
-                                    BaseAmountService baseAmountService,
-                                    CoefficientService coefficientService,
-                                    boolean isHasAccidents) {
+    public static double calculateTotalPremium(String carCubic,
+                                               String registrationDate,
+                                               String driverBirthdate,
+                                               BaseAmountService baseAmountService,
+                                               CoefficientService coefficientService,
+                                               boolean isHasAccidents) {
 
         LocalDate currentDate = LocalDate.now();
 

@@ -48,7 +48,7 @@ public class RegisterController {
     }
 
     @RequestMapping("/register/user")
-    public ModelAndView registerUser(@Valid final AccountRegDto accountDto, final BindingResult result, final HttpServletRequest request) {
+    public ModelAndView registerUser( @Valid final AccountRegDto accountDto, final BindingResult result, final HttpServletRequest request) {
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
         }
