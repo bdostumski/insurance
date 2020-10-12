@@ -5,8 +5,7 @@ public class AccountRegDto {
     private String email;
     private String password;
 
-    public AccountRegDto() {
-    }
+    public AccountRegDto() {}
 
     public String getEmail() {
         return email;

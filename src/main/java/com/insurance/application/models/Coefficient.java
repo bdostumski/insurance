@@ -2,13 +2,14 @@ package com.insurance.application.models;
 
 import javax.persistence.*;
 
+@Entity
 @Table(name = "coefficient")
 public class Coefficient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -25,7 +26,7 @@ public class Coefficient {
     @Column(name = "tax_amount")
     private double taxAmount;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -49,7 +50,7 @@ public class Coefficient {
         return taxAmount;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

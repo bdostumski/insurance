@@ -32,43 +32,43 @@
         </ul>
     </nav>
 
-    <form class="container">
+    <form class="container" th:object="${initialInfoDto}">
         <h1 class="mb-4"><i class="far fa-check-circle"></i> Total Price</h1>
         <hr class="mb-4"/>
 
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12 mb-4">
                 <label>Car Brand</label>
-                <h4><strong th:text="${}">Volvo</strong></h4>
+                <h4><strong th:text="*{carBrand}">Volvo</strong></h4>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label>Car Model</label>
-                <h4><strong>Xc90</strong></h4>
+                <h4><strong th:text="*{carModel}">Xc90</strong></h4>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label>Car Cubic</label>
-                <h4><strong>3.0 cc</strong></h4>
+                <h4><strong th:text="*{carCubic}">000 </strong>cc</h4>
             </div>
         </div>
 
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12">
                 <label>First registration date</label>
-                <h4><strong>12.30.2019</strong></h4>
+                <h4><strong th:text="*{registrationDate}">01.01.0001</strong></h4>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label>Driver birthdate</label>
-                <h4><strong>12.14.1999</strong></h4>
+                <h4><strong th:text="*{driverBirthDate}">01.01.0001</strong></h4>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label class="mr-3">Accidents in previous year (yes/no)</label>
-                <h4><strong>No</strong></h4>
+                <h4><strong th:text="*{hasAccidents}">OO</strong></h4>
             </div>
         </div>
 
         <div class="row mb-5">
             <div class="col-lg-12 col-sm-12">
-                <button style="width:100%;" type="reset" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get New Offer</button>
+                <a th:href="@{/}" style="width:100%;" type="reset" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get New Offer</a>
             </div>
         </div>
 
@@ -77,7 +77,7 @@
                 <p>The expected premium calculated is:</p>
             </div>
             <div class="col-lg-12 col-sm-12 mb-4">
-                <h3><strong>1100 BGN</strong></h3>
+                <h3><strong th:text="*{totalPrice}">1100 </strong> BGN</h3>
             </div>
             <div class="col-lg-12 col-sm-12 d-flex justify-content-around">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Register</button>

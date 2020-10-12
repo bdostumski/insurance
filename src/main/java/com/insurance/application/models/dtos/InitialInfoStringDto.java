@@ -1,10 +1,10 @@
 package com.insurance.application.models.dtos;
 
-public class InitialInfoDto {
+public class InitialInfoStringDto {
 
-    private int carBrand;
+    private String carBrand;
 
-    private int carModel;
+    private String carModel;
 
     private String carCubic;
 
@@ -12,16 +12,17 @@ public class InitialInfoDto {
 
     private String driverBirthDate;
 
-    private boolean hasAccidents;
+    private String hasAccidents;
 
-    public InitialInfoDto() {
-    }
+    private double totalPrice;
 
-    public int getCarBrand() {
+    public InitialInfoStringDto() {}
+
+    public String getCarBrand() {
         return carBrand;
     }
 
-    public int getCarModel() {
+    public String getCarModel() {
         return carModel;
     }
 
@@ -37,15 +38,19 @@ public class InitialInfoDto {
         return driverBirthDate;
     }
 
-    public boolean getHasAccidents() {
+    public String getHasAccidents() {
         return hasAccidents;
     }
 
-    public void setCarBrand(int carBrand) {
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setCarBrand(String carBrand) {
         this.carBrand = carBrand;
     }
 
-    public void setCarModel(int carModel) {
+    public void setCarModel(String carModel) {
         this.carModel = carModel;
     }
 
@@ -61,7 +66,11 @@ public class InitialInfoDto {
         this.driverBirthDate = driverBirthDate;
     }
 
-    public void setHasAccidents(boolean hasAccidents) {
+    public void setHasAccidents(String hasAccidents) {
         this.hasAccidents = hasAccidents;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

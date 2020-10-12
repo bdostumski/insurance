@@ -60,19 +60,19 @@
                     <option value="2">GLS</option>
                     <option value="3">Q8</option>
                     <option value="4">X5</option>
-                    <option>Touareg</option>
+                    <option value="5">Touareg</option>
                 </select>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Car Cubic</strong></label>
-                <select th:field="*{carCubics}" class="form-control">
-                    <option value="1">0 - 1047</option>
-                    <option value="2">1048 - 1309</option>
-                    <option value="3">1310 - 2356</option>
-                    <option value="4">2357 - 2880</option>
-                    <option value="5">2881 - 4188</option>
-                    <option value="6">4189 - 5497</option>
-                    <option value="7">5498 - 999999</option>
+                <select th:field="*{carCubic}" class="form-control">
+                    <option value="0 - 1047">0 - 1047</option>
+                    <option value="1048 - 1309">1048 - 1309</option>
+                    <option value="1310 - 2356">1310 - 2356</option>
+                    <option value="2357 - 2880">2357 - 2880</option>
+                    <option value="2881 - 4188">2881 - 4188</option>
+                    <option value="4189 - 5497">4189 - 5497</option>
+                    <option value="5498 - 999999">5498 - 999999</option>
                 </select>
             </div>
         </div>
@@ -80,11 +80,11 @@
         <div class="row mb-5">
             <div class="col-lg-4 col-sm-12">
                 <label><strong>First registration date</strong></label><br/>
-                <input th:field="*{registrationDate}" class="date_style" type="date">
+                <input th:field="*{registrationDate}" class="date_style" type="date" required>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label><strong>Driver birthdate</strong></label><br/>
-                <input th:field="*{driverBirthDate}" class="date_style" type="date">
+                <input th:field="*{driverBirthDate}" class="date_style" type="date" required>
             </div>
             <div class="col-lg-4 col-sm-12">
                 <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
