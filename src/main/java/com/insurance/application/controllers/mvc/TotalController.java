@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.text.ParseException;
 import java.util.UUID;
@@ -49,6 +50,7 @@ public class TotalController {
             final InitialInfoDto initialInfoDto,
             BindingResult bindingResult,
             Model model,
+            HttpSession session,
             Principal principal
     ) {
 
@@ -61,7 +63,8 @@ public class TotalController {
             if (principal == null) {
               tokenValue  = UUID.randomUUID().toString();
             }else {
-                tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
+                String userMail = principal.getName();
+                tokenValue = userService.getByEmail(userMail).getToken().getTokenValue();
             }
 
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
@@ -69,6 +72,8 @@ public class TotalController {
                     carModelService, baseAmountService, coefficientService, initialInfoDto, tokenValue);
 
             infoDtoService.create(infoStringDto);
+
+            session.setAttribute("theToken", tokenValue);
 
             model.addAttribute("initialInfoDto", infoStringDto);
 

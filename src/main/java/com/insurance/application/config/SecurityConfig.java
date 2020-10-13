@@ -118,7 +118,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http
                     .authorizeRequests()
                     .antMatchers("/src/**", "/css/**", "/js/**").permitAll()
-                    .antMatchers("/", "/total", "/offer", "/sign-up", "/register/user", "/registrationconfirm", "/recoverpassword", "/passwordreset/user", "/passress").permitAll()
+                    .antMatchers("/", "/total", "/offer", "/sign-up", "/register/user",
+                            "/registrationconfirm", "/recoverpassword", "/passwordreset/user", "/passress",
+                            "/register").permitAll()
                     .antMatchers("/policy").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
                     .and()
