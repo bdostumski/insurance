@@ -62,7 +62,7 @@ create table info_dto
     user_token        varchar(200) null
 );
 
-create table user_info
+create table insurance_info.user_info
 (
     id            int auto_increment
         primary key,
@@ -75,10 +75,12 @@ create table user_info
     password      varchar(200)         not null,
     enabled       tinyint(1) default 1 not null,
     role_id       int                  not null,
+    phone_number  varchar(50)          null,
+    address       varchar(200)         null,
     constraint user_info_email_uindex
         unique (email),
     constraint user_info_authorities_id_fk
-        foreign key (role_id) references authorities (id)
+        foreign key (role_id) references insurance_info.authorities (id)
 );
 
 create table car_info
