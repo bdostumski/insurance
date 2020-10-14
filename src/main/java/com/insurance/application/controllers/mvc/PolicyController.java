@@ -80,6 +80,7 @@ public class PolicyController {
 
             Policy policy = generatePolicy(initialPolicyDto, stringDto, user, car);
             policyService.create(policy);
+            infoDtoService.delete(stringDto);
             return "profile";
 
         } catch (Exception e) {
@@ -105,6 +106,8 @@ public class PolicyController {
         user.setBirthdate(stringDto.getDriverBirthDate());
         user.setFirstname(initialPolicyDto.getFirstName());
         user.setLastname(initialPolicyDto.getLastName());
+        user.setPhoneNumber(initialPolicyDto.getPhoneNumber());
+        user.setAddress(initialPolicyDto.getAddress());
         return user;
     }
 

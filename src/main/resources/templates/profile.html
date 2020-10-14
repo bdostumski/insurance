@@ -43,7 +43,7 @@
         </ul>
     </nav>
 
-    <div class="container">
+    <div class="container" th:object="${uerInfo}">
         <div class="row mt-5">
             <div class="col-12 d-flex justify-content-start my-5">
                 <h1><i class="fas fa-user"></i> My profile</h1>
@@ -52,23 +52,23 @@
 
         <div class="row">
             <div class="col-12 my-1">
-                <h4>Firstname: <span>Ivan</span></h4>
+                <h4>Firstname: <span th:text="*{firstname}">Ivan</span></h4>
             </div>
             <div class="col-12 my-1">
-                <h4>Lastname: <span>Ivanov</span></h4>
+                <h4>Lastname: <span th:text="*{lastname}" >Ivanov</span></h4>
             </div>
             <div class="col-12 my-1">
-                <h4>Birthdate: <span>12.14.1999</span></h4>
+                <h4>Birthdate: <span th:text="*{birthdate}">12.14.1999</span></h4>
             </div>   
             <div class="col-12 my-1">
-                <h4>Email: <span>Email@gmail.com</span></h4>
+                <h4>Email: <span th:text="*{email}">Email@gmail.com</span></h4>
             </div>
             <div class="col-12 my-1">
-                <h4>Phone: <span>0888123456</span></h4>
+                <h4>Phone: <span th:text="*{phoneNumber}">0888123456</span></h4>
             </div>
             <div class="col-12 my-1">
-                <h4>Pastal Address: <span>Ivan Shishman 87</span></h4>
-            </div> 
+                <h4>Pastal Address: <span th:text="*{address}">Ivan Shishman 87</span></h4>
+            </div>
             <div class="col-12 my-1">
                 <button type="submit" class="btn btn-primary"><i class="far fa-edit"></i> Edit Profile</button>
             </div> 

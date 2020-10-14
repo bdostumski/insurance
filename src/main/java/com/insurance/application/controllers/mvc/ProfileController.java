@@ -1,5 +1,6 @@
 package com.insurance.application.controllers.mvc;
 
+import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
@@ -28,10 +29,9 @@ public class ProfileController {
             Principal principal
     ) {
 
-       InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(
-               userService.getByEmail(principal.getName()).getToken().getTokenValue());
+        UserInfo user = userService.getByEmail(principal.getName());
 
-        model.addAttribute("infoDto", infoDto);
+        model.addAttribute("uerInfo", user);
 
         return "profile";
     }

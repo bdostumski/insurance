@@ -22,6 +22,12 @@ public class UserInfo {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "password")
     private String password;
 
@@ -76,6 +82,14 @@ public class UserInfo {
         return birthdate;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
     public byte getPrevAccident() {
         return prevAccident;
     }
@@ -118,6 +132,14 @@ public class UserInfo {
 
     public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setPrevAccident(byte prevAccident) {
