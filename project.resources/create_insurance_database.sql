@@ -87,10 +87,10 @@ create table car_info
         primary key,
     reg_date  datetime null,
     cubic_cap double   null,
-    brand_id  int      null,
+    model_id  int      null,
     user_id   int      null,
-    constraint car_info_car_brand_id_fk
-        foreign key (brand_id) references car_brand (id),
+    constraint car_info_car_model_id_fk
+        foreign key (model_id) references car_model (id),
     constraint car_info_user_info_id_fk
         foreign key (user_id) references user_info (id)
 );
