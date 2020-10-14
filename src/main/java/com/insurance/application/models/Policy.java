@@ -1,6 +1,10 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
+
+import java.sql.Time;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,8 +17,11 @@ public class Policy {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "start_date_time")
-    private String startDateTime;
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "start_time")
+    private Time startTime;
 
     @Column(name = "total_price")
     private Double totalPrice;
@@ -39,10 +46,6 @@ public class Policy {
         return id;
     }
 
-    public String getStartDateTime() {
-        return startDateTime;
-    }
-
     public Double getTotalPrice() {
         return totalPrice;
     }
@@ -53,6 +56,14 @@ public class Policy {
 
     public UserInfo getUserInfo() {
         return userInfo;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public Time getStartTime() {
+        return startTime;
     }
 
     public Car getCar() {
@@ -67,8 +78,12 @@ public class Policy {
         this.id = id;
     }
 
-    public void setStartDateTime(String startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
     }
 
     public void setTotalPrice(Double totalPrice) {
@@ -98,12 +113,12 @@ public class Policy {
         Policy policy = (Policy) o;
         return id == policy.id &&
                 approval == policy.approval &&
-                startDateTime.equals(policy.startDateTime) &&
+                startDate.equals(policy.startDate) &&
                 totalPrice.equals(policy.totalPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, startDateTime, totalPrice, approval);
+        return Objects.hash(id, startDate, totalPrice, approval);
     }
 }

@@ -4,6 +4,7 @@ import com.insurance.application.models.*;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.models.dtos.InitialPolicyDto;
 import com.insurance.application.services.*;
+import com.insurance.application.utils.ConvertDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 @Controller
@@ -43,11 +46,13 @@ public class PolicyController {
     @GetMapping
     public String getPolicy(
             Model model,
-            Principal principal
+            Principal principal,
+            HttpSession session
     ) {
         try {
             String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
             InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
+            session.setAttribute("userToken", tokenValue);
 
             model.addAttribute("infoDto", infoDto);
             model.addAttribute("policyInfoDto", new InitialPolicyDto());
@@ -68,7 +73,7 @@ public class PolicyController {
     ) {
 
         try {
-            String tokenValue = (String) session.getAttribute("theToken");
+            String tokenValue = (String) session.getAttribute("userToken");
             InitialInfoStringDto stringDto = infoDtoService.getByTokenValue(tokenValue);
 
 
@@ -81,7 +86,7 @@ public class PolicyController {
             Policy policy = generatePolicy(initialPolicyDto, stringDto, user, car);
             policyService.create(policy);
             infoDtoService.delete(stringDto);
-            return "profile";
+            return "redirect:/profile";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,20 +95,20 @@ public class PolicyController {
 
     }
 
-    private Policy generatePolicy(InitialPolicyDto initialPolicyDto, InitialInfoStringDto stringDto, UserInfo user, Car car) {
+    private Policy generatePolicy(InitialPolicyDto initialPolicyDto, InitialInfoStringDto stringDto, UserInfo user, Car car) throws ParseException {
         Policy policy = new Policy();
         policy.setApproval((byte) 0);
         policy.setCar(car);
         policy.setUserInfo(user);
         policy.setTotalPrice(stringDto.getTotalPrice());
-        policy.setStartDateTime(initialPolicyDto.getStartDate());
+        policy.setStartDate(dateFormat(initialPolicyDto.getStartDate()));
         return policy;
     }
 
 
-    private UserInfo configureUserDetails(Principal principal, InitialPolicyDto initialPolicyDto, InitialInfoStringDto stringDto) {
+    private UserInfo configureUserDetails(Principal principal, InitialPolicyDto initialPolicyDto, InitialInfoStringDto stringDto) throws ParseException {
         UserInfo user = userService.getByEmail(principal.getName());
-        user.setBirthdate(stringDto.getDriverBirthDate());
+        user.setBirthdate(dateFormat(stringDto.getDriverBirthDate()));
         user.setFirstname(initialPolicyDto.getFirstName());
         user.setLastname(initialPolicyDto.getLastName());
         user.setPhoneNumber(initialPolicyDto.getPhoneNumber());
@@ -112,16 +117,20 @@ public class PolicyController {
     }
 
 
-    private Car enlistCar(InitialInfoStringDto stringDto, CarBrandService carBrandService, CarModelService carModelService, UserInfo user) {
+    private Car enlistCar(InitialInfoStringDto stringDto, CarBrandService carBrandService, CarModelService carModelService, UserInfo user) throws ParseException {
         Car car = new Car();
         CarModel model = carModelService.getByModelName(stringDto.getCarModel());
         car.setUserInfo(user);
         car.setCarModel(model);
-        car.setRegDate(stringDto.getRegistrationDate());
-        car.setCubicCap(Double.parseDouble(stringDto.getCarCubic()));
+        car.setRegDate(dateFormat(stringDto.getRegistrationDate()));
+        car.setCubicCap(stringDto.getCarCubic());
 
         return car;
     }
 
 
+    private static LocalDate dateFormat(String date) throws ParseException {
+        return LocalDate.parse(ConvertDate.convertDateForSQL(date));
+
+    }
 }

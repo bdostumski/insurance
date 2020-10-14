@@ -14,13 +14,13 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/")
-public class IndexController {
+public class HomePageController {
 
     UserInfoService userInfoService;
     InfoDtoService infoDtoService;
 
     @Autowired
-    public IndexController(UserInfoService userInfoService, InfoDtoService infoDtoService) {
+    public HomePageController(UserInfoService userInfoService, InfoDtoService infoDtoService) {
         this.userInfoService = userInfoService;
         this.infoDtoService = infoDtoService;
     }
@@ -29,7 +29,7 @@ public class IndexController {
     public String getIndex(Model model,
                            Principal principal) {
 
-        if (principal == null || isInfoStringDtoNotAvailable(principal)) {
+        if (principal == null || !isInfoStringDtoAvailable(principal)) {
 
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
@@ -39,8 +39,18 @@ public class IndexController {
         }
     }
 
-    private boolean isInfoStringDtoNotAvailable(Principal principal){
-        UserInfo user = userInfoService.getByEmail(principal.getName());
-        return infoDtoService.getByTokenValue(user.getToken().getTokenValue()) == null;
+
+/*
+TODO - add coments!
+ */
+    private boolean isInfoStringDtoAvailable(Principal principal) {
+        try {
+            UserInfo user = userInfoService.getByEmail(principal.getName());
+            infoDtoService.getByTokenValue(user.getToken().getTokenValue());
+            return true;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 }

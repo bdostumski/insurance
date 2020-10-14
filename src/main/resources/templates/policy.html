@@ -47,8 +47,8 @@
                 <h1><i class="far fa-file-alt"></i> Request Policy</h1>
             </div>
         </div>
-        <form class="row" th:object="${infoDto}">
-            <div class="col-lg-5 col-sm-12">
+        <form th:object="${policyInfoDto}" th:action="@{/policy}" method="post"  class="row" >
+            <div th:object="${infoDto}" class="col-lg-5 col-sm-12">
                 <p><strong>Request No</strong> 25768 / 09.08.2019</p>
                 <p><strong>Car Model</strong> <span th:text="*{carModel}">Volvo XC90</span></p>
                 <p><strong>Driver's age</strong><span th:text="*{driverBirthDate}"> 28 yrs</span></p>
@@ -59,11 +59,11 @@
                 <div class="row mb-4">
                     <div class="col-lg-6 col-sm-12">
                         <label>Start date</label>
-                        <input type="date">
+                        <input th:field="*{startDate}" type="date">
                     </div>
                     <div class="col-lg-6 col-sm-12">
                         <label>Start time</label>
-                        <input type="time">
+                        <input th:field="*{startTime}" type="time">
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -74,27 +74,27 @@
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
-                        <input type="text" placeholder="Firstname" class="form-control">
+                        <input th:field="*{firstName}" type="text" placeholder="Firstname" class="form-control">
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
-                        <input type="text" placeholder="Lastname" class="form-control">
+                        <input th:field="*{lastName}" type="text" placeholder="Lastname" class="form-control">
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
-                        <input type="text" placeholder="Phone" class="form-control">
+                        <input th:field="*{phoneNumber}" type="text" placeholder="Phone" class="form-control">
                     </div>
                 </div>
                 <div class="row mb-4">
                     <div class="col-12">
-                        <input type="text" placeholder="Postal Address" class="form-control">
+                        <input th:field="*{address}" type="text" placeholder="Postal Address" class="form-control">
                     </div>
                 </div>
                 <hr/>
                 <div class="row mb-4">
-                    <div class="col-lg-6 col-sm-12">
+                    <div th:object="${infoDto}"  class="col-lg-6 col-sm-12">
                         <h4>Total Premium</h4>
                         <h3><strong>BGN : </strong><span th:text="*{totalPrice}">1000</span></h3>
                     </div>

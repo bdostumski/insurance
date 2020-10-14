@@ -1,6 +1,7 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -13,10 +14,10 @@ public class Car {
     private int id;
 
     @Column(name = "reg_date")
-    private String regDate;
+    private LocalDate regDate;
 
     @Column(name = "cubic_cap")
-    private double cubicCap;
+    private String cubicCap;
 
     @ManyToOne
     @JoinColumn(name = "model_id")
@@ -32,11 +33,11 @@ public class Car {
         return id;
     }
 
-    public String getRegDate() {
+    public LocalDate getRegDate() {
         return regDate;
     }
 
-    public double getCubicCap() {
+    public String getCubicCap() {
         return cubicCap;
     }
 
@@ -52,11 +53,11 @@ public class Car {
         this.id = id;
     }
 
-    public void setRegDate(String regDate) {
+    public void setRegDate(LocalDate regDate) {
         this.regDate = regDate;
     }
 
-    public void setCubicCap(double cubicCap) {
+    public void setCubicCap(String cubicCap) {
         this.cubicCap = cubicCap;
     }
 
@@ -68,15 +69,7 @@ public class Car {
         this.userInfo = userInfo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return id == car.id &&
-                Double.compare(car.cubicCap, cubicCap) == 0 &&
-                Objects.equals(regDate, car.regDate);
-    }
+
 
     @Override
     public int hashCode() {
