@@ -2,6 +2,7 @@ package com.insurance.application.repositories.Impl;
 
 import com.insurance.application.exceptions.EntityNotFoundException;
 import com.insurance.application.models.CarBrand;
+import com.insurance.application.models.CarModel;
 import com.insurance.application.repositories.CarBrandRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,6 +30,14 @@ public class CarBrandRepositoryImpl implements CarBrandRepository {
                 throw new EntityNotFoundException(String.format("Car brand with ID %d not found", id));
             }
             return carBrand;
+        }
+    }
+
+    public CarBrand getByBrandName(String brandName){
+        try (Session session = factory.openSession()) {
+            Query<CarBrand> query = session.createQuery(" from CarBrand where brand = :brandName", CarBrand.class);
+            query.setParameter("brandName", brandName);
+            return (CarBrand) query.getSingleResult();
         }
     }
 

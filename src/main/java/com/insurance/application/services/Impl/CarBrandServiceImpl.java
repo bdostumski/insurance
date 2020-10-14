@@ -27,4 +27,9 @@ public class CarBrandServiceImpl implements CarBrandService {
     public List<CarBrand> getAll() {
         return repository.getAll();
     }
+
+    @Override
+    public CarBrand getByBrandName(String brandName) {
+        return repository.getByBrandName(brandName);
+    }
 }

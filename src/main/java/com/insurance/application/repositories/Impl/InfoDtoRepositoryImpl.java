@@ -61,7 +61,6 @@ public class InfoDtoRepositoryImpl implements InfoDtoRepository {
             Query<InitialInfoStringDto> query = session.createQuery(" from InitialInfoStringDto where userToken = :token", InitialInfoStringDto.class);
             query.setParameter("token", tokenValue);
             return (InitialInfoStringDto) query.getSingleResult();
-
         }
     }
 }

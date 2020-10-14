@@ -10,4 +10,5 @@ public interface CarBrandService {
 
     List<CarBrand> getAll();
 
+    CarBrand getByBrandName(String brandName);
 }

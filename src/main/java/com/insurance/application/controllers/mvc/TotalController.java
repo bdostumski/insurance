@@ -27,6 +27,7 @@ public class TotalController {
     UserInfoService userService;
     InfoDtoService infoDtoService;
 
+    @Autowired
     public TotalController(CarBrandService carBrandService, CarModelService carModelService,
                            BaseAmountService baseAmountService, CoefficientService coefficientService,
                            UserInfoService userService, InfoDtoService infoDtoService) {
@@ -38,7 +39,7 @@ public class TotalController {
         this.infoDtoService = infoDtoService;
     }
 
-    @Autowired
+
 
     @GetMapping
     public String getTotalPage() {

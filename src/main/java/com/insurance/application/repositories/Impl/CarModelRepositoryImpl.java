@@ -32,6 +32,14 @@ public class CarModelRepositoryImpl implements CarModelRepository {
         }
     }
 
+    public CarModel getByModelName(String modelName){
+        try (Session session = factory.openSession()) {
+            Query<CarModel> query = session.createQuery(" from CarModel where model = :modelName", CarModel.class);
+            query.setParameter("modelName", modelName);
+            return (CarModel) query.getSingleResult();
+        }
+    }
+
     @Override
     public List<CarModel> getAll() {
         try (Session session = factory.openSession()) {

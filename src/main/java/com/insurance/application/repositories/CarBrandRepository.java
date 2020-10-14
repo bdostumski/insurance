@@ -10,4 +10,6 @@ public interface CarBrandRepository {
 
     List<CarBrand> getAll();
 
+    CarBrand getByBrandName(String brandName);
+
 }

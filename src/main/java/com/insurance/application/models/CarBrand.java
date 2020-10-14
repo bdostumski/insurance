@@ -19,7 +19,8 @@ public class CarBrand {
     @OneToMany(mappedBy = "carBrand", fetch = FetchType.EAGER)
     private Set<CarModel> carModelSet;
 
-    public CarBrand() {}
+    public CarBrand() {
+    }
 
     public int getId() {
         return id;

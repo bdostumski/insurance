@@ -19,8 +19,8 @@ public class Car {
     private double cubicCap;
 
     @ManyToOne
-    @JoinColumn(name = "brand_id")
-    private CarBrand carBrand;
+    @JoinColumn(name = "model_id")
+    private CarModel carModel;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -40,8 +40,8 @@ public class Car {
         return cubicCap;
     }
 
-    public CarBrand getCarBrand() {
-        return carBrand;
+    public CarModel getCarModel() {
+        return carModel;
     }
 
     public UserInfo getUserInfo() {
@@ -60,8 +60,8 @@ public class Car {
         this.cubicCap = cubicCap;
     }
 
-    public void setCarBrand(CarBrand carBrand) {
-        this.carBrand = carBrand;
+    public void setCarModel(CarModel carModel) {
+        this.carModel = carModel;
     }
 
     public void setUserInfo(UserInfo userInfo) {

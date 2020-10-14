@@ -27,4 +27,10 @@ public class CarModelServiceImpl implements CarModelService {
     public List<CarModel> getAll() {
         return repository.getAll();
     }
+
+    @Override
+    public CarModel getByModelName(String modelName) {
+        return repository.getByModelName(modelName);
+    }
+
 }

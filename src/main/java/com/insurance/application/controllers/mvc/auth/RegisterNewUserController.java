@@ -63,14 +63,12 @@ public class RegisterNewUserController {
             @Valid final AccountRegDto accountDto,
             final BindingResult result,
             HttpSession session,
-            final HttpServletRequest request
-    ) {
+            final HttpServletRequest request) {
+
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
         }
         try {
-
-
             UserInfo user = new UserInfo();
             user.setEnabled(false);
             UserRole role = rolesService.getByValue("ROLE_USER");
@@ -79,7 +77,6 @@ public class RegisterNewUserController {
             user.setPassword(encoder.encode(accountDto.getPassword()));
             user.setEmail(accountDto.getEmail());
             userInfoService.create(user);
-
 
             String sessionToken = (String) session.getAttribute("theToken");
 
@@ -90,12 +87,11 @@ public class RegisterNewUserController {
                 token = sessionToken;
             }
 
-
             tokenService.saveToken(token, user);
-
 
             final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
             sendVerificationEmail(user, token, appURL);
+
         } catch (EmailExistsExeption e) {
             result.addError(new FieldError("user", "email", e.getMessage()));
             return new ModelAndView("register", "user", accountDto);
@@ -120,7 +116,6 @@ public class RegisterNewUserController {
             user.setEnabled(true);
             userInfoService.update(user);
             redirectAttributes.addFlashAttribute("message", "Your account verified successfully");
-//        tokenService.delete(token); TODO
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -10,4 +10,6 @@ public interface CarModelService {
 
     List<CarModel> getAll();
 
+    CarModel getByModelName(String modelName);
+
 }

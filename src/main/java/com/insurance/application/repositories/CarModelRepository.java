@@ -10,4 +10,6 @@ public interface CarModelRepository {
 
     List<CarModel> getAll();
 
+    CarModel getByModelName(String modelName);
+
 }

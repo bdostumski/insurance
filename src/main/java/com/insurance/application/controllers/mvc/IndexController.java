@@ -29,16 +29,17 @@ public class IndexController {
     public String getIndex(Model model,
                            Principal principal) {
 
-        if (principal == null || isInfoStringDtoAvailable(principal)) {
+        if (principal == null || isInfoStringDtoNotAvailable(principal)) {
 
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
+
         } else {
             return "redirect:/policy";
         }
     }
 
-    private boolean isInfoStringDtoAvailable(Principal principal){
+    private boolean isInfoStringDtoNotAvailable(Principal principal){
         UserInfo user = userInfoService.getByEmail(principal.getName());
         return infoDtoService.getByTokenValue(user.getToken().getTokenValue()) == null;
     }
