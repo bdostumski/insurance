@@ -18,10 +18,10 @@ public class Policy {
     private long id;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private String startDate;
 
     @Column(name = "start_time")
-    private Time startTime;
+    private String startTime;
 
     @Column(name = "total_price")
     private Double totalPrice;
@@ -58,11 +58,11 @@ public class Policy {
         return userInfo;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public Time getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
@@ -78,11 +78,11 @@ public class Policy {
         this.id = id;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
