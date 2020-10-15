@@ -62,7 +62,7 @@ create table info_dto
     user_token        varchar(200) null
 );
 
-create table insurance_info.user_info
+create table user_info
 (
     id            int auto_increment
         primary key,
@@ -80,17 +80,17 @@ create table insurance_info.user_info
     constraint user_info_email_uindex
         unique (email),
     constraint user_info_authorities_id_fk
-        foreign key (role_id) references insurance_info.authorities (id)
+        foreign key (role_id) references authorities (id)
 );
 
 create table car_info
 (
     id        int auto_increment
         primary key,
-    reg_date  datetime null,
-    cubic_cap double   null,
-    model_id  int      null,
-    user_id   int      null,
+    reg_date  datetime    null,
+    cubic_cap varchar(20) null,
+    model_id  int         null,
+    user_id   int         null,
     constraint car_info_car_model_id_fk
         foreign key (model_id) references car_model (id),
     constraint car_info_user_info_id_fk
@@ -110,13 +110,14 @@ create table email_tokens
 
 create table policy_info
 (
-    id              int auto_increment
+    id          int auto_increment
         primary key,
-    start_date_time datetime             null,
-    total_price     double               null,
-    is_approval     tinyint(1) default 0 not null,
-    user_id         int                  null,
-    car_id          int                  null,
+    start_date  varchar(100)         null,
+    total_price double               null,
+    is_approval tinyint(1) default 0 not null,
+    user_id     int                  null,
+    car_id      int                  null,
+    start_time  varchar(100)         null,
     constraint policy_info_car_info_id_fk
         foreign key (car_id) references car_info (id),
     constraint policy_info_user_info_id_fk
