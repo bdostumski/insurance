@@ -15,4 +15,6 @@ public interface PolicyRepository {
     Policy getById(int id);
 
     List<Policy> getByUserMail(String userMail);
+
+    List<Policy> getAllPolicies();
 }

@@ -1,6 +1,7 @@
 package com.insurance.application.repositories.Impl;
 
 import com.insurance.application.exceptions.EntityNotFoundException;
+import com.insurance.application.models.CarModel;
 import com.insurance.application.models.Policy;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.PolicyRepository;
@@ -54,6 +55,14 @@ public class PolicyRepositoryImpl implements PolicyRepository {
         try (Session session = factory.openSession()) {
             Policy policy = session.get(Policy.class, id);
             return policy;
+        }
+    }
+
+    @Override
+    public List<Policy> getAllPolicies() {
+        try (Session session = factory.openSession()) {
+            Query<Policy> policyQuery = session.createQuery("from Policy");
+            return policyQuery.list();
         }
     }
 

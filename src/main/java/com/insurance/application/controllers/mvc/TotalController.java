@@ -29,7 +29,6 @@ public class TotalController {
     CarBrandService carBrandService;
     CarModelService carModelService;
     BaseAmountService baseAmountService;
-    ApplicationEventPublisher eventPublisher;
     CoefficientService coefficientService;
     UserInfoService userService;
     InfoDtoService infoDtoService;
@@ -37,13 +36,12 @@ public class TotalController {
 
     @Autowired
     public TotalController(CarBrandService carBrandService, CarModelService carModelService,
-                           BaseAmountService baseAmountService, ApplicationEventPublisher eventPublisher,
+                           BaseAmountService baseAmountService,
                            CoefficientService coefficientService,
                            UserInfoService userService, InfoDtoService infoDtoService) {
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
         this.baseAmountService = baseAmountService;
-        this.eventPublisher = eventPublisher;
         this.coefficientService = coefficientService;
         this.userService = userService;
         this.infoDtoService = infoDtoService;
@@ -96,18 +94,4 @@ public class TotalController {
         return "total";
     }
 
-    @PostMapping("/brandmodels")
-    public String getBrandModels(
-            @RequestParam("brandID") int brandId,
-            Model model,
-            HttpSession sesssion
-    ){
-        eventPublisher.publishEvent(new OnRequestModelsEvent(brandId, sesssion) );
-
-        List<CarModel> carModels = (List<CarModel>)sesssion.getAttribute("modelsList");
-
-        model.addAttribute("carmodels", carModels);
-
-        return "index";
-    }
 }

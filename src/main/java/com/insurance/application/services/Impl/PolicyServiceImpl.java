@@ -45,6 +45,11 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
+    public List<Policy> getAllPolicies() {
+        return repository.getAllPolicies();
+    }
+
+    @Override
     public List<Policy> getByUserMail(String userMail) {
        List<Policy> policyList = repository.getByUserMail(userMail);
         if (policyList == null ) {
