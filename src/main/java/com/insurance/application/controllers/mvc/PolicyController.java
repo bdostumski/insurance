@@ -60,7 +60,7 @@ public class PolicyController {
             return "policy";
         } catch (Exception e) {
             e.printStackTrace();
-            return "rerirect:/";
+            return "redirect:/";
         }
 
     }
@@ -90,7 +90,7 @@ public class PolicyController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "rerirect:/";
+            return "redirect:/";
         }
 
     }

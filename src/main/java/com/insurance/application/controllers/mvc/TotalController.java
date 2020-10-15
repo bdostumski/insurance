@@ -1,9 +1,14 @@
 package com.insurance.application.controllers.mvc;
 
+import com.insurance.application.models.CarModel;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
+import com.insurance.application.utils.OnCreateAccountEvent;
+import com.insurance.application.utils.OnRequestModelListener;
+import com.insurance.application.utils.OnRequestModelsEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.List;
 import java.util.UUID;
 
 import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
@@ -23,17 +29,21 @@ public class TotalController {
     CarBrandService carBrandService;
     CarModelService carModelService;
     BaseAmountService baseAmountService;
+    ApplicationEventPublisher eventPublisher;
     CoefficientService coefficientService;
     UserInfoService userService;
     InfoDtoService infoDtoService;
 
+
     @Autowired
     public TotalController(CarBrandService carBrandService, CarModelService carModelService,
-                           BaseAmountService baseAmountService, CoefficientService coefficientService,
+                           BaseAmountService baseAmountService, ApplicationEventPublisher eventPublisher,
+                           CoefficientService coefficientService,
                            UserInfoService userService, InfoDtoService infoDtoService) {
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
         this.baseAmountService = baseAmountService;
+        this.eventPublisher = eventPublisher;
         this.coefficientService = coefficientService;
         this.userService = userService;
         this.infoDtoService = infoDtoService;
@@ -84,5 +94,20 @@ public class TotalController {
         }
 
         return "total";
+    }
+
+    @PostMapping("/brandmodels")
+    public String getBrandModels(
+            @RequestParam("brandID") int brandId,
+            Model model,
+            HttpSession sesssion
+    ){
+        eventPublisher.publishEvent(new OnRequestModelsEvent(brandId, sesssion) );
+
+        List<CarModel> carModels = (List<CarModel>)sesssion.getAttribute("modelsList");
+
+        model.addAttribute("carmodels", carModels);
+
+        return "index";
     }
 }
