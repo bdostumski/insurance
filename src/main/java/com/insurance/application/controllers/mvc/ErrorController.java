@@ -23,6 +23,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
                 model.addAttribute("message", "Not found");
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 model.addAttribute("message", "Internal server error");
+            } else if (statusCode == HttpStatus.BAD_REQUEST.value()) {
+                model.addAttribute("message", "Please try again later!");
             }
 
             return "error";

@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -42,6 +39,12 @@ public class HomePageController {
                            HttpSession session,
                            Principal principal) {
 
+        if(principal != null) {
+            model.addAttribute("loggedUser", userInfoService.getByEmail(principal.getName()));
+        } else {
+            model.addAttribute("loggedUser", new UserInfo());
+        }
+
         if (principal != null || isInfoStringDtoAvailable(principal)) {
 
             if (session.getAttribute("stringInfoDto") != null){
@@ -49,14 +52,14 @@ public class HomePageController {
                 InitialInfoStringDto stringDtoToUpdate = infoDtoService.getById(stringDto.getId());
                 stringDtoToUpdate.setUserToken(userInfoService.getByEmail(principal.getName()).getToken().getTokenValue());
                 infoDtoService.update(stringDtoToUpdate);
+                return "redirect:/policy";
+            } else {
+                model.addAttribute("initialInfoDto", new InitialInfoDto());
+                return "index";
             }
-
-            return "redirect:/policy";
-
         } else {
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
-
         }
     }
 
@@ -75,19 +78,21 @@ TODO - add coments!
         }
     }
 
-
-/*
-TODO -> resolve this issue with async. requests
- */
     @PostMapping("/brandmodels")
     public String getBrandModels(
-            @RequestParam("brandID") int brandId,
+            @RequestHeader("brandID") int brandId,
             Model model,
-            HttpSession sesssion
+            HttpSession session
     ){
-        eventPublisher.publishEvent(new OnRequestModelsEvent(brandId, sesssion) );
 
-        List<CarModel> carModels = (List<CarModel>)sesssion.getAttribute("modelsList");
+        System.out.println("Hi brand: " + brandId);
+
+        eventPublisher.publishEvent(new OnRequestModelsEvent(brandId, session) );
+
+        List<CarModel> carModels = (List<CarModel>)session.getAttribute("modelsList");
+
+        for(CarModel c : carModels)
+            System.out.println(c.getCarBrand());
 
         model.addAttribute("carmodels", carModels);
 

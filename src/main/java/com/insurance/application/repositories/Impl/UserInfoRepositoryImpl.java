@@ -15,8 +15,6 @@ import javax.persistence.NoResultException;
 @Repository
 public class UserInfoRepositoryImpl implements UserInfoRepository {
 
-
-
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -31,7 +29,6 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
         }
     }
 
-
     @Override
     public void update(UserInfo user) {
         try (Session session = sessionFactory.openSession()) {
@@ -39,7 +36,6 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
             session.update(user);
             session.getTransaction().commit();
         }
-
     }
 
     @Override

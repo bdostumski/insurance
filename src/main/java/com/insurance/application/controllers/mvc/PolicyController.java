@@ -42,6 +42,35 @@ public class PolicyController {
         this.carBrandService = carBrandService;
     }
 
+    @GetMapping("/new")
+    public String newPolicy(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/";
+    }
+
+    @GetMapping("/profile")
+    public String policyProfile(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/user-filter")
+    public String policyFilterUser(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/user-filter";
+    }
+
+    @GetMapping("/agent-filter")
+    public String policyFilterAgent(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/agent-filter";
+    }
+
+    @GetMapping("/logout")
+    public String policyLogout(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/logout";
+    }
 
     @GetMapping
     public String getPolicy(
@@ -50,11 +79,27 @@ public class PolicyController {
             HttpSession session
     ) {
         try {
+            UserInfo user = userService.getByEmail(principal.getName());
             String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
             InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
             session.setAttribute("userToken", tokenValue);
+
+            model.addAttribute("userInfo", user);
             model.addAttribute("infoDto", infoDto);
-            model.addAttribute("policyInfoDto", new InitialPolicyDto());
+
+            UserInfo userInfo = userService.getByEmail(principal.getName());
+
+            if(userInfo.getFirstname() != null) {
+                InitialPolicyDto initialPolicyDto = new InitialPolicyDto();
+                initialPolicyDto.setFirstName(userInfo.getFirstname());
+                initialPolicyDto.setLastName(userInfo.getLastname());
+                initialPolicyDto.setAddress(userInfo.getAddress());
+                initialPolicyDto.setPhoneNumber(userInfo.getPhoneNumber());
+
+                model.addAttribute("policyInfoDto", initialPolicyDto);
+            } else {
+                model.addAttribute("policyInfoDto", new InitialPolicyDto());
+            }
 
             return "policy";
 
@@ -106,7 +151,6 @@ public class PolicyController {
         return policy;
     }
 
-
     private UserInfo configureUserDetails(Principal principal, InitialPolicyDto initialPolicyDto, InitialInfoStringDto stringDto) throws ParseException {
         UserInfo user = userService.getByEmail(principal.getName());
         user.setBirthdate(dateFormat(stringDto.getDriverBirthDate()));
@@ -116,7 +160,6 @@ public class PolicyController {
         user.setAddress(initialPolicyDto.getAddress());
         return user;
     }
-
 
     private Car enlistCar(InitialInfoStringDto stringDto, CarBrandService carBrandService, CarModelService carModelService, UserInfo user) throws ParseException {
         Car car = new Car();
@@ -129,9 +172,14 @@ public class PolicyController {
         return car;
     }
 
-
     private static LocalDate dateFormat(String date) throws ParseException {
         return LocalDate.parse(ConvertDate.convertDateForSQL(date));
+    }
 
+    private void deletePolicy(Principal principal) {
+        String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
+        InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
+
+        infoDtoService.delete(infoDto);
     }
 }

@@ -3,113 +3,106 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+              integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css}" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+        <link rel="stylesheet" th:href="@{../css/main.css}" href="css/main.css">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css}" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <title>Safety Car</title>
+    </head>
+    <body th:object="${loggedUser}">
 
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css}" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+        <nav class="navbar navbar-light bg-primary">
+            <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
+            <ul class="nav justify-content-end">
+                <li th:if="${loggedUser.enabled}" class="nav-item">
+                    <a th:href="@{profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
+                        <span th:text="${loggedUser.firstname}">FirstName</span>
+                        <span th:text="${loggedUser.lastname}">LastName</span>
+                    </a>
+                </li>
+                <li th:if="${!loggedUser.enabled}" class="nav-item">
+                    <a th:href="@{/sign-up}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> Register</a>
+                </li>
+                <li th:if="${!loggedUser.enabled}" class="nav-item">
+                    <a th:href="@{/login}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li th:if="${loggedUser.enabled}" class="nav-item">
+                    <a th:href="@{/logout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            </ul>
+        </nav>
 
-    <link rel="stylesheet" th:href="@{../css/main.css}" href="css/main.css">
-
-    <title>Safety Car</title>
-</head>
-
-<body>
-
-    <nav class="navbar navbar-light bg-primary">
-        <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a th:href="@{/sign-up}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> Register</a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/login}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/logout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </li>
-        </ul>
-    </nav>
-
-    <form class="container form_style" th:action="@{/total}" th:object="${initialInfoDto}" action="#" method="post">
-        <h1 class="mb-4"><i class="far fa-file"></i> Get Offer</h1>
-        <hr class="mb-4"/>
-
-        <div class="row mb-5">
-            <div class="col-lg-4 col-sm-12 mb-4">
-                <label><strong>Car Brand</strong></label>
-                <select th:field="*{carBrand}" class="form-control">
-                    <option value="1">Volvo</option>
-                    <option value="2">Mercedes</option>
-                    <option value="3">Audi</option>
-                    <option value="4">BMW</option>
-                    <option value="5">VW</option>
-                </select>
+        <form class="container form_style" th:action="@{/total}" th:object="${initialInfoDto}" action="#" method="post">
+            <h1 class="mb-4"><i class="far fa-file"></i> Get Offer</h1>
+            <hr class="mb-4"/>
+            <div class="row mb-5">
+                <div class="col-lg-4 col-sm-12 mb-4">
+                    <label><strong>Car Brand</strong></label>
+                    <select th:field="*{carBrand}" class="form-control">
+                        <option value="1">Volvo</option>
+                        <option value="2">Mercedes</option>
+                        <option value="3">Audi</option>
+                        <option value="4">BMW</option>
+                        <option value="5">VW</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <label><strong>Car Model</strong></label>
+                    <select id="models" th:field="*{carModel}" class="form-control">
+                        <option value="1">XC90</option>
+                        <option value="2">GLS</option>
+                        <option value="3">Q8</option>
+                        <option value="4">X5</option>
+                        <option value="5">Touareg</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <label><strong>Car Cubic</strong></label>
+                    <select th:field="*{carCubic}" class="form-control">
+                        <option value="0 - 1047">0 - 1047</option>
+                        <option value="1048 - 1309">1048 - 1309</option>
+                        <option value="1310 - 2356">1310 - 2356</option>
+                        <option value="2357 - 2880">2357 - 2880</option>
+                        <option value="2881 - 4188">2881 - 4188</option>
+                        <option value="4189 - 5497">4189 - 5497</option>
+                        <option value="5498 - 999999">5498 - 999999</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
-                <label><strong>Car Model</strong></label>
-                <select th:field="*{carModel}" class="form-control">
-                    <option value="1">XC90</option>
-                    <option value="2">GLS</option>
-                    <option value="3">Q8</option>
-                    <option value="4">X5</option>
-                    <option value="5">Touareg</option>
-                </select>
+            <div class="row mb-5">
+                <div class="col-lg-4 col-sm-12">
+                    <label><strong>First registration date</strong></label><br/>
+                    <input th:field="*{registrationDate}" class="date_style" type="date" required>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <label><strong>Driver birthdate</strong></label><br/>
+                    <input th:field="*{driverBirthDate}" class="date_style" type="date" required>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
+                    <input th:field="*{hasAccidents}" type="checkbox" value="0">
+                </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
-                <label><strong>Car Cubic</strong></label>
-                <select th:field="*{carCubic}" class="form-control">
-                    <option value="0 - 1047">0 - 1047</option>
-                    <option value="1048 - 1309">1048 - 1309</option>
-                    <option value="1310 - 2356">1310 - 2356</option>
-                    <option value="2357 - 2880">2357 - 2880</option>
-                    <option value="2881 - 4188">2881 - 4188</option>
-                    <option value="4189 - 5497">4189 - 5497</option>
-                    <option value="5498 - 999999">5498 - 999999</option>
-                </select>
+            <div class="row mb-5">
+                <div class="col-lg-12 col-sm-12">
+                    <button style="width:100%;" type="submit" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get Offer</button>
+                </div>
             </div>
-        </div>
+        </form>
 
-        <div class="row mb-5">
-            <div class="col-lg-4 col-sm-12">
-                <label><strong>First registration date</strong></label><br/>
-                <input th:field="*{registrationDate}" class="date_style" type="date" required>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <label><strong>Driver birthdate</strong></label><br/>
-                <input th:field="*{driverBirthDate}" class="date_style" type="date" required>
-            </div>
-            <div class="col-lg-4 col-sm-12">
-                <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
-                <input th:field="*{hasAccidents}" type="checkbox" value="0">
-            </div>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-lg-12 col-sm-12">
-                <button style="width:100%;" type="submit" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get Offer</button>
-            </div>
-        </div>
-    </form>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
-    </script>
-</body>
-
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+        </script>
+    </body>
 </html>

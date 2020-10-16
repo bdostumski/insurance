@@ -1,6 +1,7 @@
 package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.CarModel;
+import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
@@ -47,8 +48,6 @@ public class TotalController {
         this.infoDtoService = infoDtoService;
     }
 
-
-
     @GetMapping
     public String getTotalPage() {
         return "redirect:/";
@@ -62,6 +61,8 @@ public class TotalController {
             HttpSession session,
             Principal principal
     ) {
+
+
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
@@ -73,6 +74,12 @@ public class TotalController {
             }else {
                 String userMail = principal.getName();
                 tokenValue = userService.getByEmail(userMail).getToken().getTokenValue();
+            }
+
+            if(principal != null) {
+                model.addAttribute("loggedUser", userService.getByEmail(principal.getName()));
+            } else {
+                model.addAttribute("loggedUser", new UserInfo());
             }
 
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
@@ -94,5 +101,4 @@ public class TotalController {
         }
         return "total";
     }
-
 }

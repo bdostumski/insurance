@@ -32,3 +32,10 @@
     padding: 6px 8px;
     color: white
 }
+
+.status_withdrawn {
+    background-color: #494949;
+    border-radius: 20px;
+    padding: 6px 8px;
+    color: white;
+}

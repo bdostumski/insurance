@@ -41,7 +41,6 @@ public class UserInfo {
     @Column(name = "enabled")
     private boolean enabled;
 
-
     @OneToMany(mappedBy = "userInfo")
     Set<Policy> policySet;
 
@@ -54,8 +53,6 @@ public class UserInfo {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Token token;
-
-
 
     public UserInfo() {}
 
