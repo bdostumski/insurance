@@ -7,7 +7,9 @@ import com.insurance.application.services.UserInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -34,5 +36,13 @@ public class ProfileController {
         model.addAttribute("uerInfo", user);
 
         return "profile";
+    }
+
+    @PostMapping("/update-user")
+    public void updateUserInfo(
+            @RequestParam UserInfo user
+    ){
+
+
     }
 }

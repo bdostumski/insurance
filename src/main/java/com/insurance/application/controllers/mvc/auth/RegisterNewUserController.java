@@ -1,5 +1,6 @@
 package com.insurance.application.controllers.mvc.auth;
 
+import com.insurance.application.exceptions.DuplicateEntityException;
 import com.insurance.application.exceptions.EmailExistsExeption;
 import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
@@ -13,15 +14,14 @@ import com.insurance.application.services.VerificationTokenService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.OnCreateAccountEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,41 +60,40 @@ public class RegisterNewUserController {
 
     @RequestMapping("/register/user")
     public ModelAndView registerUser(
-            @Valid final AccountRegDto accountDto,
+            @ModelAttribute("accountDto")  @Valid final AccountRegDto accountDto,
             final BindingResult result,
             HttpSession session,
             final HttpServletRequest request) {
 
+           if(!userInfoService.emailAlreadyExists(accountDto.getEmail())) {
+
+               UserInfo user = new UserInfo();
+               user.setEnabled(false);
+               UserRole role = rolesService.getByValue("ROLE_USER");
+               user.setUserRole(role);
+               user.setPassword(encoder.encode(accountDto.getPassword()));
+               user.setEmail(accountDto.getEmail());
+               userInfoService.create(user);
+
+               String sessionToken = (String) session.getAttribute("theToken");
+
+               final String token;
+               if (sessionToken == null) {
+                   token = UUID.randomUUID().toString();
+               } else {
+                   token = sessionToken;
+               }
+
+               tokenService.saveToken(token, user);
+
+               final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
+               sendVerificationEmail(user, token, appURL);
+           }else {
+               result.addError(new FieldError("accountDto", "email", "Email already exists"));
+           }
+
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
-        }
-        try {
-            UserInfo user = new UserInfo();
-            user.setEnabled(false);
-            UserRole role = rolesService.getByValue("ROLE_USER");
-
-            user.setUserRole(role);
-            user.setPassword(encoder.encode(accountDto.getPassword()));
-            user.setEmail(accountDto.getEmail());
-            userInfoService.create(user);
-
-            String sessionToken = (String) session.getAttribute("theToken");
-
-            final String token;
-            if (sessionToken == null) {
-                 token = UUID.randomUUID().toString();
-            }else {
-                token = sessionToken;
-            }
-
-            tokenService.saveToken(token, user);
-
-            final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
-            sendVerificationEmail(user, token, appURL);
-
-        } catch (EmailExistsExeption e) {
-            result.addError(new FieldError("user", "email", e.getMessage()));
-            return new ModelAndView("register", "user", accountDto);
         }
         return new ModelAndView("redirect:/login");
     }

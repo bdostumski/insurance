@@ -26,6 +26,12 @@ public class Policy {
     @Column(name = "total_price")
     private Double totalPrice;
 
+    /*
+    approval = 0 -> pending
+    approval = 1 -> approved
+    approval = 2 -> declined
+    */
+
     @Column(name = "is_approval")
     private byte approval;
 

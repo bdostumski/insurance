@@ -3,11 +3,14 @@ package com.insurance.application.repositories.Impl;
 import com.insurance.application.exceptions.EntityNotFoundException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.UserInfoRepository;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.NoResultException;
 
 @Repository
 public class UserInfoRepositoryImpl implements UserInfoRepository {
@@ -67,12 +70,15 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
 
     @Override
     public UserInfo getByEmail(String userEmail){
+        UserInfo user;
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery(" from UserInfo where email = :usermail", UserInfo.class);
             query.setParameter("usermail", userEmail);
-            return (UserInfo) query.getSingleResult();
-
+            user = (UserInfo) query.getSingleResult();
+        }catch (NoResultException | NonUniqueResultException exception){
+            user = null;
         }
+        return user;
     }
 
 }

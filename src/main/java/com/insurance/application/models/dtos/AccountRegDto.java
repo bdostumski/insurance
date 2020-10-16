@@ -1,7 +1,10 @@
 package com.insurance.application.models.dtos;
 
+import javax.validation.constraints.Email;
+
 public class AccountRegDto {
 
+    @Email
     private String email;
     private String password;
     private String receivedTokenValue;

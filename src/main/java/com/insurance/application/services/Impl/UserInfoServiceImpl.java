@@ -1,6 +1,7 @@
 package com.insurance.application.services.Impl;
 
 import com.insurance.application.exceptions.DuplicateEntityException;
+import com.insurance.application.exceptions.EmailExistsExeption;
 import com.insurance.application.exceptions.EntityNotFoundException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.UserInfoRepository;
@@ -20,8 +21,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void create(UserInfo user) {
-
-        repository.create(user);
+        try {
+            repository.create(user);
+        } catch (Exception e) {
+            throw new EmailExistsExeption("Email already exists", e.getCause());
+        }
     }
 
     @Override
@@ -56,5 +60,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo user = repository.getByEmail(userEmail);
 
         return user;
+    }
+
+    @Override
+    public boolean emailAlreadyExists(String userEmail) {
+        return getByEmail(userEmail).isEnabled();
     }
 }
