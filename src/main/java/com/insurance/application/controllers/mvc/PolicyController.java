@@ -53,14 +53,14 @@ public class PolicyController {
             String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
             InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
             session.setAttribute("userToken", tokenValue);
-
             model.addAttribute("infoDto", infoDto);
             model.addAttribute("policyInfoDto", new InitialPolicyDto());
 
             return "policy";
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/";
+            return "redirect:/login";
         }
 
     }

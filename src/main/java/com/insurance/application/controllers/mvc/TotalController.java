@@ -62,12 +62,11 @@ public class TotalController {
             HttpSession session,
             Principal principal
     ) {
-
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
-
         try {
+
             String tokenValue;
             if (principal == null) {
               tokenValue  = UUID.randomUUID().toString();
@@ -79,10 +78,13 @@ public class TotalController {
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
             InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto, carBrandService,
                     carModelService, baseAmountService, coefficientService, initialInfoDto, tokenValue);
-
             infoDtoService.create(infoStringDto);
 
-            session.setAttribute("theToken", tokenValue);
+
+            if (principal == null){
+                session.setAttribute("stringInfoDto", initialInfoStringDto);
+                session.setAttribute("theToken", tokenValue);
+            }
 
             model.addAttribute("initialInfoDto", infoStringDto);
 
@@ -90,7 +92,6 @@ public class TotalController {
             e.printStackTrace();
             return "redirect:/";
         }
-
         return "total";
     }
 

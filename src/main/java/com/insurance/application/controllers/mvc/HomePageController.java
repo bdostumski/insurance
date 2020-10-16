@@ -3,6 +3,7 @@ package com.insurance.application.controllers.mvc;
 import com.insurance.application.models.CarModel;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
+import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.OnRequestModelsEvent;
@@ -28,7 +29,8 @@ public class HomePageController {
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public HomePageController(UserInfoService userInfoService, InfoDtoService infoDtoService,
+    public HomePageController(UserInfoService userInfoService,
+                              InfoDtoService infoDtoService,
                               ApplicationEventPublisher eventPublisher) {
         this.userInfoService = userInfoService;
         this.infoDtoService = infoDtoService;
@@ -37,15 +39,24 @@ public class HomePageController {
 
     @GetMapping
     public String getIndex(Model model,
+                           HttpSession session,
                            Principal principal) {
 
-        if (principal == null || !isInfoStringDtoAvailable(principal)) {
+        if (principal != null || isInfoStringDtoAvailable(principal)) {
 
+            if (session.getAttribute("stringInfoDto") != null){
+                InitialInfoStringDto stringDto =(InitialInfoStringDto) session.getAttribute("stringInfoDto");
+                InitialInfoStringDto stringDtoToUpdate = infoDtoService.getById(stringDto.getId());
+                stringDtoToUpdate.setUserToken(userInfoService.getByEmail(principal.getName()).getToken().getTokenValue());
+                infoDtoService.update(stringDtoToUpdate);
+            }
+
+            return "redirect:/policy";
+
+        } else {
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
 
-        } else {
-            return "redirect:/policy";
         }
     }
 
