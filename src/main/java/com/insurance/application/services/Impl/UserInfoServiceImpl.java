@@ -64,6 +64,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public boolean emailAlreadyExists(String userEmail) {
-        return getByEmail(userEmail).isEnabled();
+        if(getByEmail(userEmail) == null){
+            return false;
+        } else {
+            return getByEmail(userEmail).isEnabled();
+        }
+
     }
 }

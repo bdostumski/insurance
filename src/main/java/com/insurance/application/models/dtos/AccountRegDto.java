@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 
 public class AccountRegDto {
 
-    @Email
+    @Email(message = "Enter a valid email address.")
     private String email;
     private String password;
     private String receivedTokenValue;

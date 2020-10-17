@@ -78,6 +78,10 @@ TODO - add coments!
         }
     }
 
+
+/*
+TODO -> resolve this issue with async. requests
+ */
     @PostMapping("/brandmodels")
     public String getBrandModels(
             @RequestHeader("brandID") int brandId,
