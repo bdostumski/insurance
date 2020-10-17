@@ -69,7 +69,7 @@
             <div th:each="policy : ${policyList}" class="my-3 p-1 policy">
                 <div class="row p-2">
                     <div class="mt-2 col-lg-6 col-sm-6 d-flex justify-content-start">
-                        <h4>Request No <strong th:text="${policy.id}">25768</strong> / <strong>09.07.2019</strong> </h4>
+                        <h4>Request No <strong th:text="${policy.id}">25768</strong> / <strong th:text="${policy.startDate}">09.07.2019</strong> </h4>
                     </div>
                     <div class="col-lg-6 col-sm-6 d-flex justify-content-end">
                         <h4 class="mt-2 mr-3">

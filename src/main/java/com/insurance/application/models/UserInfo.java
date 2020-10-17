@@ -1,7 +1,6 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class UserInfo {
     private String password;
 
     @Column(name = "birthdate")
-    private LocalDate birthdate;
+    private String birthdate;
 
     @Column(name = "prev_accident")
     private byte prevAccident;
@@ -76,7 +75,7 @@ public class UserInfo {
         return password;
     }
 
-    public LocalDate getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
@@ -128,7 +127,7 @@ public class UserInfo {
         this.password = password;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 

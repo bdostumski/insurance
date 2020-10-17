@@ -69,7 +69,7 @@ create table user_info
     firstname     varchar(100)         null,
     lastname      varchar(100)         null,
     email         varchar(100)         not null,
-    birthdate     datetime             null,
+    birthdate     varchar(100)         null,
     prev_accident tinyint(1) default 0 not null,
     soft_delete   tinyint(1) default 0 null,
     password      varchar(200)         not null,
@@ -87,10 +87,10 @@ create table car_info
 (
     id        int auto_increment
         primary key,
-    reg_date  datetime    null,
-    cubic_cap varchar(20) null,
-    model_id  int         null,
-    user_id   int         null,
+    reg_date  varchar(100) null,
+    cubic_cap varchar(50)  null,
+    model_id  int          null,
+    user_id   int          null,
     constraint car_info_car_model_id_fk
         foreign key (model_id) references car_model (id),
     constraint car_info_user_info_id_fk

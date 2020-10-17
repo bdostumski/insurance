@@ -19,15 +19,13 @@ import static com.insurance.application.utils.ConvertDate.convertDate;
 public class InitialStringMapper {
 
 
-    public static InitialInfoStringDto initialStringMapper(
-            InitialInfoStringDto infoStringDto,
+    public static InitialInfoStringDto initialStringMapper(InitialInfoStringDto infoStringDto,
             CarBrandService carBrandService,
             CarModelService carModelService,
             BaseAmountService baseAmountService,
             CoefficientService coefficientService,
             InitialInfoDto initialInfoDto,
-            String tokenValue
-    ) throws ParseException {
+            String tokenValue) throws ParseException {
 
         infoStringDto.setCarBrand(carBrandService.getById(initialInfoDto.getCarBrand()).getBrand());
         infoStringDto.setCarModel(carModelService.getById(initialInfoDto.getCarModel()).getModel());

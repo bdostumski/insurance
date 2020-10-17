@@ -1,7 +1,5 @@
 package com.insurance.application.utils;
 
-import com.insurance.application.exceptions.ParserException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

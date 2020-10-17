@@ -1,9 +1,6 @@
 package com.insurance.application.repositories.Impl;
 
-import com.insurance.application.exceptions.EntityNotFoundException;
-import com.insurance.application.models.CarModel;
 import com.insurance.application.models.Policy;
-import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.PolicyRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

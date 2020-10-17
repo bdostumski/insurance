@@ -7,8 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-
 @Repository
 public class BaseAmountRepositoryImpl implements BaseAmountRepository {
 

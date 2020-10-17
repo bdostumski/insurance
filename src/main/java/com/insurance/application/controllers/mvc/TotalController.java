@@ -1,15 +1,10 @@
 package com.insurance.application.controllers.mvc;
 
-import com.insurance.application.models.CarModel;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
-import com.insurance.application.utils.OnCreateAccountEvent;
-import com.insurance.application.utils.OnRequestModelListener;
-import com.insurance.application.utils.OnRequestModelsEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.text.ParseException;
-import java.util.List;
 import java.util.UUID;
 
 import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
@@ -34,12 +28,13 @@ public class TotalController {
     UserInfoService userService;
     InfoDtoService infoDtoService;
 
-
     @Autowired
-    public TotalController(CarBrandService carBrandService, CarModelService carModelService,
+    public TotalController(CarBrandService carBrandService,
+                           CarModelService carModelService,
                            BaseAmountService baseAmountService,
                            CoefficientService coefficientService,
-                           UserInfoService userService, InfoDtoService infoDtoService) {
+                           UserInfoService userService,
+                           InfoDtoService infoDtoService) {
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
         this.baseAmountService = baseAmountService;
@@ -54,21 +49,19 @@ public class TotalController {
     }
 
     @PostMapping
-    public String createOffer(
-            final InitialInfoDto initialInfoDto,
-            BindingResult bindingResult,
-            Model model,
-            HttpSession session,
-            Principal principal
-    ) {
-
+    public String createOffer (final InitialInfoDto initialInfoDto,
+                               BindingResult bindingResult,
+                               Model model,
+                               HttpSession session,
+                               Principal principal) {
 
         if (bindingResult.hasErrors()) {
             return "redirect:/";
         }
-        try {
 
+        try {
             String tokenValue;
+
             if (principal == null) {
               tokenValue  = UUID.randomUUID().toString();
             }else {
@@ -76,17 +69,12 @@ public class TotalController {
                 tokenValue = userService.getByEmail(userMail).getToken().getTokenValue();
             }
 
-            if(principal != null) {
-                model.addAttribute("loggedUser", userService.getByEmail(principal.getName()));
-            } else {
-                model.addAttribute("loggedUser", new UserInfo());
-            }
+            model.addAttribute("loggedUser", isPrincipalNull(principal));
 
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
             InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto, carBrandService,
                     carModelService, baseAmountService, coefficientService, initialInfoDto, tokenValue);
             infoDtoService.create(infoStringDto);
-
 
             if (principal == null){
                 session.setAttribute("stringInfoDto", initialInfoStringDto);
@@ -100,5 +88,13 @@ public class TotalController {
             return "redirect:/";
         }
         return "total";
+    }
+
+    private UserInfo isPrincipalNull(Principal principal) {
+        if(principal != null) {
+            return userService.getByEmail(principal.getName());
+        } else {
+            return new UserInfo();
+        }
     }
 }

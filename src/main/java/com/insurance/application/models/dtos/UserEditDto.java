@@ -9,8 +9,7 @@ public class UserEditDto {
     private String phoneNumber;
     private String address;
 
-    public UserEditDto() {
-    }
+    public UserEditDto() {}
 
     public String getFirstname() {
         return firstname;

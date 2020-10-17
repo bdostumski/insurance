@@ -26,7 +26,7 @@ public class HomePageController {
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public HomePageController(UserInfoService userInfoService,
+    public HomePageController (UserInfoService userInfoService,
                               InfoDtoService infoDtoService,
                               ApplicationEventPublisher eventPublisher) {
         this.userInfoService = userInfoService;
@@ -35,31 +35,35 @@ public class HomePageController {
     }
 
     @GetMapping
-    public String getIndex(Model model,
-                           HttpSession session,
-                           Principal principal) {
+    public String getIndex (Model model, HttpSession session, Principal principal) {
 
-        if(principal != null) {
-            model.addAttribute("loggedUser", userInfoService.getByEmail(principal.getName()));
-        } else {
-            model.addAttribute("loggedUser", new UserInfo());
-        }
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
 
         if (principal != null || isInfoStringDtoAvailable(principal)) {
-
             if (session.getAttribute("stringInfoDto") != null){
+
                 InitialInfoStringDto stringDto =(InitialInfoStringDto) session.getAttribute("stringInfoDto");
                 InitialInfoStringDto stringDtoToUpdate = infoDtoService.getById(stringDto.getId());
                 stringDtoToUpdate.setUserToken(userInfoService.getByEmail(principal.getName()).getToken().getTokenValue());
                 infoDtoService.update(stringDtoToUpdate);
                 return "redirect:/policy";
             } else {
+
                 model.addAttribute("initialInfoDto", new InitialInfoDto());
                 return "index";
             }
         } else {
+
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
+        }
+    }
+
+    private UserInfo isPrincipalNull(Principal principal) {
+        if(principal != null) {
+            return userInfoService.getByEmail(principal.getName());
+        } else {
+            return new UserInfo();
         }
     }
 

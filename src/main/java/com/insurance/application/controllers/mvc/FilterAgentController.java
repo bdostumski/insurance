@@ -15,34 +15,32 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/agent-filter")
-public class AgentFilterController {
-
+public class FilterAgentController {
 
     PolicyService policyService;
     UserInfoService userInfoService;
 
     @Autowired
-    public AgentFilterController(PolicyService policyService, UserInfoService userInfoService) {
+    public FilterAgentController(PolicyService policyService, UserInfoService userInfoService) {
         this.policyService = policyService;
         this.userInfoService = userInfoService;
     }
 
     @GetMapping
-    public String getFilters(
-            Model model,
-            Principal principal
-    ) {
+    public String getFilters(Model model, Principal principal) {
+
         List<Policy> policyList = policyService.getAllPolicies();
-
-        if(principal != null) {
-            model.addAttribute("loggedUser", userInfoService.getByEmail(principal.getName()));
-        } else {
-            model.addAttribute("loggedUser", new UserInfo());
-        }
-
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
 
-
         return "/agent-filter";
+    }
+
+    private UserInfo isPrincipalNull(Principal principal) {
+        if(principal != null) {
+            return userInfoService.getByEmail(principal.getName());
+        } else {
+            return new UserInfo();
+        }
     }
 }

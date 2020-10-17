@@ -1,6 +1,5 @@
 package com.insurance.application.repositories.Impl;
 
-
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.repositories.InfoDtoRepository;
 import org.hibernate.Session;

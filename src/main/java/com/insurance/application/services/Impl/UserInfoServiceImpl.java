@@ -1,8 +1,6 @@
 package com.insurance.application.services.Impl;
 
-import com.insurance.application.exceptions.DuplicateEntityException;
 import com.insurance.application.exceptions.EmailExistsExeption;
-import com.insurance.application.exceptions.EntityNotFoundException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.UserInfoRepository;
 import com.insurance.application.services.UserInfoService;

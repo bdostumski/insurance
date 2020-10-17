@@ -2,13 +2,10 @@ package com.insurance.application.utils;
 
 import com.insurance.application.models.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class ResetPasswordListener implements ApplicationListener<OnResetPasswordEvent> {

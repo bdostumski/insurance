@@ -72,26 +72,26 @@
                     </div>
                     <div class="row mb-4">
                         <div class="col-12">
-                            <input th:if="${policyInfoDto.firstName.isBlank()}" th:field="*{firstName}" type="text" placeholder="Firstname" class="form-control">
-                            <input th:if="${!policyInfoDto.firstName.isBlank()}" th:field="*{firstName}" th:value="${userInfo.firstname}" type="text" class="form-control">
+                            <input th:if="${policyInfoDto.firstName == null}" th:field="*{firstName}" type="text" placeholder="Firstname" class="form-control" required>
+                            <input th:if="${policyInfoDto.firstName != null}" th:field="*{firstName}" th:placeholder="*{firstName}" th:value="${userInfo.firstname}" type="text" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-12">
-                            <input th:if="${policyInfoDto.lastName.isBlank()}" th:field="*{lastName}" type="text" placeholder="Lastname" class="form-control">
-                            <input th:if="${!policyInfoDto.lastName.isBlank()}" th:field="*{lastName}" th:value="${userInfo.lastname}" type="text" placeholder="Lastname" class="form-control">
+                            <input th:if="${policyInfoDto.lastName == null}" th:field="*{lastName}" type="text" placeholder="Lastname" class="form-control" required>
+                            <input th:if="${policyInfoDto.lastName != null}" th:field="*{lastName}" th:placeholder="*{lastName}" th:value="${userInfo.lastname}" type="text" placeholder="Lastname" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-12">
-                            <input th:if="${policyInfoDto.phoneNumber.isBlank()}" th:field="*{phoneNumber}" type="text" placeholder="Phone" class="form-control">
-                            <input th:if="${!policyInfoDto.phoneNumber.isBlank()}" th:field="*{phoneNumber}" th:value="${userInfo.phoneNumber}" type="text" placeholder="Phone" class="form-control">
+                            <input th:if="${policyInfoDto.phoneNumber == null}" th:field="*{phoneNumber}" type="text" placeholder="Phone" class="form-control" required>
+                            <input th:if="${policyInfoDto.phoneNumber != null}" th:field="*{phoneNumber}" th:placeholder="*{phoneNumber}" th:value="${userInfo.phoneNumber}" type="text" placeholder="Phone" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-12">
-                            <input th:if="${policyInfoDto.address.isBlank()}" th:field="*{address}" type="text" placeholder="Postal Address" class="form-control">
-                            <input th:if="${!policyInfoDto.address.isBlank()}" th:field="*{address}" th:value="${userInfo.address}" type="text" placeholder="Postal Address" class="form-control">
+                            <input th:if="${policyInfoDto.address == null}" th:field="*{address}" type="text" placeholder="Postal Address" class="form-control" required>
+                            <input th:if="${policyInfoDto.address != null}" th:field="*{address}" th:placeholder="*{address}" th:value="${userInfo.address}" type="text" placeholder="Postal Address" class="form-control" required>
                         </div>
                     </div>
                     <hr/>

@@ -1,7 +1,6 @@
 package com.insurance.application.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +13,7 @@ public class Car {
     private int id;
 
     @Column(name = "reg_date")
-    private LocalDate regDate;
+    private String regDate;
 
     @Column(name = "cubic_cap")
     private String cubicCap;
@@ -33,7 +32,7 @@ public class Car {
         return id;
     }
 
-    public LocalDate getRegDate() {
+    public String getRegDate() {
         return regDate;
     }
 
@@ -53,7 +52,7 @@ public class Car {
         this.id = id;
     }
 
-    public void setRegDate(LocalDate regDate) {
+    public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
 

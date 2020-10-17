@@ -1,6 +1,5 @@
 package com.insurance.application.repositories.Impl;
 
-import com.insurance.application.exceptions.EntityNotFoundException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.UserInfoRepository;
 import org.hibernate.NonUniqueResultException;

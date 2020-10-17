@@ -10,8 +10,7 @@ public class InitialPolicyDto {
     private String phoneNumber;
     private String address;
 
-    public InitialPolicyDto() {
-    }
+    public InitialPolicyDto() {}
 
     public void setStartDate(String startDate) {
         this.startDate = startDate;

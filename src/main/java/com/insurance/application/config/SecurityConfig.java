@@ -121,9 +121,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/total", "/offer", "/sign-up", "/register/user", "/brandmodels",
                             "/registrationconfirm", "/recoverpassword", "/passwordreset/user", "/passress",
                             "/register").permitAll()
-                    .antMatchers("/policy").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/policy").hasAnyRole("ADMIN", "USER", "AGENT")
                     .antMatchers("/user-filter").hasAnyRole("USER")
-                    .antMatchers("/agent-filter").hasAnyRole("ADMIN")
+                    .antMatchers("/agent-filter").hasAnyRole("ADMIN", "AGENT")
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate").defaultSuccessUrl("/")

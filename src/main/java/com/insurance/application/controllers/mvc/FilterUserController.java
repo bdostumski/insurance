@@ -15,32 +15,34 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user-filter")
-public class UserFilterController {
+public class FilterUserController {
 
     PolicyService policyService;
     UserInfoService userInfoService;
 
     @Autowired
-    public UserFilterController(PolicyService policyService, UserInfoService userInfoService) {
+    public FilterUserController(PolicyService policyService, UserInfoService userInfoService) {
+
         this.policyService = policyService;
         this.userInfoService = userInfoService;
     }
 
     @GetMapping
-    public String getFilters(
-            Model model,
-            Principal principal
-    ) {
+    public String getFilters (Model model, Principal principal) {
+
         List<Policy> policyList = policyService.getByUserMail(principal.getName());
 
-        if(principal != null) {
-            model.addAttribute("loggedUser", userInfoService.getByEmail(principal.getName()));
-        } else {
-            model.addAttribute("loggedUser", new UserInfo());
-        }
-
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
 
         return "/user-filter";
+    }
+
+    private UserInfo isPrincipalNull(Principal principal) {
+        if(principal != null) {
+            return userInfoService.getByEmail(principal.getName());
+        } else {
+            return new UserInfo();
+        }
     }
 }

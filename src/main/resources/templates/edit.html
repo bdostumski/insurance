@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
             integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
             crossorigin="anonymous" />
-        <link rel="stylesheet" href="css/filters.css">
+        <link rel="stylesheet" href="css/edit.css">
 
         <title>Edit Profile - Safety Car</title>
     </head>
@@ -22,18 +22,18 @@
             <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
             <ul th:object="${userInfo}" class="nav justify-content-end">
                 <li th:if="${userInfo.enabled}" class="nav-item">
-                    <a th:href="@{profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
+                    <a th:href="@{/profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
                         <span th:text="${userInfo.firstname}">FirstName</span>
                         <span th:text="${userInfo.lastname}">LastName</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a th:href="@{policy}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
+                    <a th:href="@{/policy}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
                 </li>
                 <li class="nav-item">
-                    <a th:if="${userInfo.userRole.id == 1}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
-                    <a th:if="${userInfo.userRole.id == 2}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
-                    <a th:if="${userInfo.userRole.id == 3}" th:href="@{user-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.userRole.id == 1}" th:href="@{/agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.userRole.id == 2}" th:href="@{/agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.userRole.id == 3}" th:href="@{/user-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/logout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -47,25 +47,25 @@
                     <h1><i class="far fa-edit"></i> Edit Profile</h1>
                 </div>
             </div>
-            <form th:action="@{/edit}" method="post" th:object="${userInfo}">
+            <form th:action="@{/profile/update-user}" method="post" th:object="${userInfo}">
                 <div class="row">
                     <div class="col-12 my-1">
-                        <h4>Firstname: <span><input type="text" th:placeholder="${userInfo.firstname}" th:value="${userInfo.firstname}" th:field="*{firstname}"></span></h4>
+                        <h4><b>Firstname:</b> <span><input type="text" th:placeholder="${userInfo.firstname}" th:value="${userInfo.firstname}" th:field="*{firstname}"></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4>Lastname: <span><input type="text" th:placeholder="${userInfo.lastname}" th:value="${userInfo.lastname}" th:field="*{lastname}"></span></h4>
+                        <h4><b>Lastname:</b> <span><input type="text" th:placeholder="${userInfo.lastname}" th:value="${userInfo.lastname}" th:field="*{lastname}"></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4>Birthdate: <span><input type="date" th:value="${userInfo.birthdate}" th:field="*{birthdate}"></span></h4>
+                        <h4><b>Birthdate:</b> <span><input type="date" th:value="${userInfo.birthdate}" th:field="*{birthdate}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4>Email: <span><input type="text" th:placeholder="${userInfo.email}" th:value="${userInfo.email}" th:field="*{email}"></span></h4>
+                        <h4><b>Email:</b> <span><input type="text" th:placeholder="${userInfo.email}" th:value="${userInfo.email}" th:field="*{email}"></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4>Phone: <span><input type="text" th:placeholder="${userInfo.phoneNumber}" th:value="${userInfo.phoneNumber}" th:field="*{phoneNumber}"></span></h4>
+                        <h4><b>Phone:</b> <span><input type="text" th:placeholder="${userInfo.phoneNumber}" th:value="${userInfo.phoneNumber}" th:field="*{phoneNumber}"></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4>Postal Address: <span><input type="text" th:placeholder="${userInfo.address}" th:value="${userInfo.address}" th:field="*{address}"></span></h4>
+                        <h4><b>Postal Address:</b> <span><input type="text" th:placeholder="${userInfo.address}" th:value="${userInfo.address}" th:field="*{address}"></span></h4>
                     </div>
                     <div class="col-12 my-1">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Confirm</button>

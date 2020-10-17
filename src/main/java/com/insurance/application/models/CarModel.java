@@ -22,8 +22,7 @@ public class CarModel {
     @OneToMany(mappedBy = "carModel", fetch = FetchType.EAGER)
     private Set<Car> cars;
 
-    public CarModel() {
-    }
+    public CarModel() {}
 
     public int getId() {
         return id;

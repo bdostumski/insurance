@@ -3,7 +3,6 @@ package com.insurance.application.models;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "car_brand")
 public class CarBrand {
@@ -19,8 +18,7 @@ public class CarBrand {
     @OneToMany(mappedBy = "carBrand", fetch = FetchType.EAGER)
     private Set<CarModel> carModelSet;
 
-    public CarBrand() {
-    }
+    public CarBrand() {}
 
     public int getId() {
         return id;
