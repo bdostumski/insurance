@@ -1,6 +1,9 @@
 package com.insurance.application.models;
 
+import com.insurance.application.utils.ConvertDate;
+
 import javax.persistence.*;
+import java.text.ParseException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -76,6 +79,15 @@ public class UserInfo {
     }
 
     public String getBirthdate() {
+        return birthdate;
+    }
+
+    public String getConvertedBirthdate() {
+        try {
+            return ConvertDate.convertDate(birthdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return birthdate;
     }
 

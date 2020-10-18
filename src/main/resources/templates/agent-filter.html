@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
             integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
             crossorigin="anonymous" />
-        <link rel="stylesheet" href="css/filters.css">
+        <link rel="stylesheet" th:href="@{../css/filters.css}">
 
         <title>Filters - Safety Car</title>
     </head>
@@ -69,7 +69,7 @@
             <div th:each="policy : ${policyList}" class="my-3 p-1 policy">
                 <div class="row p-2">
                     <div class="mt-2 col-lg-6 col-sm-6 d-flex justify-content-start">
-                        <h4>Request No <strong th:text="${policy.id}">25768</strong> / <strong th:text="${policy.startDate}">09.07.2019</strong> </h4>
+                        <h4>Request No <strong th:text="${policy.id}">25768</strong> / <strong th:text="${policy.getConvertedStartDate()}">09.07.2019</strong> </h4>
                     </div>
                     <div class="col-lg-6 col-sm-6 d-flex justify-content-end">
                         <h4 class="mt-2 mr-3">
@@ -91,7 +91,7 @@
                             <div class="card card-body border-0">
                                 <h5><strong>Vehicle</strong></h5>
                                 <div>Car model: <span th:text="${policy.car.carModel.carBrand.brand}">Audi</span> <span th:text="${policy.car.carModel.model}">A4</span></div>
-                                <div>Registration date: <span th:text="${policy.car.regDate}">08.07.2019</span></div>
+                                <div>Registration date: <span th:text="${policy.car.getConvertedRegDate()}">08.07.2019</span></div>
                                 <div>Registration certificate: <a href="#">AudiA4.jpg</a></div>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                         <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${policy.id}">
                             <div class="card card-body border-0">
                                 <h5><strong>Policy Start</strong></h5>
-                                <div>Start date: <span th:text="${policy.startDate}">10/07/2019</span></div>
+                                <div>Start date: <span th:text="${policy.getConvertedStartDate()}">10/07/2019</span></div>
                                 <div>Start time: <span th:text="${policy.startTime}">00:00</span></div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                         <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${policy.id}">
                             <div class="card card-body border-0">
                                 <h5><strong>Driver Details</strong></h5>
-                                <div>Driver's age: <span th:text="${policy.car.userInfo.birthdate}">18yrs</span></div>
+                                <div>Driver's age: <span th:text="${policy.car.userInfo.getConvertedBirthdate()}">18yrs</span></div>
                                 <div>Previous accidents:
                                     <span th:if="${policy.car.userInfo.prevAccident == 0}">No</span>
                                     <span th:if="${policy.car.userInfo.prevAccident == 1}">Yes</span>

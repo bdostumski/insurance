@@ -51,11 +51,11 @@
             <div class="row mb-5">
                 <div class="col-lg-4 col-sm-12">
                     <label>First registration date</label>
-                    <h4><strong th:text="*{registrationDate}">01.01.0001</strong></h4>
+                    <h4><strong th:text="${registrationDateModel}">01.01.0001</strong></h4>
                 </div>
                 <div class="col-lg-4 col-sm-12">
                     <label>Driver birthdate</label>
-                    <h4><strong th:text="*{driverBirthDate}">01.01.0001</strong></h4>
+                    <h4><strong th:text="${driverBirthDateModel}">01.01.0001</strong></h4>
                 </div>
                 <div class="col-lg-4 col-sm-12">
                     <label class="mr-3">Accidents in previous year (yes/no)</label>
@@ -64,7 +64,8 @@
             </div>
             <div class="row mb-5">
                 <div class="col-lg-12 col-sm-12">
-                    <a th:href="@{/}" style="width:100%;" type="reset" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get New Offer</a>
+                    <a th:if="${!loggedUser.enabled}" th:href="@{/}" style="width:100%;" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get New Offer</a>
+                    <a th:if="${loggedUser.enabled}" th:href="@{/total/new-offer}" style="width:100%;" class="btn btn-primary"><i class="fas fa-search-dollar"></i>  Get New Offer</a>
                 </div>
             </div>
             <div class="row" style="text-align:center;">

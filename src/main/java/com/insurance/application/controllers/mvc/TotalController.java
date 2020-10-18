@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
+import static com.insurance.application.utils.ConvertDate.convertDate;
 
 @Controller
 @RequestMapping("/total")
@@ -45,6 +46,12 @@ public class TotalController {
 
     @GetMapping
     public String getTotalPage() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/new-offer")
+    public String getTotalPage(Principal principal) {
+        deletePolicy(principal);
         return "redirect:/";
     }
 
@@ -81,6 +88,12 @@ public class TotalController {
                 session.setAttribute("theToken", tokenValue);
             }
 
+            String registrationDate = convertDate(initialInfoDto.getRegistrationDate());
+            model.addAttribute("registrationDateModel", registrationDate);
+
+            String driverBirthDate = convertDate(initialInfoDto.getDriverBirthDate());
+            model.addAttribute("driverBirthDateModel", driverBirthDate);
+
             model.addAttribute("initialInfoDto", infoStringDto);
 
         } catch (ParseException e) {
@@ -96,5 +109,11 @@ public class TotalController {
         } else {
             return new UserInfo();
         }
+    }
+
+    private void deletePolicy(Principal principal) {
+        String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
+        InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
+        infoDtoService.delete(infoDto);
     }
 }

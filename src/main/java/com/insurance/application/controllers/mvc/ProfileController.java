@@ -4,6 +4,8 @@ import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.UserEditDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.utils.ConvertDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+
+import static com.insurance.application.utils.ConvertDate.convertDateForSQL;
 
 @Controller
 @RequestMapping("/profile")
@@ -29,6 +40,13 @@ public class ProfileController {
 
         UserInfo user = userService.getByEmail(principal.getName());
         model.addAttribute("uerInfo", user);
+
+        try {
+            String date = ConvertDate.convertDate(user.getBirthdate());
+            model.addAttribute("birthDate", date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return "profile";
     }

@@ -141,7 +141,7 @@ public class PolicyController {
         policy.setCar(car);
         policy.setUserInfo(user);
         policy.setTotalPrice(stringDto.getTotalPrice());
-        policy.setStartDate(convertDate(initialPolicyDto.getStartDate()));
+        policy.setStartDate(initialPolicyDto.getStartDate());
         policy.setStartTime(initialPolicyDto.getStartTime());
 
         return policy;

@@ -1,7 +1,10 @@
 package com.insurance.application.models;
 
+import com.insurance.application.utils.ConvertDate;
+
 import javax.persistence.*;
 
+import java.text.ParseException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -62,6 +65,15 @@ public class Policy {
     }
 
     public String getStartDate() {
+        return startDate;
+    }
+
+    public String getConvertedStartDate() {
+        try {
+            return ConvertDate.convertDate(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return startDate;
     }
 

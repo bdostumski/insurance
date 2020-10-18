@@ -1,6 +1,9 @@
 package com.insurance.application.models;
 
+import com.insurance.application.utils.ConvertDate;
+
 import javax.persistence.*;
+import java.text.ParseException;
 import java.util.Objects;
 
 @Entity
@@ -36,6 +39,15 @@ public class Car {
         return regDate;
     }
 
+    public String getConvertedRegDate() {
+        try {
+            return ConvertDate.convertDate(regDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return regDate;
+    }
+
     public String getCubicCap() {
         return cubicCap;
     }
@@ -67,8 +79,6 @@ public class Car {
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
-
-
 
     @Override
     public int hashCode() {
