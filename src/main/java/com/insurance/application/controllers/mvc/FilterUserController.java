@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -44,5 +45,21 @@ public class FilterUserController {
         } else {
             return new UserInfo();
         }
+    }
+
+    @GetMapping("/withdraw")
+    public String withdraw(@RequestParam int id,
+                               Model model,
+                               Principal principal) {
+
+        List<Policy> policyList = policyService.getByUserMail(principal.getName());
+        Policy policy = policyService.getById(id);
+        policy.setApproval((byte) 2);
+        policyService.update(policy);
+
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList", policyList);
+
+        return "redirect:/user-filter";
     }
 }

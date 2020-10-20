@@ -142,11 +142,9 @@
                     <div class="col">
                         <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${policy.id}">
                             <div class="card card-body border-0">
-                                <form>
-                                    <button style="width: 100%" type="submit" class="btn btn-danger">
+                                    <a th:if="${policy.approval == 0}" th:href="@{/user-filter/withdraw/(id=${policy.id})}" style="width: 100%" type="submit" class="btn btn-danger">
                                         <i class="fas fa-times"></i>
-                                        Withdraw</button>
-                                </form>
+                                        Withdraw</a>
                             </div>
                         </div>
                     </div>

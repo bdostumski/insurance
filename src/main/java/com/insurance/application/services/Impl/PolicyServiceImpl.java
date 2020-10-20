@@ -25,12 +25,12 @@ public class PolicyServiceImpl implements PolicyService {
 
     @Override
     public void update(Policy policy) {
-        repository.create(policy);
+        repository.update(policy);
     }
 
     @Override
     public void delete(Policy policy) {
-        repository.create(policy);
+        repository.delete(policy);
     }
 
     @Override

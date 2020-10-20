@@ -143,12 +143,8 @@
                         <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${policy.id}">
                             <div class="card card-body border-0">
                                 <div class="d-flex justify-content-around mt-4">
-                                    <form>
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Approve</button>
-                                    </form>
-                                    <form>
-                                        <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i> Decline</button>
-                                    </form>
+                                    <a th:href="@{/agent-filter/approve/(id=${policy.id})}" type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Approve</a>
+                                    <a th:href="@{/agent-filter/decline/(id=${policy.id})}" type="submit" class="btn btn-danger"><i class="fas fa-times"></i> Decline</a>
                                 </div>
                             </div>
                         </div>

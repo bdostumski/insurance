@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -34,6 +35,38 @@ public class FilterAgentController {
         model.addAttribute("policyList", policyList);
 
         return "/agent-filter";
+    }
+
+    @GetMapping("/approve")
+    public String approve(@RequestParam int id,
+                           Model model,
+                           Principal principal) {
+
+        List<Policy> policyList = policyService.getAllPolicies();
+        Policy policy = policyService.getById(id);
+        policy.setApproval((byte) 1);
+        policyService.update(policy);
+
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList", policyList);
+
+        return "redirect:/agent-filter";
+    }
+
+    @GetMapping("/decline")
+    public String decline(@RequestParam int id,
+                          Model model,
+                          Principal principal) {
+
+        List<Policy> policyList = policyService.getAllPolicies();
+        Policy policy = policyService.getById(id);
+        policy.setApproval((byte) 2);
+        policyService.update(policy);
+
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList", policyList);
+
+        return "redirect:/agent-filter";
     }
 
     private UserInfo isPrincipalNull(Principal principal) {

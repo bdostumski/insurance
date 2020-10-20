@@ -1,38 +1,26 @@
 package com.insurance.application.controllers.mvc.auth;
 
-import com.insurance.application.exceptions.DuplicateEntityException;
-import com.insurance.application.exceptions.EmailExistsExeption;
 import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.UserRole;
 import com.insurance.application.models.dtos.AccountRegDto;
-import com.insurance.application.models.dtos.InitialInfoDto;
-import com.insurance.application.models.dtos.InitialInfoStringDto;
-import com.insurance.application.services.Impl.UserRoleServiceImpl;
 import com.insurance.application.services.UserRolesService;
 import com.insurance.application.services.VerificationTokenService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.OnCreateAccountEvent;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.security.Principal;
-import java.text.ParseException;
 import java.util.UUID;
-
-import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
 
 @Controller
 public class RegisterNewUserController {
@@ -56,7 +44,6 @@ public class RegisterNewUserController {
     public ModelAndView registrationForm() {
         return new ModelAndView("register", "accountDto", new AccountRegDto());
     }
-
 
     @RequestMapping("/register/user")
     public ModelAndView registerUser(
@@ -98,12 +85,9 @@ public class RegisterNewUserController {
         return new ModelAndView("redirect:/login");
     }
 
-
-
     private void sendVerificationEmail(UserInfo user, String token, String appURL) {
         eventPublisher.publishEvent(new OnCreateAccountEvent(appURL, user, token));
     }
-
 
     @RequestMapping(value = "/registrationconfirm")
     public ModelAndView confirmRegistration(
@@ -121,6 +105,4 @@ public class RegisterNewUserController {
 
         return new ModelAndView("redirect:/login");
     }
-
-
 }

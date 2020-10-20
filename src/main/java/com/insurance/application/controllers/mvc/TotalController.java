@@ -55,6 +55,19 @@ public class TotalController {
         return "redirect:/";
     }
 
+    @GetMapping("/logout")
+    public String policyLogout(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/logout";
+    }
+
+    @GetMapping("/profile")
+    public String policyProfile(Principal principal) {
+        deletePolicy(principal);
+        return "redirect:/profile";
+    }
+
+
     @PostMapping
     public String createOffer (final InitialInfoDto initialInfoDto,
                                BindingResult bindingResult,
@@ -70,8 +83,8 @@ public class TotalController {
             String tokenValue;
 
             if (principal == null) {
-              tokenValue  = UUID.randomUUID().toString();
-            }else {
+                tokenValue = UUID.randomUUID().toString();
+            } else {
                 String userMail = principal.getName();
                 tokenValue = userService.getByEmail(userMail).getToken().getTokenValue();
             }
@@ -83,7 +96,7 @@ public class TotalController {
                     carModelService, baseAmountService, coefficientService, initialInfoDto, tokenValue);
             infoDtoService.create(infoStringDto);
 
-            if (principal == null){
+            if (principal == null) {
                 session.setAttribute("stringInfoDto", initialInfoStringDto);
                 session.setAttribute("theToken", tokenValue);
             }

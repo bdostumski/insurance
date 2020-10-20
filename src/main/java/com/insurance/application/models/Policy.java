@@ -15,7 +15,7 @@ public class Policy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private int id;
 
     @Column(name = "start_date")
     private String startDate;
@@ -48,7 +48,7 @@ public class Policy {
 
     public Policy() {}
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -89,7 +89,7 @@ public class Policy {
         return imageSet;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
