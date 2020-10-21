@@ -1,8 +1,5 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,24 +45,24 @@
                     <h1><i class="fas fa-filter"></i> Filters</h1>
                 </div>
             </div>
-            <div class="row mb-5">
+            <form class="row mb-5" th:action="@{/agent-filter}" th:object="${policyFilter}" method="post">
                 <div class="col-lg-3 col-sm-12">
                     <h5><i class="far fa-calendar-alt"></i> From Date</h5>
-                    <input class="filters_style" type="date">
+                    <input th:field="*{fromDate}" class="filters_style datefield" type="date">
                 </div>
                 <div class="col-lg-3 col-sm-12">
                     <h5><i class="far fa-calendar-alt"></i> To Date</h5>
-                    <input class="filters_style" type="date">
+                    <input th:field="*{toDate}" class="filters_style datefield" type="date">
                 </div>
                 <div class="col-lg-3 col-sm-12">
                     <h5><i class="fas fa-search"></i> Search by email</h5>
-                    <input type="text" class="filters_style" placeholder="Search by">
+                    <input th:field="*{mail}" type="text" class="filters_style" placeholder="Search by">
                 </div>
                 <div class="col-lg-3 col-sm-12">
                     <button type="submit" class="btn btn-primary filters_style search_button_position"><i
                             class="fas fa-search"></i> Filter</button>
                 </div>
-            </div>
+            </form>
             <div th:each="policy : ${policyList}" class="my-3 p-1 policy">
                 <div class="row p-2">
                     <div class="mt-2 col-lg-6 col-sm-6 d-flex justify-content-start">
@@ -152,6 +149,25 @@
                 </div>
             </div>
         </div>
+
+<!--        <script>-->
+<!--            let today = new Date();-->
+<!--            let dd = today.getDate();-->
+<!--            let mm = today.getMonth()+1; //January is 0!-->
+<!--            let yyyy = today.getFullYear();-->
+
+<!--            if(dd<10)-->
+<!--                dd='0'+dd-->
+
+<!--            if(mm<10)-->
+<!--                mm='0'+mm-->
+
+<!--            today = yyyy+'-'+mm+'-'+dd;-->
+
+<!--            document.querySelectorAll(".datefield").forEach(function(e) {-->
+<!--                e.setAttribute("max", today);-->
+<!--            });-->
+<!--        </script>-->
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">

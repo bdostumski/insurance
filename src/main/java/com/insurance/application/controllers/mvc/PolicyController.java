@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.text.ParseException;
-
-import static com.insurance.application.utils.ConvertDate.convertDate;
 
 @Controller
 @RequestMapping("/policy")
@@ -74,7 +71,7 @@ public class PolicyController {
     }
 
     @GetMapping
-    public String getPolicy(Model model, Principal principal, HttpSession session) {
+    public String getPolicy (Model model, Principal principal, HttpSession session) {
 
         try {
 
@@ -134,7 +131,8 @@ public class PolicyController {
 
     private Policy generatePolicy(InitialPolicyDto initialPolicyDto,
                                   InitialInfoStringDto stringDto,
-                                  UserInfo user, Car car) throws ParseException {
+                                  UserInfo user,
+                                  Car car) {
 
         Policy policy = new Policy();
         policy.setApproval((byte) 0);
@@ -157,6 +155,9 @@ public class PolicyController {
         user.setLastname(initialPolicyDto.getLastName());
         user.setPhoneNumber(initialPolicyDto.getPhoneNumber());
         user.setAddress(initialPolicyDto.getAddress());
+
+        int accidents = stringDto.getHasAccidents().equals("No") ? 0 : 1;
+        user.setPrevAccident((byte) accidents);
 
         return user;
     }

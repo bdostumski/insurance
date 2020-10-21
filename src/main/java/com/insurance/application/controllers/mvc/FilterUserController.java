@@ -2,14 +2,14 @@ package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.Policy;
 import com.insurance.application.models.UserInfo;
+import com.insurance.application.models.dtos.PolicyFilterDto;
+import com.insurance.application.services.PolicyFilterService;
 import com.insurance.application.services.PolicyService;
 import com.insurance.application.services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,12 +20,16 @@ public class FilterUserController {
 
     PolicyService policyService;
     UserInfoService userInfoService;
+    PolicyFilterService policyFilterService;
 
     @Autowired
-    public FilterUserController(PolicyService policyService, UserInfoService userInfoService) {
+    public FilterUserController(PolicyService policyService,
+                                UserInfoService userInfoService,
+                                PolicyFilterService policyFilterService) {
 
         this.policyService = policyService;
         this.userInfoService = userInfoService;
+        this.policyFilterService = policyFilterService;
     }
 
     @GetMapping
@@ -33,6 +37,7 @@ public class FilterUserController {
 
         List<Policy> policyList = policyService.getByUserMail(principal.getName());
 
+        model.addAttribute("policyFilter", new PolicyFilterDto());
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
 
@@ -45,6 +50,24 @@ public class FilterUserController {
         } else {
             return new UserInfo();
         }
+    }
+
+    @PostMapping
+    public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
+                          Model model,
+                          Principal principal) {
+
+        UserInfo user = userInfoService.getByEmail(principal.getName());
+
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList",
+                policyFilterService.filterForUser (user.getId(),
+                        policyFilterDto.getFromDate(),
+                        policyFilterDto.getToDate()));
+
+        model.addAttribute("policyFilter", new PolicyFilterDto());
+
+        return "user-filter";
     }
 
     @GetMapping("/withdraw")

@@ -2,14 +2,14 @@ package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.Policy;
 import com.insurance.application.models.UserInfo;
+import com.insurance.application.models.dtos.PolicyFilterDto;
+import com.insurance.application.services.PolicyFilterService;
 import com.insurance.application.services.PolicyService;
 import com.insurance.application.services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -20,11 +20,15 @@ public class FilterAgentController {
 
     PolicyService policyService;
     UserInfoService userInfoService;
+    PolicyFilterService policyFilterService;
 
     @Autowired
-    public FilterAgentController(PolicyService policyService, UserInfoService userInfoService) {
+    public FilterAgentController(PolicyService policyService,
+                                 UserInfoService userInfoService,
+                                 PolicyFilterService policyFilterService) {
         this.policyService = policyService;
         this.userInfoService = userInfoService;
+        this.policyFilterService = policyFilterService;
     }
 
     @GetMapping
@@ -33,6 +37,7 @@ public class FilterAgentController {
         List<Policy> policyList = policyService.getAllPolicies();
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
+        model.addAttribute("policyFilter", new PolicyFilterDto());
 
         return "/agent-filter";
     }
@@ -67,6 +72,22 @@ public class FilterAgentController {
         model.addAttribute("policyList", policyList);
 
         return "redirect:/agent-filter";
+    }
+
+    @PostMapping
+    public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
+                          Model model,
+                          Principal principal) {
+
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList",
+                policyFilterService.filterForAdmin (policyFilterDto.getFromDate(),
+                        policyFilterDto.getToDate(),
+                        policyFilterDto.getMail()));
+
+        model.addAttribute("policyFilter", new PolicyFilterDto());
+
+        return "agent-filter";
     }
 
     private UserInfo isPrincipalNull(Principal principal) {

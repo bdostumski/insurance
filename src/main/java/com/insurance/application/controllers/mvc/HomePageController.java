@@ -42,7 +42,7 @@ public class HomePageController {
         if (principal != null || isInfoStringDtoAvailable(principal)) {
             if (session.getAttribute("stringInfoDto") != null){
 
-                InitialInfoStringDto stringDto =(InitialInfoStringDto) session.getAttribute("stringInfoDto");
+                InitialInfoStringDto stringDto = (InitialInfoStringDto) session.getAttribute("stringInfoDto");
                 InitialInfoStringDto stringDtoToUpdate = infoDtoService.getById(stringDto.getId());
                 stringDtoToUpdate.setUserToken(userInfoService.getByEmail(principal.getName()).getToken().getTokenValue());
                 infoDtoService.update(stringDtoToUpdate);
@@ -77,7 +77,6 @@ TODO - add coments!
             infoDtoService.getByTokenValue(user.getToken().getTokenValue());
             return true;
         } catch (Exception exception) {
-            exception.printStackTrace();
             return false;
         }
     }

@@ -30,7 +30,7 @@ public class TotalController {
     InfoDtoService infoDtoService;
 
     @Autowired
-    public TotalController(CarBrandService carBrandService,
+    public TotalController (CarBrandService carBrandService,
                            CarModelService carModelService,
                            BaseAmountService baseAmountService,
                            CoefficientService coefficientService,
@@ -92,12 +92,14 @@ public class TotalController {
             model.addAttribute("loggedUser", isPrincipalNull(principal));
 
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
-            InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto, carBrandService,
-                    carModelService, baseAmountService, coefficientService, initialInfoDto, tokenValue);
+            InitialInfoStringDto infoStringDto = initialStringMapper (initialInfoStringDto,
+                    carBrandService, carModelService, baseAmountService,
+                    coefficientService, initialInfoDto, tokenValue);
             infoDtoService.create(infoStringDto);
 
+            session.setAttribute("stringInfoDto", initialInfoStringDto);
+
             if (principal == null) {
-                session.setAttribute("stringInfoDto", initialInfoStringDto);
                 session.setAttribute("theToken", tokenValue);
             }
 

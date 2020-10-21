@@ -1,8 +1,5 @@
 <!doctype html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -77,11 +74,11 @@
             <div class="row mb-5">
                 <div class="col-lg-4 col-sm-12">
                     <label><strong>First registration date</strong></label><br/>
-                    <input th:field="*{registrationDate}" class="date_style" type="date" required>
+                    <input id="maxDay" th:field="*{registrationDate}" class="date_style" type="date" required>
                 </div>
                 <div class="col-lg-4 col-sm-12">
                     <label><strong>Driver birthdate</strong></label><br/>
-                    <input th:field="*{driverBirthDate}" class="date_style" type="date" required>
+                    <input id="birthDay" th:field="*{driverBirthDate}" class="date_style" type="date" required>
                 </div>
                 <div class="col-lg-4 col-sm-12">
                     <label class="mr-3"><strong>Accidents in previous year (yes/no)</strong></label>
@@ -94,6 +91,32 @@
                 </div>
             </div>
         </form>
+
+        <script>
+            let maxDay = new Date();
+            let birthDay;
+            let dd = maxDay.getDate();
+            let mm = maxDay.getMonth()+1;
+            let yyyy = maxDay.getFullYear();
+
+            let birth_day_month = (maxDay.getMonth() - 6);
+            let birth_day_year = maxDay.getFullYear() - 18;
+
+            if(dd<10)
+                dd='0'+dd
+
+            if(mm<10)
+                mm='0'+mm
+
+            if(birth_day_month<10)
+                birth_day_month='0'+birth_day_month
+
+            maxDay = yyyy+'-'+mm+'-'+dd;
+            birthDay = birth_day_year+'-'+birth_day_month+'-'+dd;
+
+            document.getElementById("birthDay").max = birthDay;
+            document.getElementById("maxDay").max = maxDay;
+        </script>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
