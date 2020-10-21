@@ -54,7 +54,7 @@
                     <div class="row mb-4">
                         <div class="col-lg-6 col-sm-12">
                             <label>Start date</label>
-                            <input th:field="*{startDate}" type="date" required>
+                            <input id="minDay" th:field="*{startDate}" type="date" required>
                         </div>
                         <div class="col-lg-6 col-sm-12">
                             <label>Start time</label>
@@ -105,6 +105,23 @@
                 </div>
             </form>
         </div>
+
+        <script>
+            let minDay = new Date();
+            let dd = minDay.getDate();
+            let mm = minDay.getMonth()+1;
+            let yyyy = minDay.getFullYear();
+
+            if(dd<10)
+                dd='0'+dd
+
+            if(mm<10)
+                mm='0'+mm
+
+            minDay = yyyy+'-'+mm+'-'+dd;
+
+            document.getElementById("minDay").min = minDay;
+        </script>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
