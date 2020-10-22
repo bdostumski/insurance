@@ -35,17 +35,33 @@ public class FilterAgentController {
     public String getFilters(Model model, Principal principal) {
 
         List<Policy> policyList = policyService.getAllPolicies();
+
+        model.addAttribute("policyFilter", new PolicyFilterDto());
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
-        model.addAttribute("policyFilter", new PolicyFilterDto());
 
         return "/agent-filter";
     }
 
+    @PostMapping
+    public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
+                          Model model,
+                          Principal principal) {
+
+        model.addAttribute("policyFilter", new PolicyFilterDto());
+        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("policyList",
+                policyFilterService.filterForAdmin (policyFilterDto.getFromDate(),
+                        policyFilterDto.getToDate(),
+                        policyFilterDto.getMail()));
+
+        return "agent-filter";
+    }
+
     @GetMapping("/approve")
     public String approve(@RequestParam int id,
-                           Model model,
-                           Principal principal) {
+                          Model model,
+                          Principal principal) {
 
         List<Policy> policyList = policyService.getAllPolicies();
         Policy policy = policyService.getById(id);
@@ -72,22 +88,6 @@ public class FilterAgentController {
         model.addAttribute("policyList", policyList);
 
         return "redirect:/agent-filter";
-    }
-
-    @PostMapping
-    public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
-                          Model model,
-                          Principal principal) {
-
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
-        model.addAttribute("policyList",
-                policyFilterService.filterForAdmin (policyFilterDto.getFromDate(),
-                        policyFilterDto.getToDate(),
-                        policyFilterDto.getMail()));
-
-        model.addAttribute("policyFilter", new PolicyFilterDto());
-
-        return "agent-filter";
     }
 
     private UserInfo isPrincipalNull(Principal principal) {

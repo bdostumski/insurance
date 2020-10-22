@@ -36,6 +36,7 @@ public class ProfileController {
             String date = ConvertDate.convertDate(user.getBirthdate());
             model.addAttribute("birthDate", date);
         } catch (ParseException e) {
+            // TODO
             e.printStackTrace();
         }
 

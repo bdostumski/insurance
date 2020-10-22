@@ -112,7 +112,6 @@ public class TotalController {
             model.addAttribute("initialInfoDto", infoStringDto);
 
         } catch (ParseException e) {
-            e.printStackTrace();
             return "redirect:/";
         }
         return "total";

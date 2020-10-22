@@ -44,14 +44,6 @@ public class FilterUserController {
         return "/user-filter";
     }
 
-    private UserInfo isPrincipalNull(Principal principal) {
-        if(principal != null) {
-            return userInfoService.getByEmail(principal.getName());
-        } else {
-            return new UserInfo();
-        }
-    }
-
     @PostMapping
     public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
                           Model model,
@@ -59,13 +51,12 @@ public class FilterUserController {
 
         UserInfo user = userInfoService.getByEmail(principal.getName());
 
+        model.addAttribute("policyFilter", new PolicyFilterDto());
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList",
                 policyFilterService.filterForUser (user.getId(),
                         policyFilterDto.getFromDate(),
                         policyFilterDto.getToDate()));
-
-        model.addAttribute("policyFilter", new PolicyFilterDto());
 
         return "user-filter";
     }
@@ -80,9 +71,18 @@ public class FilterUserController {
         policy.setApproval((byte) 2);
         policyService.update(policy);
 
+        model.addAttribute("policyFilter", new PolicyFilterDto());
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList", policyList);
 
         return "redirect:/user-filter";
+    }
+
+    private UserInfo isPrincipalNull(Principal principal) {
+        if(principal != null) {
+            return userInfoService.getByEmail(principal.getName());
+        } else {
+            return new UserInfo();
+        }
     }
 }

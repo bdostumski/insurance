@@ -25,7 +25,6 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
 
     @Override
     public List<Policy> filterForUser(int userId, String fromDate, String toDate) {
-
         try(Session session = factory.openSession()) {
 
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -33,22 +32,21 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
             Root<Policy> root = cr.from(Policy.class);
             List<Predicate> predicates = new ArrayList<>();
 
-            if(fromDate.isBlank() || toDate.isBlank()) {
+            if(!fromDate.isBlank())
+                predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), fromDate));
 
-                predicates.add(cb.equal(root.get("userInfo").get("id"), userId));
+            if(!toDate.isBlank())
+                predicates.add(cb.lessThanOrEqualTo(root.get("startDate"), toDate));
+
+            if(fromDate.isBlank() && toDate.isBlank()) {
                 cr.select(root).where(predicates.toArray(Predicate[]::new));
                 Query<Policy> query = session.createQuery(cr);
                 return query.getResultList();
-
-            } else {
-
-                predicates.add(cb.between(root.get("startDate"), fromDate, toDate));
-                predicates.add(cb.equal(root.get("userInfo").get("id"), userId));
-                cr.select(root).where(predicates.toArray(Predicate[]::new));
-                Query<Policy> query = session.createQuery(cr);
-                return query.getResultList();
-
             }
+
+            cr.select(root).where(predicates.toArray(Predicate[]::new));
+            Query<Policy> query = session.createQuery(cr);
+            return query.getResultList();
         }
     }
 
@@ -61,21 +59,24 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
             Root<Policy> root = cr.from(Policy.class);
             List<Predicate> predicates = new ArrayList<>();
 
-            if(fromDate.isBlank() || toDate.isBlank() || mail.isBlank()) {
+            if(!fromDate.isBlank())
+                predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), fromDate));
 
-                cr.select(root).where(predicates.toArray(Predicate[]::new));
-                Query<Policy> query = session.createQuery(cr);
-                return query.getResultList();
+            if(!toDate.isBlank())
+                predicates.add(cb.lessThanOrEqualTo(root.get("startDate"), toDate));
 
-            } else {
-
-                predicates.add(cb.between(root.get("startDate"), fromDate, toDate));
+            if(!mail.isBlank())
                 predicates.add(cb.like(root.get("userInfo").get("email"), "%" + mail + "%"));
+
+            if(fromDate.isBlank() && toDate.isBlank() && mail.isBlank()) {
                 cr.select(root).where(predicates.toArray(Predicate[]::new));
                 Query<Policy> query = session.createQuery(cr);
                 return query.getResultList();
-
             }
+
+            cr.select(root).where(predicates.toArray(Predicate[]::new));
+            Query<Policy> query = session.createQuery(cr);
+            return query.getResultList();
         }
     }
 }

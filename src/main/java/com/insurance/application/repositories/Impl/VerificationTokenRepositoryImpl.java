@@ -44,6 +44,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
                 session.getTransaction().commit();
 
         }catch (EntityNotFoundException e){
+            // TODO
             e.printStackTrace();
         }
     }

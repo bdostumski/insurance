@@ -98,7 +98,6 @@ public class PolicyController {
             }
             return "policy";
         } catch (Exception e) {
-            e.printStackTrace();
             return "redirect:/";
         }
     }
@@ -124,7 +123,6 @@ public class PolicyController {
 
             return "redirect:/profile";
         } catch (Exception e) {
-            e.printStackTrace();
             return "redirect:/";
         }
     }
