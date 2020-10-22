@@ -16,20 +16,20 @@
     <body>
         <nav class="navbar navbar-light bg-primary">
             <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
-            <ul th:object="${uerInfo}" class="nav justify-content-end">
-                <li th:if="${uerInfo.enabled}" class="nav-item">
+            <ul th:object="${userInfo}" class="nav justify-content-end">
+                <li class="nav-item">
                     <a th:href="@{profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
-                        <span th:text="${uerInfo.firstname}">FirstName</span>
-                        <span th:text="${uerInfo.lastname}">LastName</span>
+                        <span th:text="${userInfo.firstname}">FirstName</span>
+                        <span th:text="${userInfo.lastname}">LastName</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{policy}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
                 </li>
                 <li class="nav-item">
-                    <a th:if="${uerInfo.userRole.id == 1}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
-                    <a th:if="${uerInfo.userRole.id == 2}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
-                    <a th:if="${uerInfo.userRole.id == 3}" th:href="@{user-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.role == 1}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.role == 2}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.role == 3}" th:href="@{user-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/logout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -37,7 +37,7 @@
             </ul>
         </nav>
 
-        <div class="container" th:object="${uerInfo}">
+        <div class="container" th:object="${userInfo}">
             <div class="row mt-5">
                 <div class="col-12 d-flex justify-content-start my-5">
                     <h1><i class="fas fa-user"></i> My profile</h1>
@@ -51,7 +51,7 @@
                     <h4>Lastname: <span th:text="*{lastname}" >Ivanov</span></h4>
                 </div>
                 <div class="col-12 my-1">
-                    <h4>Birthdate: <span th:text="${birthDate}">12.14.1999</span></h4>
+                    <h4>Birthdate: <span th:text="*{birthdate}">12.14.1999</span></h4>
                 </div>
                 <div class="col-12 my-1">
                     <h4>Email: <span th:text="*{email}">Email@gmail.com</span></h4>

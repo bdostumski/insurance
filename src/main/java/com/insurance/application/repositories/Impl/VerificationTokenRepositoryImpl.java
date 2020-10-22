@@ -29,7 +29,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
     @Override
     public Token findByToken(String token){
         try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery(" from Token where token = :token", Token.class);
+            Query query = session.createQuery(" from Token where tokenValue = :token", Token.class);
             query.setParameter("token", token);
             return (Token) query.getSingleResult();
 
@@ -44,8 +44,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
                 session.getTransaction().commit();
 
         }catch (EntityNotFoundException e){
-            // TODO
-            e.printStackTrace();
+            throw new EntityNotFoundException("Token not found");
         }
     }
 }

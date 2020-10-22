@@ -8,6 +8,7 @@ public class UserProfileInfoDto {
     private String email;
     private String phoneNumber;
     private String address;
+    private int role;
 
     public UserProfileInfoDto() {}
 
@@ -35,6 +36,9 @@ public class UserProfileInfoDto {
         return address;
     }
 
+    public int getRole() {
+        return role;
+    }
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
@@ -58,6 +62,10 @@ public class UserProfileInfoDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }
 

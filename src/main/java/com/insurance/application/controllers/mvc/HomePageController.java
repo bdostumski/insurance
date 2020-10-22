@@ -1,9 +1,12 @@
 package com.insurance.application.controllers.mvc;
 
+import com.insurance.application.models.CarBrand;
 import com.insurance.application.models.CarModel;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
+import com.insurance.application.services.CarBrandService;
+import com.insurance.application.services.CarModelService;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.events.OnRequestModelsEvent;
@@ -24,14 +27,20 @@ public class HomePageController {
     UserInfoService userInfoService;
     InfoDtoService infoDtoService;
     ApplicationEventPublisher eventPublisher;
+    CarBrandService carBrandService;
+    CarModelService carModelService;
 
     @Autowired
     public HomePageController (UserInfoService userInfoService,
                               InfoDtoService infoDtoService,
-                              ApplicationEventPublisher eventPublisher) {
+                              ApplicationEventPublisher eventPublisher,
+                               CarBrandService carBrandService,
+                               CarModelService carModelService) {
         this.userInfoService = userInfoService;
         this.infoDtoService = infoDtoService;
         this.eventPublisher = eventPublisher;
+        this.carBrandService = carBrandService;
+        this.carModelService = carModelService;
     }
 
     @GetMapping
@@ -49,11 +58,15 @@ public class HomePageController {
                 return "redirect:/policy";
             } else {
 
+                model.addAttribute("brandList", carBrandService.getAll());
+                model.addAttribute("models", carModelService.getAll());
                 model.addAttribute("initialInfoDto", new InitialInfoDto());
                 return "index";
             }
         } else {
 
+            model.addAttribute("brands", new CarBrand());
+            model.addAttribute("models", new CarModel());
             model.addAttribute("initialInfoDto", new InitialInfoDto());
             return "index";
         }

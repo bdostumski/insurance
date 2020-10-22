@@ -29,18 +29,31 @@ public class ProfileController {
     @GetMapping
     public String getProfile (Model model, Principal principal) {
 
-        UserInfo user = userService.getByEmail(principal.getName());
-        model.addAttribute("uerInfo", user);
-
         try {
-            String date = ConvertDate.convertDate(user.getBirthdate());
-            model.addAttribute("birthDate", date);
+            UserProfileInfoDto userDto = userInfoToDto(principal);
+            model.addAttribute("userInfo", userDto);
         } catch (ParseException e) {
             // TODO
             e.printStackTrace();
         }
 
         return "profile";
+    }
+
+    private UserProfileInfoDto userInfoToDto (Principal principal) throws ParseException {
+
+        UserInfo userInfo = userService.getByEmail(principal.getName());
+
+        UserProfileInfoDto user = new UserProfileInfoDto();
+        user.setFirstname(userInfo.getFirstname());
+        user.setLastname(userInfo.getLastname());
+        user.setAddress(userInfo.getAddress());
+        user.setEmail(userInfo.getEmail());
+        user.setRole(userInfo.getUserRole().getId());
+
+        user.setBirthdate(ConvertDate.convertDate(userInfo.getBirthdate()));
+
+        return user;
     }
 
     @PostMapping("/update-user")

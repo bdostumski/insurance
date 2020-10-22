@@ -47,7 +47,8 @@ public class PasswordResetController {
     }
 
     @GetMapping("/recoverpassword")
-    public String getLogin() {
+    public String getLogin(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("message", "If this e-mail exists, we've sent a new password");
         return "resetpassword";
     }
 
@@ -73,7 +74,7 @@ public class PasswordResetController {
             return "register";
         }
         redirectAttributes.addFlashAttribute("message", "If this e-mail exists, we've sent a new password");
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     private void sendPasswordChangedMail(UserInfo user, String token, String appURL) {
@@ -121,6 +122,4 @@ public class PasswordResetController {
 
         return "redirect:/login";
     }
-
-
 }
