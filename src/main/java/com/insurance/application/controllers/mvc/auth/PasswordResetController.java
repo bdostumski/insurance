@@ -7,6 +7,8 @@ import com.insurance.application.models.UserInfo;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.services.VerificationTokenService;
 import com.insurance.application.events.OnResetPasswordEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.UUID;
 
 @Controller
@@ -33,6 +36,7 @@ public class PasswordResetController {
     VerificationTokenService tokenService;
     ApplicationEventPublisher eventPublisher;
     PasswordEncoder encoder;
+    private static final Logger logger = LoggerFactory.getLogger(PasswordResetController.class);
 
     public PasswordResetController(UserInfoService userInfoService, VerificationTokenService tokenService,
                                    ApplicationEventPublisher eventPublisher, PasswordEncoder encoder) {
@@ -49,23 +53,23 @@ public class PasswordResetController {
 
     @RequestMapping("/passwordreset/user")
     public String sendMail(@Valid @RequestParam(name = "email") final String userEmail,
-//                           final BindingResult result,
                            final HttpServletRequest request,
                            RedirectAttributes redirectAttributes) {
-//        if (result.hasErrors()) {
-//            return "register";
-//        }
         try {
 
-            UserInfo user = userInfoService.getByEmail(userEmail);
+            if (userInfoService.emailAlreadyExists(userEmail)) {
+                UserInfo user = userInfoService.getByEmail(userEmail);
 
-            final String tokenValue = UUID.randomUUID().toString();
-            tokenService.saveToken(tokenValue, user);
+                final String tokenValue = UUID.randomUUID().toString();
+                tokenService.saveToken(tokenValue, user);
 
-            final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
-            sendPasswordChangedMail(user, tokenValue, appURL);
+                final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
+                sendPasswordChangedMail(user, tokenValue, appURL);
+
+            } else {
+                logger.info( " A reset wa attempted at :" + Calendar.getInstance() + " from " + request.getRequestURI());
+            }
         } catch (EmailExistsExeption e) {
-//            result.addError(new FieldError("user", "email", e.getMessage()));
             return "register";
         }
         redirectAttributes.addFlashAttribute("message", "If this e-mail exists, we've sent a new password");
