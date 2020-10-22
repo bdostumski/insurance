@@ -1,5 +1,7 @@
 package com.insurance.application.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class UserRole {
     @Column(name = "authority")
     String authority;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userRole")
     Set<UserInfo> usersSet;
 

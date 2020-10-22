@@ -1,4 +1,4 @@
-package com.insurance.application.utils;
+package com.insurance.application.events;
 
 import com.insurance.application.models.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +8,23 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResetPasswordListener implements ApplicationListener<OnResetPasswordEvent> {
+public class CreateAccountListener implements ApplicationListener<OnCreateAccountEvent> {
 
     @Autowired
     private MailSender mailSender;
 
     @Override
-    public void onApplicationEvent(OnResetPasswordEvent event) {
-        this.resetPassword(event);
+    public void onApplicationEvent(OnCreateAccountEvent event) {
+        this.confirmRegistration(event);
     }
 
-    private void resetPassword(OnResetPasswordEvent event) {
+    private void confirmRegistration(OnCreateAccountEvent event) {
         UserInfo user = event.getUser();
 
         String recipient = user.getEmail();
-        String subject = "Password Change";
-        String url= event.getAppUrl() + "/passwordreset/user?token=" + event.getToken();
-        String message = "This is an automatic email to change your password upon request. \n " + "If you haven't requested a password change, please ignore the provided link and contact you administrator" ;
+        String subject = "Registration Confirmation";
+        String url= event.getAppUrl() + "/registrationconfirm?token=" + event.getToken();
+        String message = "Please confirm your account";
 
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipient);

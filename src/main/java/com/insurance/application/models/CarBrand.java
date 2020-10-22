@@ -1,5 +1,7 @@
 package com.insurance.application.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ public class CarBrand {
     @Column(name = "brand")
     private String brand;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "carBrand", fetch = FetchType.EAGER)
     private Set<CarModel> carModelSet;
 

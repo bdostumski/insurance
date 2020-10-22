@@ -6,24 +6,19 @@ import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.services.VerificationTokenService;
-import com.insurance.application.utils.OnCreateAccountEvent;
-import com.insurance.application.utils.OnResetPasswordEvent;
+import com.insurance.application.events.OnResetPasswordEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,8 +105,8 @@ public class PasswordResetController {
                 UserInfo user = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 user.setPassword(encoder.encode(password));
                 userInfoService.update(user);
+
                 redirectAttributes.addFlashAttribute("message", "Password changed successfully");
-//        tokenService.delete(token); TODO
             } else {
                 //TODO - show errors message on password mismatch
                 return "passress";

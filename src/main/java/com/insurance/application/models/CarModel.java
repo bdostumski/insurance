@@ -1,5 +1,7 @@
 package com.insurance.application.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,10 +17,12 @@ public class CarModel {
     @Column(name = "model")
     private String model;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private CarBrand carBrand;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "carModel", fetch = FetchType.EAGER)
     private Set<Car> cars;
 

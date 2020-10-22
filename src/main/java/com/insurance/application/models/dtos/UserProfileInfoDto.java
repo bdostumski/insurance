@@ -1,6 +1,6 @@
 package com.insurance.application.models.dtos;
 
-public class UserEditDto {
+public class UserProfileInfoDto {
 
     private String firstname;
     private String lastname;
@@ -9,7 +9,7 @@ public class UserEditDto {
     private String phoneNumber;
     private String address;
 
-    public UserEditDto() {}
+    public UserProfileInfoDto() {}
 
     public String getFirstname() {
         return firstname;

@@ -2,6 +2,8 @@ package com.insurance.application.models;
 
 import com.insurance.application.utils.ConvertDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import java.text.ParseException;
@@ -31,10 +33,10 @@ public class Policy {
     approval = 1 -> approved
     approval = 2 -> declined
     */
-
     @Column(name = "is_approval")
     private byte approval;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
@@ -43,6 +45,7 @@ public class Policy {
     @JoinColumn(name = "car_id")
     private Car car;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
     private Set<Image> imageSet;
 

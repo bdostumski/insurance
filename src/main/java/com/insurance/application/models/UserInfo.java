@@ -2,6 +2,8 @@ package com.insurance.application.models;
 
 import com.insurance.application.utils.ConvertDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.text.ParseException;
 import java.util.Objects;
@@ -43,16 +45,20 @@ public class UserInfo {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userInfo")
     Set<Policy> policySet;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userInfo")
     Set<Car> carSet;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "role_id")
     UserRole userRole;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Token token;
 
@@ -91,6 +97,7 @@ public class UserInfo {
         return birthdate;
     }
 
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -119,6 +126,10 @@ public class UserInfo {
         return userRole;
     }
 
+    public Token getToken() {
+        return token;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -135,20 +146,20 @@ public class UserInfo {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
     }
 
     public void setPrevAccident(byte prevAccident) {
@@ -169,10 +180,6 @@ public class UserInfo {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
-    }
-
-    public Token getToken() {
-        return token;
     }
 
     public void setToken(Token token) {

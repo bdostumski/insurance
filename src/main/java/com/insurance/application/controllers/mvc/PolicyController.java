@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.text.ParseException;
+
+import static com.insurance.application.utils.Constants.APPROVAL_STATUS_PENDING;
+import static com.insurance.application.utils.ConvertDate.convertDate;
 
 @Controller
 @RequestMapping("/policy")
@@ -123,17 +127,19 @@ public class PolicyController {
 
             return "redirect:/profile";
         } catch (Exception e) {
+            e.printStackTrace();
             return "redirect:/";
         }
     }
 
+
+
     private Policy generatePolicy(InitialPolicyDto initialPolicyDto,
                                   InitialInfoStringDto stringDto,
-                                  UserInfo user,
-                                  Car car) {
+                                  UserInfo user, Car car)  {
 
         Policy policy = new Policy();
-        policy.setApproval((byte) 0);
+        policy.setApproval(APPROVAL_STATUS_PENDING);
         policy.setCar(car);
         policy.setUserInfo(user);
         policy.setTotalPrice(stringDto.getTotalPrice());

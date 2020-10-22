@@ -1,4 +1,4 @@
-package com.insurance.application.utils;
+package com.insurance.application.events;
 
 import org.springframework.context.ApplicationEvent;
 

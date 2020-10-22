@@ -1,15 +1,10 @@
 package com.insurance.application.controllers.mvc.auth;
 
-import com.insurance.application.models.Token;
-import com.insurance.application.models.UserInfo;
-import com.insurance.application.models.UserRole;
+
 import com.insurance.application.models.dtos.AccountRegDto;
-import com.insurance.application.services.UserRolesService;
-import com.insurance.application.services.VerificationTokenService;
+import com.insurance.application.security.UserRegistrationHandler;
 import com.insurance.application.services.UserInfoService;
-import com.insurance.application.utils.OnCreateAccountEvent;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -26,18 +21,12 @@ import java.util.UUID;
 public class RegisterNewUserController {
 
     UserInfoService userInfoService;
-    VerificationTokenService tokenService;
-    ApplicationEventPublisher eventPublisher;
-    UserRolesService rolesService;
-    PasswordEncoder encoder;
+    UserRegistrationHandler registrationHandler;
 
-    public RegisterNewUserController(UserInfoService userInfoService, VerificationTokenService tokenService,
-                                     ApplicationEventPublisher eventPublisher, UserRolesService rolesService, PasswordEncoder encoder) {
+    @Autowired
+    public RegisterNewUserController(UserInfoService userInfoService, UserRegistrationHandler registrationHandler) {
         this.userInfoService = userInfoService;
-        this.tokenService = tokenService;
-        this.eventPublisher = eventPublisher;
-        this.rolesService = rolesService;
-        this.encoder = encoder;
+        this.registrationHandler = registrationHandler;
     }
 
     @RequestMapping("/sign-up")
@@ -47,37 +36,25 @@ public class RegisterNewUserController {
 
     @RequestMapping("/register/user")
     public ModelAndView registerUser(
-            @ModelAttribute("accountDto")  @Valid final AccountRegDto accountDto,
+            @ModelAttribute("accountDto") @Valid final AccountRegDto accountDto,
             final BindingResult result,
             HttpSession session,
             final HttpServletRequest request) {
 
-           if(!userInfoService.emailAlreadyExists(accountDto.getEmail())) {
+        if (!userInfoService.emailAlreadyExists(accountDto.getEmail())) {
 
-               UserInfo user = new UserInfo();
-               user.setEnabled(false);
-               UserRole role = rolesService.getByValue("ROLE_USER");
-               user.setUserRole(role);
-               user.setPassword(encoder.encode(accountDto.getPassword()));
-               user.setEmail(accountDto.getEmail());
-               userInfoService.create(user);
+            String sessionToken = (String) session.getAttribute("theToken");
+            /*
+            If a session token has been saved in the session, it will be used as a maail confirmmation token.
+            Else a new one would be generated
+            */
+            final String token = (sessionToken != null) ? sessionToken : UUID.randomUUID().toString();
 
-               String sessionToken = (String) session.getAttribute("theToken");
+            registrationHandler.startUserRegistration(accountDto, token, request);
 
-               final String token;
-               if (sessionToken == null) {
-                   token = UUID.randomUUID().toString();
-               } else {
-                   token = sessionToken;
-               }
-
-               tokenService.saveToken(token, user);
-
-               final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
-               sendVerificationEmail(user, token, appURL);
-           }else {
-               result.addError(new FieldError("accountDto", "email", "Email already exists"));
-           }
+        } else {
+            result.addError(new FieldError("accountDto", "email", "Email already exists"));
+        }
 
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
@@ -85,19 +62,13 @@ public class RegisterNewUserController {
         return new ModelAndView("redirect:/login");
     }
 
-    private void sendVerificationEmail(UserInfo user, String token, String appURL) {
-        eventPublisher.publishEvent(new OnCreateAccountEvent(appURL, user, token));
-    }
 
     @RequestMapping(value = "/registrationconfirm")
     public ModelAndView confirmRegistration(
             @RequestParam("token") String token,
             RedirectAttributes redirectAttributes) {
         try {
-            Token verificationToken = tokenService.findByToken(token);
-            UserInfo user = verificationToken.getUser();
-            user.setEnabled(true);
-            userInfoService.update(user);
+            registrationHandler.finishUserRegistration(token);
             redirectAttributes.addFlashAttribute("message", "Your account verified successfully");
         } catch (Exception e) {
             e.printStackTrace();

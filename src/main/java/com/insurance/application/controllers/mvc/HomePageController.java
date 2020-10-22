@@ -6,7 +6,7 @@ import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
-import com.insurance.application.utils.OnRequestModelsEvent;
+import com.insurance.application.events.OnRequestModelsEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;

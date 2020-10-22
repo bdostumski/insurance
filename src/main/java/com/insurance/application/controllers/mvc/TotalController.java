@@ -97,8 +97,6 @@ public class TotalController {
                     coefficientService, initialInfoDto, tokenValue);
             infoDtoService.create(infoStringDto);
 
-            session.setAttribute("stringInfoDto", initialInfoStringDto);
-
             if (principal == null) {
                 session.setAttribute("theToken", tokenValue);
             }
@@ -110,6 +108,8 @@ public class TotalController {
             model.addAttribute("driverBirthDateModel", driverBirthDate);
 
             model.addAttribute("initialInfoDto", infoStringDto);
+            session.setAttribute("stringInfoDto", initialInfoStringDto);
+
 
         } catch (ParseException e) {
             return "redirect:/";

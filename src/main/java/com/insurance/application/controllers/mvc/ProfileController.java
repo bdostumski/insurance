@@ -1,7 +1,7 @@
 package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.UserInfo;
-import com.insurance.application.models.dtos.UserEditDto;
+import com.insurance.application.models.dtos.UserProfileInfoDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.ConvertDate;
@@ -44,7 +44,7 @@ public class ProfileController {
     }
 
     @PostMapping("/update-user")
-    public String updateUserProfile (final UserEditDto userEditDto, Model model) {
+    public String updateUserProfile (final UserProfileInfoDto userEditDto, Model model) {
 
         UserInfo userToEdit;
 
