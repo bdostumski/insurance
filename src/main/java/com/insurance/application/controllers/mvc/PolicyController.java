@@ -52,8 +52,12 @@ public class PolicyController {
 
     @GetMapping("/profile")
     public String policyProfile(Principal principal) {
-        deletePolicy(principal);
-        return "redirect:/profile";
+        if(userService.getByEmail(principal.getName()).getFirstname() != null) {
+            deletePolicy(principal);
+            return "redirect:/profile";
+        }
+        // TODO error message
+        return "redirect:/policy";
     }
 
     @GetMapping("/user-filter")

@@ -19,7 +19,7 @@
             <a th:href="@{/}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
             <ul th:object="${loggedUser}" class="nav justify-content-end">
                 <li th:if="${loggedUser.enabled}" class="nav-item">
-                    <a th:href="@{profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
+                    <a th:href="@{user-filter/profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
                         <span th:text="${loggedUser.firstname}">FirstName</span>
                         <span th:text="${loggedUser.lastname}">LastName</span>
                     </a>

@@ -22,7 +22,6 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
         this.factory = factory;
     }
 
-
     @Override
     public List<Policy> filterForUser(int userId, String fromDate, String toDate) {
         try(Session session = factory.openSession()) {
@@ -37,6 +36,8 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
 
             if(!toDate.isBlank())
                 predicates.add(cb.lessThanOrEqualTo(root.get("startDate"), toDate));
+
+            predicates.add(cb.equal(root.get("userInfo").get("id"), userId));
 
             if(fromDate.isBlank() && toDate.isBlank()) {
                 cr.select(root).where(predicates.toArray(Predicate[]::new));

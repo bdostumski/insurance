@@ -108,8 +108,6 @@ public class TotalController {
             model.addAttribute("driverBirthDateModel", driverBirthDate);
 
             model.addAttribute("initialInfoDto", infoStringDto);
-            session.setAttribute("stringInfoDto", initialInfoStringDto);
-
 
         } catch (ParseException e) {
             return "redirect:/";

@@ -28,16 +28,18 @@ public class ProfileController {
 
     @GetMapping
     public String getProfile (Model model, Principal principal) {
-
         try {
             UserProfileInfoDto userDto = userInfoToDto(principal);
-            model.addAttribute("userInfo", userDto);
-        } catch (ParseException e) {
-            // TODO
-            e.printStackTrace();
-        }
 
-        return "profile";
+            if(userDto.getFirstname() != null) {
+                model.addAttribute("userInfo", userDto);
+            } else {
+                model.addAttribute("userInfo", new UserProfileInfoDto());
+            }
+            return "profile";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
     }
 
     private UserProfileInfoDto userInfoToDto (Principal principal) throws ParseException {
@@ -49,6 +51,7 @@ public class ProfileController {
         user.setLastname(userInfo.getLastname());
         user.setAddress(userInfo.getAddress());
         user.setEmail(userInfo.getEmail());
+        user.setPhoneNumber(userInfo.getPhoneNumber());
         user.setRole(userInfo.getUserRole().getId());
 
         user.setBirthdate(ConvertDate.convertDate(userInfo.getBirthdate()));

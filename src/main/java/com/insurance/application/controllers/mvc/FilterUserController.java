@@ -44,6 +44,15 @@ public class FilterUserController {
         return "/user-filter";
     }
 
+    @GetMapping("/profile")
+    public String policyProfile(Principal principal) {
+        if(userInfoService.getByEmail(principal.getName()).getFirstname() != null) {
+            return "redirect:/profile";
+        }
+        // TODO error message
+        return "redirect:/user-filter";
+    }
+
     @PostMapping
     public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
                           Model model,
