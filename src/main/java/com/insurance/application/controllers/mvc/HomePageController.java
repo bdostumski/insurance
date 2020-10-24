@@ -46,11 +46,6 @@ public class HomePageController {
     @GetMapping
     public String getIndex (Model model, HttpSession session, Principal principal) {
 
-        /**
-         * On login in index and total page, principal is not null
-         * When I go to total and register new user, and login principal is null
-         */
-
         UserInfo userInfo = isPrincipalNull(principal);
         model.addAttribute("loggedUser", userInfo);
 
@@ -59,6 +54,11 @@ public class HomePageController {
         }
 
         if(principal != null) {
+
+            if(userInfoService.getByEmail(principal.getName()).getUserRole().getId() == 1) {
+                return "redirect:/admin-filter";
+            }
+
             if(userInfoService.getByEmail(principal.getName()).getUserRole().getId() == 2) {
                 return "redirect:/agent-filter";
             }
@@ -74,42 +74,11 @@ public class HomePageController {
             }
         }
 
-
-
         model.addAttribute("brands", new CarBrand());
         model.addAttribute("models", new CarModel());
         model.addAttribute("initialInfoDto", new InitialInfoDto());
 
         return "index";
-//        String tokenValue = userInfoService.getByEmail(principal.getName()).getToken().getTokenValue();
-
-
-
-
-
-//        if (principal != null || isInfoStringDtoAvailable(principal)) {
-//            if (session.getAttribute("stringInfoDto") != null){
-//
-//                InitialInfoStringDto stringDto = (InitialInfoStringDto) session.getAttribute("stringInfoDto");
-////                InitialInfoStringDto stringDtoToUpdate = (InitialInfoStringDto) session.getAttribute("stringInfoDto");
-//                InitialInfoStringDto stringDtoToUpdate = infoDtoService.getById(stringDto.getId());
-//                stringDtoToUpdate.setUserToken(userInfoService.getByEmail(principal.getName()).getToken().getTokenValue());
-//                infoDtoService.update(stringDtoToUpdate);
-//
-//                model.addAttribute("initialInfoDto", stringDtoToUpdate);
-//
-//                return "index";
-//            } else {
-//
-//                model.addAttribute("brandList", carBrandService.getAll());
-//                model.addAttribute("models", carModelService.getAll());
-//                model.addAttribute("initialInfoDto", new InitialInfoDto());
-//                return "index";
-//            }
-//        } else {
-
-
-//        }
     }
 
     private UserInfo isPrincipalNull(Principal principal) {

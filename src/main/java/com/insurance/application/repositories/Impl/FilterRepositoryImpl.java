@@ -1,7 +1,8 @@
 package com.insurance.application.repositories.Impl;
 
 import com.insurance.application.models.Policy;
-import com.insurance.application.repositories.PolicyFilterRepository;
+import com.insurance.application.models.UserInfo;
+import com.insurance.application.repositories.FilterRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
+public class FilterRepositoryImpl implements FilterRepository {
 
     private final SessionFactory factory;
 
     @Autowired
-    public PolicyFilterRepositoryImpl(SessionFactory factory) {
+    public FilterRepositoryImpl(SessionFactory factory) {
         this.factory = factory;
     }
 
@@ -52,7 +53,7 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
     }
 
     @Override
-    public List<Policy> filterForAdmin(String fromDate, String toDate, String mail) {
+    public List<Policy> filterForAgent(String fromDate, String toDate, String mail) {
         try(Session session = factory.openSession()) {
 
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -77,6 +78,38 @@ public class PolicyFilterRepositoryImpl implements PolicyFilterRepository {
 
             cr.select(root).where(predicates.toArray(Predicate[]::new));
             Query<Policy> query = session.createQuery(cr);
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<UserInfo> filterForAdmin(String firstname,
+                                         String lastname,
+                                         String mail) {
+        try(Session session = factory.openSession()) {
+
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<UserInfo> cr = cb.createQuery(UserInfo.class);
+            Root<UserInfo> root = cr.from(UserInfo.class);
+            List<Predicate> predicates = new ArrayList<>();
+
+            if(!firstname.isBlank())
+                predicates.add(cb.like(root.get("firstname"), "%" + firstname + "%"));
+
+            if(!lastname.isBlank())
+                predicates.add(cb.like(root.get("lastname"), "%" + lastname + "%"));
+
+            if(!mail.isBlank())
+                predicates.add(cb.like(root.get("email"), "%" + mail + "%"));
+
+            if(firstname.isBlank() && lastname.isBlank() && mail.isBlank()) {
+                cr.select(root).where(predicates.toArray(Predicate[]::new));
+                Query<UserInfo> query = session.createQuery(cr);
+                return query.getResultList();
+            }
+
+            cr.select(root).where(predicates.toArray(Predicate[]::new));
+            Query<UserInfo> query = session.createQuery(cr);
             return query.getResultList();
         }
     }

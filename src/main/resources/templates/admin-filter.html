@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+              integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+              integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+              crossorigin="anonymous" />
+        <link rel="stylesheet" th:href="@{../css/filters.css}">
+
+        <title>Admin - Safety Car</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-light bg-primary">
+            <a th:href="@{/admin-filter}" class="navbar-brand text-light"><i class="fas fa-car-crash"></i> Safety Car</a>
+            <ul th:object="${loggedUser}" class="nav justify-content-end">
+                <li th:if="${loggedUser.enabled}" class="nav-item">
+                    <a th:href="@{profile}" class="nav-link text-light mx-3"><i class="far fa-user"></i> Welcome
+                        <span th:text="${loggedUser.firstname}">FirstName</span>
+                        <span th:text="${loggedUser.lastname}">LastName</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/admin-filter/new-agent}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> New Agent</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{admin-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> Agents</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/logout}" class="nav-link text-light mx-3" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center">
+                    <h1 style="color:#007BFF"><i class="fas fa-user-shield"></i> Admin Workspace</h1>
+                </div>
+                <div class="col-12 d-flex justify-content-start my-5">
+                    <h1><i class="fas fa-filter"></i> Filters</h1>
+                </div>
+            </div>
+            <form class="row mb-5" th:action="@{/admin-filter}" th:object="${userFilter}" method="post">
+                <div class="col-lg-3 col-sm-12">
+                    <h5><i class="fas fa-signature"></i> Search by firstname</h5>
+                    <input th:field="*{firstname}" type="text" class="filters_style" placeholder="Search by">
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <h5><i class="fas fa-signature"></i> Search by lastname</h5>
+                    <input th:field="*{lastname}" type="text" class="filters_style" placeholder="Search by">
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <h5><i class="far fa-envelope"></i> Search by email</h5>
+                    <input th:field="*{email}" type="text" class="filters_style" placeholder="Search by">
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <button type="submit" class="btn btn-primary filters_style search_button_position"><i
+                            class="fas fa-search"></i> Filter</button>
+                </div>
+            </form>
+            <div th:each="user : ${users}" class="my-3 p-1 policy">
+                <div class="row p-2">
+                    <div class="mt-2 col-lg-6 col-sm-6 d-flex justify-content-start">
+                        <h4>User No <strong th:text="${user.id}">25768</strong> / <strong th:text="${user.email}">Email</strong> </h4>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 d-flex justify-content-end">
+                        <h4 class="mt-2 mr-3">
+                            <span th:if="${user.enabled}" class="mx-3 status_approve"><i class="fas fa-check"></i> Approved</span>
+                            <span th:unless="${user.enabled}" class="mx-3 status_decline"><i class="fas fa-times"></i> Declined</span>
+                        </h4>
+                        <button class="btn btn-outline-primary border-0" type="button" data-toggle="collapse"
+                                th:data-target="'#multiCollapseExample' + ${user.id}" aria-expanded="false"
+                                th:aria-controls="'multiCollapseExample' + ${user.id}">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${user.id}">
+                            <div class="card card-body border-0">
+                                <h5><strong>User Details</strong></h5>
+                                <div>Full name: <span th:text="${user.firstname}">Username </span> <span th:text="${user.lastname}">Lastname</span></div>
+                                <div>Birthdate: <span th:text="${user.birthdate}">08.07.2019</span></div>
+                                <div>Address: <span th:text="${user.address}">Address</span></div>
+                                <div>Phone: <span th:text="${user.phoneNumber}">Address</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${user.id}">
+                            <div class="card card-body border-0">
+                                <div class="d-flex justify-content-around mt-5">
+                                    <a th:if="${user.enabled}" th:href="@{/admin-filter/decline/(id=${user.id})}" style="width:100%;" type="submit" class="btn btn-danger mt-5"><i class="fas fa-times"></i> Decline</a>
+                                    <a th:unless="${user.enabled}" th:href="@{/admin-filter/approve/(id=${user.id})}" style="width:100%;" type="submit" class="btn btn-primary mt-5"><i class="fas fa-check"></i> Approve</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function getDateFrom(e) {
+                document.getElementById("dateTo").min = e.value;
+            }
+
+            function getDateTo(e) {
+                document.getElementById("dateFrom").max = e.value;
+            }
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+                integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+                integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+        </script>
+    </body>
+</html>

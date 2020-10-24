@@ -6,6 +6,8 @@ import com.insurance.application.repositories.UserInfoRepository;
 import com.insurance.application.services.UserInfoService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
@@ -15,6 +17,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     public UserInfoServiceImpl(UserInfoRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public List<UserInfo> getAll() {
+        return repository.getAll();
     }
 
     @Override

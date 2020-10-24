@@ -107,7 +107,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/register").permitAll()
                     .antMatchers("/policy").hasAnyRole("ADMIN", "USER", "AGENT")
                     .antMatchers("/user-filter").hasAnyRole("USER")
-                    .antMatchers("/agent-filter").hasAnyRole("ADMIN", "AGENT")
+                    .antMatchers("/agent-filter").hasAnyRole("AGENT")
+                    .antMatchers("/admin-filter").hasAnyRole("ADMIN")
+
                     .anyRequest().authenticated()
                     .and()
                     .formLogin().loginPage("/login").permitAll().loginProcessingUrl("/authenticate").defaultSuccessUrl("/")

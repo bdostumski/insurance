@@ -2,7 +2,11 @@ package com.insurance.application.services;
 
 import com.insurance.application.models.UserInfo;
 
+import java.util.List;
+
 public interface UserInfoService {
+
+    List<UserInfo> getAll();
 
     void create(UserInfo user);
 

@@ -3,7 +3,7 @@ package com.insurance.application.controllers.mvc;
 import com.insurance.application.models.Policy;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.PolicyFilterDto;
-import com.insurance.application.services.PolicyFilterService;
+import com.insurance.application.services.FilterService;
 import com.insurance.application.services.PolicyService;
 import com.insurance.application.services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +20,16 @@ public class FilterUserController {
 
     PolicyService policyService;
     UserInfoService userInfoService;
-    PolicyFilterService policyFilterService;
+    FilterService filterService;
 
     @Autowired
     public FilterUserController(PolicyService policyService,
                                 UserInfoService userInfoService,
-                                PolicyFilterService policyFilterService) {
+                                FilterService filterService) {
 
         this.policyService = policyService;
         this.userInfoService = userInfoService;
-        this.policyFilterService = policyFilterService;
+        this.filterService = filterService;
     }
 
     @GetMapping
@@ -63,7 +63,7 @@ public class FilterUserController {
         model.addAttribute("policyFilter", new PolicyFilterDto());
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("policyList",
-                policyFilterService.filterForUser (user.getId(),
+                filterService.filterForUser (user.getId(),
                         policyFilterDto.getFromDate(),
                         policyFilterDto.getToDate()));
 
