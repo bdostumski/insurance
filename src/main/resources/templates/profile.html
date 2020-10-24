@@ -31,7 +31,7 @@
                 </li>
                 <li class="nav-item">
                     <a th:if="${userInfo.role == 1}" th:href="@{admin-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> Agents</a>
-                    <a th:if="${userInfo.role == 2}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
+                    <a th:if="${userInfo.role == 2}" th:href="@{agent-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> Policies</a>
                     <a th:if="${userInfo.role == 3}" th:href="@{user-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> My policies</a>
                 </li>
                 <li class="nav-item">
