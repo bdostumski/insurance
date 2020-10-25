@@ -10,6 +10,7 @@ public class PolicyRequestDto {
     private String vechicleModel;
     private String vechicleBrand;
     private String vehicleRegDate;
+    private String vehicleCubicCapacity;
 
     // Empty constructor
     public PolicyRequestDto() {
@@ -48,6 +49,14 @@ public class PolicyRequestDto {
 
     public double getPolicyPrice() {
         return policyPrice;
+    }
+
+    public String getVehicleCubicCapacity() {
+        return vehicleCubicCapacity;
+    }
+
+    public void setVehicleCubicCapacity(String vehicleCubicCapacity) {
+        this.vehicleCubicCapacity = vehicleCubicCapacity;
     }
 
     public void setPolicyPrice(double policyPrice) {
