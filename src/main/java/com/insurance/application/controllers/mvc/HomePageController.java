@@ -1,14 +1,10 @@
 package com.insurance.application.controllers.mvc;
 
-import com.insurance.application.models.CarBrand;
 import com.insurance.application.models.CarModel;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
-import com.insurance.application.services.CarBrandService;
-import com.insurance.application.services.CarModelService;
-import com.insurance.application.services.InfoDtoService;
-import com.insurance.application.services.UserInfoService;
+import com.insurance.application.services.*;
 import com.insurance.application.events.OnRequestModelsEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,18 +25,21 @@ public class HomePageController {
     ApplicationEventPublisher eventPublisher;
     CarBrandService carBrandService;
     CarModelService carModelService;
+    CarService carService;
 
     @Autowired
     public HomePageController (UserInfoService userInfoService,
                               InfoDtoService infoDtoService,
                               ApplicationEventPublisher eventPublisher,
                                CarBrandService carBrandService,
-                               CarModelService carModelService) {
+                               CarModelService carModelService,
+                               CarService carService) {
         this.userInfoService = userInfoService;
         this.infoDtoService = infoDtoService;
         this.eventPublisher = eventPublisher;
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
+        this.carService = carService;
     }
 
     @GetMapping
@@ -79,8 +78,9 @@ public class HomePageController {
             }
         }
 
-        model.addAttribute("brands", new CarBrand());
-        model.addAttribute("models", new CarModel());
+        model.addAttribute("brands", carBrandService.getAll());
+        model.addAttribute("models", carModelService.getAll());
+//        model.addAttribute("cars", carService.getById());
         model.addAttribute("initialInfoDto", new InitialInfoDto());
 
         return "index";
