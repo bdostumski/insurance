@@ -46,6 +46,11 @@ public class HomePageController {
     @GetMapping
     public String getIndex (Model model, HttpSession session, Principal principal) {
 
+        /**
+         * On login in index and total page, principal is not null
+         * When I go to total and register new user, and login principal is null
+         */
+
         UserInfo userInfo = isPrincipalNull(principal);
         model.addAttribute("loggedUser", userInfo);
 
@@ -90,9 +95,9 @@ public class HomePageController {
     }
 
 
-/*
-TODO - add coments!
- */
+    /*
+    TODO - add coments!
+     */
     private boolean isInfoStringDtoAvailable(Principal principal) {
         try {
             UserInfo user = userInfoService.getByEmail(principal.getName());
@@ -104,9 +109,9 @@ TODO - add coments!
     }
 
 
-/*
-TODO -> resolve this issue with async. requests
- */
+    /*
+    TODO -> resolve this issue with async. requests
+     */
     @PostMapping("/brandmodels")
     public String getBrandModels(
             @RequestHeader("brandID") int brandId,

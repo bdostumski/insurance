@@ -71,4 +71,13 @@ public class PolicyRepositoryImpl implements PolicyRepository {
             return query.list();
         }
     }
+
+    @Override
+    public List<Policy> getByUserId(int userId) {
+        try (Session session = factory.openSession()) {
+            Query<Policy> query = session.createQuery(" from Policy where userInfo.id = :userId", Policy.class);
+            query.setParameter("userId", userId);
+            return query.list();
+        }
+    }
 }

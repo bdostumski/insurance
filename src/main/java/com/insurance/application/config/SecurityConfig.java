@@ -43,14 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     public static class RestConfiguration extends WebSecurityConfigurerAdapter {
 
+
         @Autowired
         CustomUserDetailsService customUserDetailsService;
 
         @Autowired
         private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+
         @Autowired
         private JwtRequestFilter jwtRequestFilter;
+
+
 
         @Override
         public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -64,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return super.authenticationManagerBean();
         }
 
-
         @Override
         protected void configure(HttpSecurity restHttp) throws Exception {
             restHttp.antMatcher("/v.1.0/api/**");
@@ -77,10 +80,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
             // Add a filter to validate the tokens with every request
             restHttp.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         }
+
     }
 
 

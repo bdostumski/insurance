@@ -1,5 +1,9 @@
 package com.insurance.application.models.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Optional;
+
 public class UserProfileInfoDto {
 
     private String firstname;
@@ -8,9 +12,13 @@ public class UserProfileInfoDto {
     private String email;
     private String phoneNumber;
     private String address;
+    private String accidentLastYear;
+
+    @JsonIgnore
     private int role;
 
-    public UserProfileInfoDto() {}
+    public UserProfileInfoDto() {
+    }
 
     public String getFirstname() {
         return firstname;
@@ -42,6 +50,14 @@ public class UserProfileInfoDto {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getAccidentLastYear() {
+        return accidentLastYear;
+    }
+
+    public void setAccidentLastYear(String accidentLastYear) {
+        this.accidentLastYear = accidentLastYear;
     }
 
     public void setLastname(String lastname) {

@@ -18,4 +18,6 @@ public interface PolicyService {
 
     List<Policy> getByUserMail(String userMail);
 
+    List<Policy> getByUserId(int userId);
+
 }

@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
+import static com.insurance.application.utils.Constants.NO_ACCIDENT_LAST_YEAR;
+
 @RestController
 @RequestMapping("/v.1.0/api/user")
 public class UserRestController {
@@ -83,6 +85,8 @@ public class UserRestController {
         userProfileInfo.setAddress(userInfo.getAddress());
         userProfileInfo.setPhoneNumber(userInfo.getPhoneNumber());
         userProfileInfo.setBirthdate(userInfo.getConvertedBirthdate());
+        String previousAccident = (userInfo.getPrevAccident() == NO_ACCIDENT_LAST_YEAR)? "No" : "Yes";
+        userProfileInfo.setAccidentLastYear(previousAccident);
 
         return userProfileInfo;
     }

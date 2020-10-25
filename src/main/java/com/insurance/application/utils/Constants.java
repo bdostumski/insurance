@@ -10,6 +10,12 @@ public class Constants {
 
     public static final String AGENT_SECRET_PASSWORD = "agent";
 
+    public static final byte NO_ACCIDENT_LAST_YEAR = 0;
+    public static final byte HAD_ACCIDENT_LAST_YEAR = 1;
+
+
+
+
 
 
 

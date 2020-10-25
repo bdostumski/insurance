@@ -58,4 +58,15 @@ public class PolicyServiceImpl implements PolicyService {
         }
         return policyList;
     }
+
+    @Override
+    public List<Policy> getByUserId(int userId) {
+        List<Policy> policyList = repository.getByUserId(userId);
+        if (policyList == null ) {
+            policyList = new ArrayList<>();
+//            throw new EntityNotFoundException(  TODO -> empty or throw?
+//                    String.format("No policies found"));
+        }
+        return policyList;
+    }
 }
