@@ -48,22 +48,22 @@
             <form th:action="@{/profile/update-user}" method="post" th:object="${userInfo}">
                 <div class="row">
                     <div class="col-12 my-1">
-                        <h4><b>Firstname:</b> <span><input type="text" th:placeholder="${userInfo.firstname}" th:value="${userInfo.firstname}" th:field="*{firstname}"></span></h4>
+                        <h4><b>Firstname:</b> <span><input type="text" th:placeholder="${userInfo.firstname}" th:value="${userInfo.firstname}" th:field="*{firstname}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4><b>Lastname:</b> <span><input type="text" th:placeholder="${userInfo.lastname}" th:value="${userInfo.lastname}" th:field="*{lastname}"></span></h4>
+                        <h4><b>Lastname:</b> <span><input type="text" th:placeholder="${userInfo.lastname}" th:value="${userInfo.lastname}" th:field="*{lastname}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
                         <h4><b>Birthdate:</b> <span><input id="birthDay" type="date" th:field="*{birthdate}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4><b>Email:</b> <span><input type="text" th:placeholder="${userInfo.email}" th:value="${userInfo.email}" th:field="*{email}"></span></h4>
+                        <h4><b>Email:</b> <span><input type="text" th:placeholder="${userInfo.email}" th:value="${userInfo.email}" th:field="*{email}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4><b>Phone:</b> <span><input type="text" th:placeholder="${userInfo.phoneNumber}" th:value="${userInfo.phoneNumber}" th:field="*{phoneNumber}"></span></h4>
+                        <h4><b>Phone:</b> <span><input type="text" th:placeholder="${userInfo.phoneNumber}" th:value="${userInfo.phoneNumber}" th:field="*{phoneNumber}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
-                        <h4><b>Postal Address:</b> <span><input type="text" th:placeholder="${userInfo.address}" th:value="${userInfo.address}" th:field="*{address}"></span></h4>
+                        <h4><b>Postal Address:</b> <span><input type="text" th:placeholder="${userInfo.address}" th:value="${userInfo.address}" th:field="*{address}" required></span></h4>
                     </div>
                     <div class="col-12 my-1">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Confirm</button>

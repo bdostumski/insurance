@@ -3,8 +3,8 @@ body {
     background-size: cover;
 }
 
-.form_style {
-    padding: 40px!important;
+div {
+    padding: 70px!important;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -12,16 +12,6 @@ body {
     background-color: rgba(255,255,255,0.9);
     border-radius: 10px;
     box-shadow: 0 0 50px rgba(0,0,0,0.3);
-}
-
-h1 {
+    width: 500px;
     text-align:center;
-}
-
-.error {
-    color: red;
-}
-
-.date_style {
-    padding: 8px 20px; 
 }
