@@ -31,6 +31,9 @@
                 <div class="form-group">
                     <p th:if="${#fields.hasErrors('email')}"  class="form-group alert alert-danger" th:errors="*{email}">Email already exists</p>
                 </div>
+                <div class="form-group">
+                    <p id='result'></p>
+                </div>
             </div>
 
             <div class="d-flex justify-content-between btn-group">

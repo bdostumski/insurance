@@ -129,6 +129,8 @@ public class PolicyController {
             policyService.create(policy);
             infoDtoService.delete(stringDto);
 
+            session.removeAttribute("theToken");
+
             return "redirect:/profile";
         } catch (Exception e) {
             e.printStackTrace();

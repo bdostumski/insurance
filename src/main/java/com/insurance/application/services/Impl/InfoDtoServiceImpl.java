@@ -21,7 +21,7 @@ public class InfoDtoServiceImpl implements InfoDtoService {
 
     @Override
     public void update(InitialInfoStringDto stringDto) {
-        repository.create(stringDto);
+        repository.update(stringDto);
     }
 
     @Override

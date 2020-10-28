@@ -74,13 +74,13 @@ public class HomePageController {
                 String userToken = user.getToken().getTokenValue();
                 initialInfoStringDto.setUserToken(userToken);
                 infoDtoService.update(initialInfoStringDto);
+                session.removeAttribute("theToken");
                 return "redirect:policy";
             }
         }
 
         model.addAttribute("brands", carBrandService.getAll());
         model.addAttribute("models", carModelService.getAll());
-//        model.addAttribute("cars", carService.getById());
         model.addAttribute("initialInfoDto", new InitialInfoDto());
 
         return "index";
