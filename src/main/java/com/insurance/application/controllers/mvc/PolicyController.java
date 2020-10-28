@@ -45,36 +45,40 @@ public class PolicyController {
     }
 
     @GetMapping("/new")
-    public String newPolicy(Principal principal) {
+    public String newPolicy(Principal principal, HttpSession session) {
         deletePolicy(principal);
+        session.removeAttribute("theToken");
         return "redirect:/";
     }
 
     @GetMapping("/profile")
-    public String policyProfile(Principal principal) {
+    public String policyProfile(Principal principal, HttpSession session) {
         if(userService.getByEmail(principal.getName()).getFirstname() != null) {
             deletePolicy(principal);
+            session.removeAttribute("theToken");
             return "redirect:/profile";
         }
-        // TODO error message
         return "redirect:/policy";
     }
 
     @GetMapping("/user-filter")
-    public String policyFilterUser(Principal principal) {
+    public String policyFilterUser(Principal principal, HttpSession session) {
         deletePolicy(principal);
+        session.removeAttribute("theToken");
         return "redirect:/user-filter";
     }
 
     @GetMapping("/agent-filter")
-    public String policyFilterAgent(Principal principal) {
+    public String policyFilterAgent(Principal principal, HttpSession session) {
         deletePolicy(principal);
+        session.removeAttribute("theToken");
         return "redirect:/agent-filter";
     }
 
     @GetMapping("/logout")
-    public String policyLogout(Principal principal) {
+    public String policyLogout(Principal principal, HttpSession session) {
         deletePolicy(principal);
+        session.removeAttribute("theToken");
         return "redirect:/logout";
     }
 

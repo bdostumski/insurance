@@ -60,9 +60,13 @@ public class RegisterNewUserController {
         if (result.hasErrors()) {
             return new ModelAndView("register", "accountDto", accountDto);
         }
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/successful-registratoin");
     }
 
+    @GetMapping("/successful-registratoin")
+    public String getSuccessfulRegistratoin() {
+        return "successful-registratoin";
+    }
 
     @RequestMapping(value = "/registrationconfirm")
     public ModelAndView confirmRegistration(
