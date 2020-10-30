@@ -1,12 +1,17 @@
 package com.insurance.application.repositories.Impl;
 
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.repositories.InfoDtoRepository;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+
+import javax.persistence.NoResultException;
 
 @Repository
 public class InfoDtoRepositoryImpl implements InfoDtoRepository {
@@ -60,6 +65,8 @@ public class InfoDtoRepositoryImpl implements InfoDtoRepository {
             Query<InitialInfoStringDto> query = session.createQuery(" from InitialInfoStringDto where userToken = :token", InitialInfoStringDto.class);
             query.setParameter("token", tokenValue);
             return (InitialInfoStringDto) query.getSingleResult();
+        }catch (NoResultException | NonUniqueResultException exception) {
+            throw new EntityNotFoundException(" No InfoDto found for user");
         }
     }
 }

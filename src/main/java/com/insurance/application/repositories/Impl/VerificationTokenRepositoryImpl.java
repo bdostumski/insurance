@@ -2,13 +2,14 @@ package com.insurance.application.repositories.Impl;
 
 import com.insurance.application.models.Token;
 import com.insurance.application.repositories.VerificationTokenRepository;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityNotFoundException;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
+import javax.persistence.NoResultException;
 
 @Repository
 public class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
@@ -32,7 +33,8 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
             Query query = session.createQuery(" from Token where tokenValue = :token", Token.class);
             query.setParameter("token", token);
             return (Token) query.getSingleResult();
-
+        }catch (NoResultException | NonUniqueResultException exception) {
+            throw new EntityNotFoundException(" No token found ");
         }
     }
 
@@ -42,9 +44,8 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
                 session.beginTransaction();
                 session.delete(token);
                 session.getTransaction().commit();
-
-        }catch (EntityNotFoundException e){
-            throw new EntityNotFoundException("Token not found");
+        }catch (NoResultException | NonUniqueResultException exception) {
+            throw new EntityNotFoundException(" No token found ");
         }
     }
 }

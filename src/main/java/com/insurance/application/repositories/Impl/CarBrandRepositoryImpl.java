@@ -3,12 +3,14 @@ package com.insurance.application.repositories.Impl;
 import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.CarBrand;
 import com.insurance.application.repositories.CarBrandRepository;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
@@ -37,6 +39,8 @@ public class CarBrandRepositoryImpl implements CarBrandRepository {
             Query<CarBrand> query = session.createQuery(" from CarBrand where brand = :brandName", CarBrand.class);
             query.setParameter("brandName", brandName);
             return (CarBrand) query.getSingleResult();
+        }catch (NoResultException | NonUniqueResultException exception) {
+            throw new EntityNotFoundException(" No such Car Brand found");
         }
     }
 

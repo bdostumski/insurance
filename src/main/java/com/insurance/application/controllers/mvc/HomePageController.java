@@ -1,6 +1,7 @@
 package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.UserInfo;
+import com.insurance.application.models.UserRole;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
@@ -43,6 +44,11 @@ public class HomePageController {
         this.carService = carService;
     }
 
+    //TODO - delete
+//    @Autowired
+//    UserRolesService rolesService;
+
+
     @GetMapping
     public String getIndex(Model model, HttpSession session, Principal principal) {
 
@@ -59,6 +65,11 @@ public class HomePageController {
         }
 
         if (principal != null) {
+
+
+//            //TODO - delete
+//            UserRole role = rolesService.getByValue("ROLE_NOUSER");
+
 
 
             if (userRole(principal) == USER_ROLE_ADMIN)
@@ -83,7 +94,8 @@ public class HomePageController {
 
     /**
      * Checks if initial policy info is available for the logged in user.
-     * @param  principal - currently logged in user
+     *
+     * @param principal - currently logged in user
      * @return boolean
      */
     private boolean isInfoStringDtoAvailable(Principal principal) {
@@ -96,11 +108,11 @@ public class HomePageController {
         }
     }
 
-    private int userRole (Principal principal){
+    private int userRole(Principal principal) {
         return userInfoService.getByEmail(principal.getName()).getUserRole().getId();
     }
 
-    private void assignInitialnfoDtoToUser(HttpSession session, Principal principal){
+    private void assignInitialnfoDtoToUser(HttpSession session, Principal principal) {
         String token = (String) session.getAttribute("theToken");
         InitialInfoStringDto initialInfoStringDto = infoDtoService.getByTokenValue(token);
         UserInfo user = userInfoService.getByEmail(principal.getName());

@@ -33,14 +33,6 @@ public class ImageRepositoryImpl implements ImageRepository {
     }
 
     @Override
-    public List<Image> getAll() {
-        try (Session session = factory.openSession()) {
-            Query<Image> imageQuery = session.createQuery("from Image");
-            return imageQuery.list();
-        }
-    }
-
-    @Override
     public void create(Image image) {
         try (Session session = factory.openSession()) {
             session.save(image);

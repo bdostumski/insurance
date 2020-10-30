@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.RollbackException;
 
@@ -45,5 +46,11 @@ public class ExceptionHandler {
         logger.error("More than one results found for query: ", ex.getMessage());
         return new ResponseEntity<Object>("More than one item found for your request", HttpStatus.BAD_REQUEST);
 
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = {EntityNotFoundException.class})
+    public ResponseEntity<Object> handleInvalidInputException(EntityNotFoundException ex) {
+        logger.error("No Info found for query: ", ex.getMessage());
+        return new ResponseEntity<Object>("No info availble", HttpStatus.NOT_FOUND);
     }
 }

@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityNotFoundException;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.util.List;
 
@@ -65,22 +65,24 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
     }
 
     @Override
-    public UserInfo getByLastName(String userName){
+    public UserInfo getByLastName(String userName) {
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery(" from UserInfo where lastname = :userName", UserInfo.class);
             query.setParameter("userName", userName);
             return (UserInfo) query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException exception) {
+            throw new EntityNotFoundException(" No user found ");
         }
     }
 
     @Override
-    public UserInfo getByEmail(String userEmail){
+    public UserInfo getByEmail(String userEmail) {
         UserInfo user;
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery(" from UserInfo where email = :usermail", UserInfo.class);
             query.setParameter("usermail", userEmail);
             user = (UserInfo) query.getSingleResult();
-        }catch (NoResultException | NonUniqueResultException exception){
+        } catch (NoResultException | NonUniqueResultException exception) {
             throw new EntityNotFoundException(" No user found ");
         }
         return user;

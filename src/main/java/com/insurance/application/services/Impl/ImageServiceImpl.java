@@ -22,11 +22,6 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public List<Image> getAll() {
-        return repository.getAll();
-    }
-
-    @Override
     public void create(Image image) {
         repository.create(image);
     }
