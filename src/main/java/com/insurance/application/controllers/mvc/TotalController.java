@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.text.ParseException;
 import java.util.UUID;
 
 import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
+import static com.insurance.application.utils.CalcUtil.*;
 import static com.insurance.application.utils.ConvertDate.convertDate;
+import static com.insurance.application.utils.ConvertDate.dateFormat;
 
 @Controller
 @RequestMapping("/total")
@@ -29,6 +30,7 @@ public class TotalController {
     CoefficientService coefficientService;
     UserInfoService userService;
     InfoDtoService infoDtoService;
+    PolicyPaymentService policyPaymentService;
 
     @Autowired
     public TotalController (CarBrandService carBrandService,
@@ -36,13 +38,15 @@ public class TotalController {
                            BaseAmountService baseAmountService,
                            CoefficientService coefficientService,
                            UserInfoService userService,
-                           InfoDtoService infoDtoService) {
+                           InfoDtoService infoDtoService,
+                            PolicyPaymentService policyPaymentService) {
         this.carBrandService = carBrandService;
         this.carModelService = carModelService;
         this.baseAmountService = baseAmountService;
         this.coefficientService = coefficientService;
         this.userService = userService;
         this.infoDtoService = infoDtoService;
+        this.policyPaymentService = policyPaymentService;
     }
 
     @GetMapping
@@ -68,36 +72,55 @@ public class TotalController {
         return "redirect:/profile";
     }
 
-
     @PostMapping
     public String createOffer (final InitialInfoDto initialInfoDto,
                                Model model,
                                HttpSession session,
                                Principal principal) {
 
-            String tokenValue = generateToken(principal);
 
-            model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
 
-            InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
-            InitialInfoStringDto infoStringDto = initialStringMapper (initialInfoStringDto,
-                    carBrandService, carModelService, baseAmountService,
-                    coefficientService, initialInfoDto, tokenValue);
-            infoDtoService.create(infoStringDto);
+        String tokenValue = generateToken(principal);
+        double totalPremium = totalPremium(initialInfoDto);
 
-            if (principal == null) {
-                session.setAttribute("theToken", tokenValue);
-            }
+        InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
+        InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto,
+                carBrandService, carModelService, initialInfoDto, tokenValue, totalPremium);
+        infoDtoService.create(infoStringDto);
 
-            String registrationDate = convertDate(initialInfoDto.getRegistrationDate());
-            model.addAttribute("registrationDateModel", registrationDate);
+        if (principal == null) {
+            session.setAttribute("theToken", tokenValue);
+        }
 
-            String driverBirthDate = convertDate(initialInfoDto.getDriverBirthDate());
-            model.addAttribute("driverBirthDateModel", driverBirthDate);
+        String registrationDate = convertDate(initialInfoDto.getRegistrationDate());
+        model.addAttribute("registrationDateModel", registrationDate);
 
-            model.addAttribute("initialInfoDto", infoStringDto);
+        String driverBirthDate = convertDate(initialInfoDto.getDriverBirthDate());
+        model.addAttribute("driverBirthDateModel", driverBirthDate);
+
+        model.addAttribute("initialInfoDto", infoStringDto);
 
         return "total";
+    }
+
+    private double totalPremium(InitialInfoDto dto) {
+
+        boolean hasAccident = dto.getHasAccidents();
+        boolean isDriverUnderLimitAge = isDriverUnderAge(dto.getDriverBirthDate(), coefficientService);
+
+        int carAge = calcAge(dateFormat(dto.getRegistrationDate()));
+        int carCubic = getCarCubic(dto.getCarCubic());
+
+        double taxAmount = coefficientService.getById(1).getTaxAmount();
+        double baseAmount = baseAmountService.getBaseAmount(carCubic, carAge);
+        double accidentCoefficient = coefficientService.getById(1).getAccident();
+        double driverAgeCoefficient =  coefficientService.getById(1).getAgeCoefficient();
+        double netPremium = policyPaymentService.netPremium(hasAccident, isDriverUnderLimitAge,
+                baseAmount, accidentCoefficient, driverAgeCoefficient);
+
+        double totalPremium = policyPaymentService.totalPremium(netPremium, taxAmount);
+        return totalPremium;
     }
 
     private String generateToken(Principal principal){

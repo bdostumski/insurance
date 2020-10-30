@@ -2,6 +2,8 @@ package com.insurance.application.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class ConvertDate {
@@ -15,5 +17,10 @@ public class ConvertDate {
             e.printStackTrace();
         }
         return "0000-00-00";
+    }
+
+    public static LocalDate dateFormat(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(date, formatter);
     }
 }
