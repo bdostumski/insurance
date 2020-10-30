@@ -110,7 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/src/**", "/css/**", "/js/**").permitAll()
                     .antMatchers("/", "/total", "/offer", "/sign-up", "/register/user", "/brandmodels",
                             "/registrationconfirm", "/recoverpassword", "/passwordreset/user", "/passress",
-                            "/register", "/successful-registratoin").permitAll()
+                            "/register", "/successful-registratoin", "/image/**").permitAll()
                     .antMatchers("/policy").hasAnyRole("ADMIN", "USER", "AGENT")
                     .antMatchers("/user-filter").hasAnyRole("USER")
                     .antMatchers("/agent-filter").hasAnyRole("AGENT")
