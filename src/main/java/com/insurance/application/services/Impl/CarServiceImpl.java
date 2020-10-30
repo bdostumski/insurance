@@ -1,6 +1,6 @@
 package com.insurance.application.services.Impl;
 
-import com.insurance.application.exceptions.DuplicateEntityException;
+import com.insurance.application.exceptions.exceptionclasses.DuplicateEntityException;
 import com.insurance.application.models.Car;
 import com.insurance.application.repositories.CarRepository;
 import com.insurance.application.services.CarService;

@@ -1,6 +1,6 @@
 package com.insurance.application.services.Impl;
 
-import com.insurance.application.exceptions.EntityNotFoundException;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.Policy;
 import com.insurance.application.repositories.PolicyRepository;
 import com.insurance.application.services.PolicyService;

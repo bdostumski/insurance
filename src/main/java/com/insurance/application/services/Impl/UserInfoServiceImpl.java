@@ -1,6 +1,7 @@
 package com.insurance.application.services.Impl;
 
-import com.insurance.application.exceptions.EmailExistsExeption;
+import com.insurance.application.exceptions.exceptionclasses.EmailExistsExeption;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.repositories.UserInfoRepository;
 import com.insurance.application.services.UserInfoService;
@@ -63,17 +64,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo getByEmail(String userEmail) {
         UserInfo user = repository.getByEmail(userEmail);
-
         return user;
     }
 
     @Override
     public boolean emailAlreadyExists(String userEmail) {
-        if(getByEmail(userEmail) == null){
-            return false;
-        } else {
-            return getByEmail(userEmail).isEnabled();
+        try {
+          return getByEmail(userEmail).isEnabled();
         }
-
+        catch (EntityNotFoundException ex){
+            return false;
+        }
     }
 }

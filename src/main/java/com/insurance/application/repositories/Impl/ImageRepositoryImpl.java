@@ -1,6 +1,6 @@
 package com.insurance.application.repositories.Impl;
 
-import com.insurance.application.exceptions.EntityNotFoundException;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.Image;
 import com.insurance.application.repositories.ImageRepository;
 import org.hibernate.Session;

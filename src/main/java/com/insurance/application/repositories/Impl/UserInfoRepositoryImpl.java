@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import java.util.List;
 
@@ -80,7 +81,7 @@ public class UserInfoRepositoryImpl implements UserInfoRepository {
             query.setParameter("usermail", userEmail);
             user = (UserInfo) query.getSingleResult();
         }catch (NoResultException | NonUniqueResultException exception){
-            user = null;
+            throw new EntityNotFoundException(" No user found ");
         }
         return user;
     }

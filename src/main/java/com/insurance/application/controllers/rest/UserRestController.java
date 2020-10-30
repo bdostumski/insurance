@@ -1,12 +1,11 @@
 package com.insurance.application.controllers.rest;
 
 
-import com.insurance.application.exceptions.DuplicateEntityException;
+import com.insurance.application.exceptions.exceptionclasses.DuplicateEntityException;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.AccountRegDto;
 import com.insurance.application.models.dtos.UserProfileInfoDto;
 import com.insurance.application.security.UserRegistrationHandler;
-import com.insurance.application.security.jwt.JwtRequest;
 import com.insurance.application.security.jwt.JwtResponse;
 import com.insurance.application.security.jwt.JwtTokenUtil;
 import com.insurance.application.services.UserInfoService;

@@ -1,7 +1,6 @@
 package com.insurance.application.controllers.mvc.auth;
 
 
-import com.insurance.application.exceptions.EmailExistsExeption;
 import com.insurance.application.models.Token;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.services.UserInfoService;
