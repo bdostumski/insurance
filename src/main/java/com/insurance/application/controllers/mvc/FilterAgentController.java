@@ -6,6 +6,7 @@ import com.insurance.application.models.dtos.PolicyFilterDto;
 import com.insurance.application.services.FilterService;
 import com.insurance.application.services.PolicyService;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
+import static com.insurance.application.utils.Constants.APPROVAL_STATUS_APPROVED;
+import static com.insurance.application.utils.Constants.APPROVAL_STATUS_DECLINED;
 
 @Controller
 @RequestMapping("/agent-filter")
@@ -37,19 +41,19 @@ public class FilterAgentController {
         List<Policy> policyList = policyService.getAllPolicies();
 
         model.addAttribute("policyFilter", new PolicyFilterDto());
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
         model.addAttribute("policyList", policyList);
 
         return "/agent-filter";
     }
 
     @PostMapping
-    public String filter (@ModelAttribute PolicyFilterDto policyFilterDto,
-                          Model model,
-                          Principal principal) {
+    public String filter(@ModelAttribute PolicyFilterDto policyFilterDto,
+                         Model model,
+                         Principal principal) {
 
         model.addAttribute("policyFilter", new PolicyFilterDto());
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
         model.addAttribute("policyList",
                 filterService.filterForAgent(policyFilterDto.getFromDate(),
                         policyFilterDto.getToDate(),
@@ -63,13 +67,7 @@ public class FilterAgentController {
                           Model model,
                           Principal principal) {
 
-        List<Policy> policyList = policyService.getAllPolicies();
-        Policy policy = policyService.getById(id);
-        policy.setApproval((byte) 1);
-        policyService.update(policy);
-
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
-        model.addAttribute("policyList", policyList);
+        updatePolicyStatus(id, model, principal, APPROVAL_STATUS_APPROVED);
 
         return "redirect:/agent-filter";
     }
@@ -79,22 +77,18 @@ public class FilterAgentController {
                           Model model,
                           Principal principal) {
 
-        List<Policy> policyList = policyService.getAllPolicies();
-        Policy policy = policyService.getById(id);
-        policy.setApproval((byte) 2);
-        policyService.update(policy);
-
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
-        model.addAttribute("policyList", policyList);
+        updatePolicyStatus(id, model, principal, APPROVAL_STATUS_DECLINED);
 
         return "redirect:/agent-filter";
     }
 
-    private UserInfo isPrincipalNull(Principal principal) {
-        if(principal != null) {
-            return userInfoService.getByEmail(principal.getName());
-        } else {
-            return new UserInfo();
-        }
+    private void updatePolicyStatus(int policyId, Model model, Principal principal, byte policyStatus) {
+        List<Policy> policyList = policyService.getAllPolicies();
+        Policy policy = policyService.getById(policyId);
+        policy.setApproval(policyStatus);
+        policyService.update(policy);
+
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
+        model.addAttribute("policyList", policyList);
     }
 }

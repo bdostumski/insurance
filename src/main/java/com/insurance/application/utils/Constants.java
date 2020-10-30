@@ -14,6 +14,18 @@ public class Constants {
     public static final byte NO_ACCIDENT_LAST_YEAR = 0;
     public static final byte HAD_ACCIDENT_LAST_YEAR = 1;
 
+    public static final int USER_ROLE_ADMIN = 1;
+    public static final int USER_ROLE_AGENT = 2;
+    public static final int USER_ROLE_USER = 3;
+
+    public static final String AUTHORITY_ADMIN = "ROLE_ADMIN";
+    public static final String AUTHORITY_AGENT = "ROLE_AGENT";
+    public static final String AUTHORITY_USER = "ROLE_USER";
+
+
+
+
+
 
 
 

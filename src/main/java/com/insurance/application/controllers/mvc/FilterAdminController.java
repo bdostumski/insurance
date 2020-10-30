@@ -33,7 +33,6 @@ public class FilterAdminController {
     public String getAdminPage(Principal principal, Model model) {
 
         model.addAttribute("userFilter", new UserFilterDto());
-
         model.addAttribute("loggedUser", isPrincipalNull(principal));
         model.addAttribute("users", userInfoService.getAll());
 

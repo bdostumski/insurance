@@ -29,7 +29,8 @@ public class Car {
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
 
-    public Car() {}
+    public Car() {
+    }
 
     public int getId() {
         return id;
@@ -40,12 +41,7 @@ public class Car {
     }
 
     public String getConvertedRegDate() {
-        try {
-            return ConvertDate.convertDate(regDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return regDate;
+        return ConvertDate.convertDate(regDate);
     }
 
     public String getCubicCap() {

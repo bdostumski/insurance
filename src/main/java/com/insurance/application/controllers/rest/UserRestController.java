@@ -74,21 +74,24 @@ public class UserRestController {
 
     @GetMapping("/profile/{userId}")
     public UserProfileInfoDto getUserProfileDetails(@RequestHeader("Authorization") String token,
-                                                    @PathVariable ("userId") int userId){
+                                                    @PathVariable("userId") int userId) {
+        try {
+            UserInfo userInfo = userInfoService.getById(userId);
+            UserProfileInfoDto userProfileInfo = new UserProfileInfoDto();
 
-        UserInfo userInfo = userInfoService.getById(userId);
-        UserProfileInfoDto userProfileInfo = new UserProfileInfoDto();
+            userProfileInfo.setFirstname(userInfo.getFirstname());
+            userProfileInfo.setLastname(userInfo.getLastname());
+            userProfileInfo.setEmail(userInfo.getEmail());
+            userProfileInfo.setAddress(userInfo.getAddress());
+            userProfileInfo.setPhoneNumber(userInfo.getPhoneNumber());
+            userProfileInfo.setBirthdate(userInfo.getConvertedBirthdate());
 
-        userProfileInfo.setFirstname(userInfo.getFirstname());
-        userProfileInfo.setLastname(userInfo.getLastname());
-        userProfileInfo.setEmail(userInfo.getEmail());
-        userProfileInfo.setAddress(userInfo.getAddress());
-        userProfileInfo.setPhoneNumber(userInfo.getPhoneNumber());
-        userProfileInfo.setBirthdate(userInfo.getConvertedBirthdate());
-        String previousAccident = (userInfo.getPrevAccident() == NO_ACCIDENT_LAST_YEAR)? "No" : "Yes";
-        userProfileInfo.setAccidentLastYear(previousAccident);
-
-        return userProfileInfo;
+            String previousAccident = (userInfo.getPrevAccident() == NO_ACCIDENT_LAST_YEAR) ? "No" : "Yes";
+            userProfileInfo.setAccidentLastYear(previousAccident);
+            return userProfileInfo;
+        } catch (NullPointerException exception) {
+            throw new ResponseStatusException( HttpStatus.NO_CONTENT );
+        }
     }
 
 

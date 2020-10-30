@@ -6,6 +6,7 @@ import com.insurance.application.models.dtos.PolicyFilterDto;
 import com.insurance.application.services.FilterService;
 import com.insurance.application.services.PolicyService;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
+import static com.insurance.application.utils.Constants.APPROVAL_STATUS_WITHDRAWN;
 
 @Controller
 @RequestMapping("/user-filter")
@@ -38,7 +41,7 @@ public class FilterUserController {
         List<Policy> policyList = policyService.getByUserMail(principal.getName());
 
         model.addAttribute("policyFilter", new PolicyFilterDto());
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
         model.addAttribute("policyList", policyList);
 
         return "/user-filter";
@@ -49,7 +52,6 @@ public class FilterUserController {
         if(userInfoService.getByEmail(principal.getName()).getFirstname() != null) {
             return "redirect:/profile";
         }
-        // TODO error message
         return "redirect:/user-filter";
     }
 
@@ -61,7 +63,7 @@ public class FilterUserController {
         UserInfo user = userInfoService.getByEmail(principal.getName());
 
         model.addAttribute("policyFilter", new PolicyFilterDto());
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
         model.addAttribute("policyList",
                 filterService.filterForUser (user.getId(),
                         policyFilterDto.getFromDate(),
@@ -77,21 +79,13 @@ public class FilterUserController {
 
         List<Policy> policyList = policyService.getByUserMail(principal.getName());
         Policy policy = policyService.getById(id);
-        policy.setApproval((byte) 2);
+        policy.setApproval(APPROVAL_STATUS_WITHDRAWN);
         policyService.update(policy);
 
         model.addAttribute("policyFilter", new PolicyFilterDto());
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userInfoService));
         model.addAttribute("policyList", policyList);
 
         return "redirect:/user-filter";
-    }
-
-    private UserInfo isPrincipalNull(Principal principal) {
-        if(principal != null) {
-            return userInfoService.getByEmail(principal.getName());
-        } else {
-            return new UserInfo();
-        }
     }
 }

@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item">
                     <a th:if="${userInfo.userRole.id == 1}" th:href="@{/admin-filter/new-agent}" class="nav-link text-light mx-3" href="#"><i class="fas fa-user-plus"></i> New Agent</a>
-                    <a th:if="${userInfo.userRole.id == 3}" th:href="@{/policy}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
+                    <a th:if="${userInfo.userRole.id == 3}" th:href="@{/}" class="nav-link text-light mx-3" href="#"><i class="fas fa-plus"></i> New policy</a>
                 </li>
                 <li class="nav-item">
                     <a th:if="${userInfo.userRole.id == 1}" th:href="@{/admin-filter}" class="nav-link text-light mx-3" href="#"><i class="far fa-folder-open"></i> Agents</a>

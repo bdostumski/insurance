@@ -56,70 +56,72 @@ public class PasswordResetController {
     public String sendMail(@Valid @RequestParam(name = "email") final String userEmail,
                            final HttpServletRequest request,
                            RedirectAttributes redirectAttributes) {
-        try {
+
 
             if (userInfoService.emailAlreadyExists(userEmail)) {
+
                 UserInfo user = userInfoService.getByEmail(userEmail);
 
-                final String tokenValue = UUID.randomUUID().toString();
-                tokenService.saveToken(tokenValue, user);
+                String tokenValue = generateRecoveryToken(userEmail, user);
 
                 final String appURL = "http://" + request.getServerName() + ":" + request.getServerPort() + ":" + request.getContextPath();
                 sendPasswordChangedMail(user, tokenValue, appURL);
 
             } else {
-                logger.info( " A reset wa attempted at :" + Calendar.getInstance() + " from " + request.getRequestURI());
+                logger.info(" A reset wa attempted at :" + Calendar.getInstance() + " from " + request.getRequestURI());
             }
-        } catch (EmailExistsExeption e) {
-            return "register";
-        }
+
         redirectAttributes.addFlashAttribute("message", "If this e-mail exists, we've sent a new password");
-        return "redirect:/";
+        return "redirect:/login";
     }
+
+    private String generateRecoveryToken ( String userEmail, UserInfo user){
+        Token currentToken = user.getToken();
+        tokenService.delete(currentToken);
+
+        final String tokenValue = UUID.randomUUID().toString();
+        tokenService.saveToken(tokenValue, user);
+        return tokenValue;
+    }
+
 
     private void sendPasswordChangedMail(UserInfo user, String token, String appURL) {
         eventPublisher.publishEvent(new OnResetPasswordEvent(appURL, user, token));
     }
 
+
     @GetMapping(value = "/passwordreset/user")
     public ModelAndView openPasswordChanger(
             @RequestParam("token") String token) {
-        try {
 
-            Token verificationToken = tokenService.findByToken(token);
-            UserInfo user = verificationToken.getUser();
+        Token verificationToken = tokenService.findByToken(token);
+        UserInfo user = verificationToken.getUser();
 
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(new SimpleGrantedAuthority(user.getUserRole().getAuthority())));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(new SimpleGrantedAuthority(user.getUserRole().getAuthority())));
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
         return new ModelAndView("passress");
     }
+
 
     @PostMapping(value = "/passress")
     public String saveNewPassword(
             @RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmedPassword,
             RedirectAttributes redirectAttributes) {
-        try {
-            if (password.equals(confirmedPassword)) {
 
-                UserInfo user = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                user.setPassword(encoder.encode(password));
-                userInfoService.update(user);
+        if (password.equals(confirmedPassword)) {
 
-                redirectAttributes.addFlashAttribute("message", "Password changed successfully");
-            } else {
-                //TODO - show errors message on password mismatch
-                return "passress";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            UserInfo user = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            user.setPassword(encoder.encode(password));
+            userInfoService.update(user);
+
+            redirectAttributes.addFlashAttribute("message", "Password changed successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Passwords don't match");
+            return "passress";
         }
-
+        redirectAttributes.addFlashAttribute("message", "Password reset successful");
         return "redirect:/login";
     }
 }

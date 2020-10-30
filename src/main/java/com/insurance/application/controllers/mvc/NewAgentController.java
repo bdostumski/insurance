@@ -6,6 +6,8 @@ import com.insurance.application.models.UserRole;
 import com.insurance.application.models.dtos.UserProfileInfoDto;
 import com.insurance.application.services.InfoDtoService;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.services.UserRolesService;
+import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 
 import static com.insurance.application.utils.Constants.AGENT_SECRET_PASSWORD;
+import static com.insurance.application.utils.Constants.AUTHORITY_AGENT;
 
 @Controller
 @RequestMapping("/new-agent")
@@ -26,18 +29,21 @@ public class NewAgentController {
     InfoDtoService infoDtoService;
     UserInfoService userService;
     PasswordEncoder encoder;
+    UserRolesService rolesService;
 
     @Autowired
-    public NewAgentController(InfoDtoService infoDtoService, UserInfoService userService, PasswordEncoder encoder) {
+    public NewAgentController(InfoDtoService infoDtoService, UserInfoService userService,
+                              PasswordEncoder encoder, UserRolesService rolesService) {
         this.infoDtoService = infoDtoService;
         this.userService = userService;
         this.encoder = encoder;
+        this.rolesService = rolesService;
     }
 
     @GetMapping
     public String getUpdateUserProfile(Model model, Principal principal) {
 
-        model.addAttribute("loggedUser", isPrincipalNull(principal));
+        model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
         model.addAttribute("userInfo", new UserInfo());
 
         return "new-agent";
@@ -54,11 +60,7 @@ public class NewAgentController {
         createAgent.setEmail(agetnDto.getEmail());
         createAgent.setPhoneNumber(agetnDto.getPhoneNumber());
         createAgent.setAddress(agetnDto.getAddress());
-
-        UserRole userRole = new UserRole();
-        userRole.setAuthority("ROLE_AGENT");
-        userRole.setId(2);
-        createAgent.setUserRole(userRole);
+        createAgent.setUserRole(rolesService.getByValue(AUTHORITY_AGENT));
 
         createAgent.setPassword(encoder.encode(AGENT_SECRET_PASSWORD));
 
@@ -68,13 +70,4 @@ public class NewAgentController {
 
         return "redirect:/admin-filter";
     }
-
-    private UserInfo isPrincipalNull(Principal principal) {
-        if(principal != null) {
-            return userService.getByEmail(principal.getName());
-        } else {
-            return new UserInfo();
-        }
-    }
-
 }

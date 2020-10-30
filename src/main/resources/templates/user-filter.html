@@ -87,7 +87,7 @@
                                 <h5><strong>Vehicle</strong></h5>
                                 <div>Car model: <span th:text="${policy.car.carModel.carBrand.brand}">Audi</span> <span th:text="${policy.car.carModel.model}">A4</span></div>
                                 <div>Registration date: <span th:text="${policy.car.getConvertedRegDate()}">08.07.2019</span></div>
-                                <div>Registration certificate: <a href="#">AudiA4.jpg</a></div>
+                                <div>Registration certificate:  <a th:object="${policy}" th:href="@{policy.getImage().getPath()}" target="_blank">AudiA4.jpg</a></div>
                             </div>
                         </div>
                     </div>

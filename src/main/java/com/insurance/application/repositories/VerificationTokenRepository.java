@@ -8,5 +8,5 @@ public interface VerificationTokenRepository {
 
     Token findByToken(String token);
 
-    void delete(String token);
+    void delete(Token token);
 }

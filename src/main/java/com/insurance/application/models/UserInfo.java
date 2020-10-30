@@ -62,7 +62,8 @@ public class UserInfo {
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Token token;
 
-    public UserInfo() {}
+    public UserInfo() {
+    }
 
     public int getId() {
         return id;
@@ -89,12 +90,7 @@ public class UserInfo {
     }
 
     public String getConvertedBirthdate() {
-        try {
-            return ConvertDate.convertDate(birthdate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return birthdate;
+        return ConvertDate.convertDate(birthdate);
     }
 
 

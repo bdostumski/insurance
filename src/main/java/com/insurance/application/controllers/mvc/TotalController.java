@@ -4,6 +4,7 @@ import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
+import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,26 +71,13 @@ public class TotalController {
 
     @PostMapping
     public String createOffer (final InitialInfoDto initialInfoDto,
-                               BindingResult bindingResult,
                                Model model,
                                HttpSession session,
                                Principal principal) {
 
-        if (bindingResult.hasErrors()) {
-            return "redirect:/";
-        }
+            String tokenValue = generateToken(principal);
 
-        try {
-            String tokenValue;
-
-            if (principal == null) {
-                tokenValue = UUID.randomUUID().toString();
-            } else {
-                String userMail = principal.getName();
-                tokenValue = userService.getByEmail(userMail).getToken().getTokenValue();
-            }
-
-            model.addAttribute("loggedUser", isPrincipalNull(principal));
+            model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
 
             InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
             InitialInfoStringDto infoStringDto = initialStringMapper (initialInfoStringDto,
@@ -109,17 +97,16 @@ public class TotalController {
 
             model.addAttribute("initialInfoDto", infoStringDto);
 
-        } catch (ParseException e) {
-            return "redirect:/";
-        }
         return "total";
     }
 
-    private UserInfo isPrincipalNull(Principal principal) {
-        if(principal != null) {
-            return userService.getByEmail(principal.getName());
+    private String generateToken(Principal principal){
+
+        if (principal == null) {
+            return UUID.randomUUID().toString();
         } else {
-            return new UserInfo();
+            String userMail = principal.getName();
+            return userService.getByEmail(userMail).getToken().getTokenValue();
         }
     }
 

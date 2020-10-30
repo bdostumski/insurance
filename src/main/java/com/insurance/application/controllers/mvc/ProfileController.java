@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
-import java.text.ParseException;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/profile")
@@ -28,40 +26,22 @@ public class ProfileController {
     }
 
     @GetMapping
-    public String getProfile (Model model, Principal principal) {
-        try {
-            UserProfileInfoDto userDto = userInfoToDto(principal);
+    public String getProfile(Model model, Principal principal) {
 
-            if(userDto.getFirstname() != null) {
-                model.addAttribute("userInfo", userDto);
-            } else {
-                model.addAttribute("userInfo", new UserProfileInfoDto());
-            }
+        UserInfo user = userService.getByEmail(principal.getName());
+
+        if (user.getFirstname() != null) {
+            UserProfileInfoDto userDto = userInfoToDto(principal);
+            model.addAttribute("userInfo", userDto);
             return "profile";
-        } catch (Exception e) {
+        } else {
             return "redirect:/";
         }
-    }
 
-    private UserProfileInfoDto userInfoToDto (Principal principal) throws ParseException {
-
-        UserInfo userInfo = userService.getByEmail(principal.getName());
-
-        UserProfileInfoDto user = new UserProfileInfoDto();
-        user.setFirstname(userInfo.getFirstname());
-        user.setLastname(userInfo.getLastname());
-        user.setAddress(userInfo.getAddress());
-        user.setEmail(userInfo.getEmail());
-        user.setPhoneNumber(userInfo.getPhoneNumber());
-        user.setRole(userInfo.getUserRole().getId());
-
-        user.setBirthdate(ConvertDate.convertDate(userInfo.getBirthdate()));
-
-        return user;
     }
 
     @PostMapping("/update-user")
-    public String updateUserProfile (final UserProfileInfoDto userEditDto, Model model) {
+    public String updateUserProfile(final UserProfileInfoDto userEditDto, Model model) {
 
         UserInfo userToEdit;
 
@@ -86,5 +66,22 @@ public class ProfileController {
         model.addAttribute("userInfo", user);
 
         return "edit";
+    }
+
+    private UserProfileInfoDto userInfoToDto(Principal principal) {
+
+        UserInfo userInfo = userService.getByEmail(principal.getName());
+
+        UserProfileInfoDto user = new UserProfileInfoDto();
+        user.setFirstname(userInfo.getFirstname());
+        user.setLastname(userInfo.getLastname());
+        user.setAddress(userInfo.getAddress());
+        user.setEmail(userInfo.getEmail());
+        user.setPhoneNumber(userInfo.getPhoneNumber());
+        user.setRole(userInfo.getUserRole().getId());
+
+        user.setBirthdate(ConvertDate.convertDate(userInfo.getBirthdate()));
+
+        return user;
     }
 }

@@ -42,7 +42,7 @@
                     <h1><i class="far fa-file-alt"></i> Request Policy</h1>
                 </div>
             </div>
-            <form th:object="${policyInfoDto}" th:action="@{/policy}" method="post"  class="row" >
+            <form th:object="${policyInfoDto}" th:action="@{/policy}" enctype='multipart/form-data' method="post"  class="row" >
                 <div th:object="${infoDto}" class="col-lg-5 col-sm-12">
                     <p><strong>Request No</strong> 25768 / 09.08.2019</p>
                     <p><strong>Car Model</strong> <span th:text="*{carModel}">Volvo XC90</span></p>

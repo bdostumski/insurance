@@ -7,7 +7,6 @@ public class AccountRegDto {
     @Email(message = "Enter a valid email address.")
     private String email;
     private String password;
-    private String receivedTokenValue;
 
     public AccountRegDto() {}
 
@@ -27,11 +26,4 @@ public class AccountRegDto {
         this.password = password;
     }
 
-    public String getReceivedTokenValue() {
-        return receivedTokenValue;
-    }
-
-    public void setReceivedTokenValue(String receivedTokenValue) {
-        this.receivedTokenValue = receivedTokenValue;
-    }
 }

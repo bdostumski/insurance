@@ -26,7 +26,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 model.addAttribute("message", "Internal server error");
             } else if (statusCode == HttpStatus.BAD_REQUEST.value()) {
-                model.addAttribute("message", "Please try again later!");
+                model.addAttribute("message", "Bad Request");
             }
 
             return "error";

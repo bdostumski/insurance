@@ -17,7 +17,7 @@ public class Image {
     @Column(name = "path")
     private String path;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "policy_id")
     private Policy policy;
 

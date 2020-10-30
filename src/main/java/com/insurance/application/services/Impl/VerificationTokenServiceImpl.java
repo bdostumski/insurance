@@ -28,7 +28,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     @Override
-    public void delete(String token) {
+    public void delete(Token token) {
         repository.delete(token);
     }
 }

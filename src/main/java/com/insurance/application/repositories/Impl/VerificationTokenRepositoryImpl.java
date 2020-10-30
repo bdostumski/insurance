@@ -37,7 +37,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenReposit
     }
 
     @Override
-    public void delete(String token) {
+    public void delete(Token token) {
         try (Session session = sessionFactory.openSession()) {
                 session.beginTransaction();
                 session.delete(token);

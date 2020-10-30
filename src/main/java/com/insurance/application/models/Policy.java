@@ -46,10 +46,11 @@ public class Policy {
     private Car car;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "policy", fetch = FetchType.EAGER)
-    private Set<Image> imageSet;
+    @OneToOne(mappedBy = "policy", fetch = FetchType.EAGER)
+    private Image image;
 
-    public Policy() {}
+    public Policy() {
+    }
 
     public int getId() {
         return id;
@@ -72,12 +73,9 @@ public class Policy {
     }
 
     public String getConvertedStartDate() {
-        try {
-            return ConvertDate.convertDate(startDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return startDate;
+
+        return ConvertDate.convertDate(startDate);
+
     }
 
     public String getStartTime() {
@@ -88,8 +86,8 @@ public class Policy {
         return car;
     }
 
-    public Set<Image> getImageSet() {
-        return imageSet;
+    public Image getImage() {
+        return image;
     }
 
     public void setId(int id) {
@@ -120,8 +118,8 @@ public class Policy {
         this.car = car;
     }
 
-    public void setImageSet(Set<Image> imageSet) {
-        this.imageSet = imageSet;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     @Override

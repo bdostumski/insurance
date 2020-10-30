@@ -1,5 +1,8 @@
 package com.insurance.application.controllers.mvc;
 
+import com.insurance.application.imageprocessing.FileSystemStorageService;
+import com.insurance.application.imageprocessing.FileUploadController;
+import com.insurance.application.imageprocessing.StorageService;
 import com.insurance.application.models.*;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.models.dtos.InitialPolicyDto;
@@ -7,15 +10,15 @@ import com.insurance.application.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.text.ParseException;
 
-import static com.insurance.application.utils.Constants.APPROVAL_STATUS_PENDING;
-import static com.insurance.application.utils.ConvertDate.convertDate;
+import static com.insurance.application.utils.Constants.*;
+
 
 @Controller
 @RequestMapping("/policy")
@@ -26,36 +29,32 @@ public class PolicyController {
     PolicyService policyService;
     CarService carService;
     CarModelService carModelService;
-    CarBrandService carBrandService;
+    ImageService imageService;
+    StorageService storageService;
 
     @Autowired
-    public PolicyController (InfoDtoService infoDtoService,
-                            UserInfoService userService,
-                            PolicyService policyService,
-                            CarService carService,
-                            CarModelService carModelService,
-                            CarBrandService carBrandService) {
-
+    public PolicyController(InfoDtoService infoDtoService, UserInfoService userService, PolicyService policyService,
+                            CarService carService, CarModelService carModelService,
+                            ImageService imageService, StorageService storageService) {
         this.infoDtoService = infoDtoService;
         this.userService = userService;
         this.policyService = policyService;
         this.carService = carService;
         this.carModelService = carModelService;
-        this.carBrandService = carBrandService;
+        this.imageService = imageService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/new")
     public String newPolicy(Principal principal, HttpSession session) {
-        deletePolicy(principal);
-        session.removeAttribute("theToken");
+        cleanCachedInfo(principal, session);
         return "redirect:/";
     }
 
     @GetMapping("/profile")
     public String policyProfile(Principal principal, HttpSession session) {
-        if(userService.getByEmail(principal.getName()).getFirstname() != null) {
-            deletePolicy(principal);
-            session.removeAttribute("theToken");
+        if (userService.getByEmail(principal.getName()).getFirstname() != null) {
+            cleanCachedInfo(principal, session);
             return "redirect:/profile";
         }
         return "redirect:/policy";
@@ -63,90 +62,81 @@ public class PolicyController {
 
     @GetMapping("/user-filter")
     public String policyFilterUser(Principal principal, HttpSession session) {
-        deletePolicy(principal);
-        session.removeAttribute("theToken");
+        cleanCachedInfo(principal, session);
         return "redirect:/user-filter";
     }
 
     @GetMapping("/agent-filter")
     public String policyFilterAgent(Principal principal, HttpSession session) {
-        deletePolicy(principal);
-        session.removeAttribute("theToken");
+        cleanCachedInfo(principal, session);
         return "redirect:/agent-filter";
     }
 
     @GetMapping("/logout")
     public String policyLogout(Principal principal, HttpSession session) {
-        deletePolicy(principal);
-        session.removeAttribute("theToken");
+        cleanCachedInfo(principal, session);
         return "redirect:/logout";
     }
 
     @GetMapping
-    public String getPolicy (Model model, Principal principal, HttpSession session) {
+    public String getPolicy(Model model, Principal principal, HttpSession session) {
 
-        try {
+        UserInfo user = userService.getByEmail(principal.getName());
+        model.addAttribute("userInfo", user);
 
-            UserInfo user = userService.getByEmail(principal.getName());
-            String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
-            InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
-            session.setAttribute("userToken", tokenValue);
+        String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
+        session.setAttribute("userToken", tokenValue);
 
-            model.addAttribute("userInfo", user);
-            model.addAttribute("infoDto", infoDto);
+        InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
+        model.addAttribute("infoDto", infoDto);
 
-            UserInfo userInfo = userService.getByEmail(principal.getName());
+        return loadUserDetails(user, model);
 
-            if(userInfo.getFirstname() != null) {
-                InitialPolicyDto initialPolicyDto = new InitialPolicyDto();
-                initialPolicyDto.setFirstName(userInfo.getFirstname());
-                initialPolicyDto.setLastName(userInfo.getLastname());
-                initialPolicyDto.setAddress(userInfo.getAddress());
-                initialPolicyDto.setPhoneNumber(userInfo.getPhoneNumber());
-
-                model.addAttribute("policyInfoDto", initialPolicyDto);
-            } else {
-                model.addAttribute("policyInfoDto", new InitialPolicyDto());
-            }
-            return "policy";
-        } catch (Exception e) {
-            return "redirect:/";
-        }
     }
 
     @PostMapping
-    public String createPolicy (Principal principal,
-                                final InitialPolicyDto initialPolicyDto,
-                                HttpSession session) {
+    public String createPolicy(Principal principal,
+                               final InitialPolicyDto initialPolicyDto,
+                               @RequestParam("file") MultipartFile file,
+                               HttpSession session) {
 
-        try {
-            String tokenValue = (String) session.getAttribute("userToken");
-            InitialInfoStringDto stringDto = infoDtoService.getByTokenValue(tokenValue);
+        String tokenValue = (String) session.getAttribute("userToken");
+        InitialInfoStringDto stringDto = infoDtoService.getByTokenValue(tokenValue);
 
-            UserInfo user = configureUserDetails(principal, initialPolicyDto, stringDto);
-            userService.update(user);
+        UserInfo user = configureUserDetails(principal, initialPolicyDto, stringDto);
 
-            Car car = enlistCar(stringDto, carBrandService, carModelService, user);
-            carService.create(car);
+        Car car = enlistCar(stringDto, carModelService, user);
 
-            Policy policy = generatePolicy(initialPolicyDto, stringDto, user, car);
-            policyService.create(policy);
-            infoDtoService.delete(stringDto);
+        Policy policy = generatePolicy(initialPolicyDto, stringDto, user, car);
+        policyService.create(policy);
 
-            session.removeAttribute("theToken");
+        handleFileUpload(policy, file, user.getId());
 
-            return "redirect:/profile";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "redirect:/";
-        }
+        cleanCachedInfo(principal, session);
+        session.removeAttribute("userToken");
+
+        return "redirect:/profile";
     }
 
+    private String loadUserDetails(UserInfo user, Model model) {
+        if (user.getFirstname() != null) {
+            InitialPolicyDto initialPolicyDto = new InitialPolicyDto();
+            initialPolicyDto.setFirstName(user.getFirstname());
+            initialPolicyDto.setLastName(user.getLastname());
+            initialPolicyDto.setAddress(user.getAddress());
+            initialPolicyDto.setPhoneNumber(user.getPhoneNumber());
+
+            model.addAttribute("policyInfoDto", initialPolicyDto);
+        } else {
+            model.addAttribute("policyInfoDto", new InitialPolicyDto());
+        }
+        return "policy";
+    }
 
 
     private Policy generatePolicy(InitialPolicyDto initialPolicyDto,
                                   InitialInfoStringDto stringDto,
-                                  UserInfo user, Car car)  {
+                                  UserInfo user, Car car) {
 
         Policy policy = new Policy();
         policy.setApproval(APPROVAL_STATUS_PENDING);
@@ -170,14 +160,14 @@ public class PolicyController {
         user.setPhoneNumber(initialPolicyDto.getPhoneNumber());
         user.setAddress(initialPolicyDto.getAddress());
 
-        int accidents = stringDto.getHasAccidents().equals("No") ? 0 : 1;
+        int accidents = stringDto.getHasAccidents().equals("No") ? NO_ACCIDENT_LAST_YEAR : HAD_ACCIDENT_LAST_YEAR;
         user.setPrevAccident((byte) accidents);
+        userService.update(user);
 
         return user;
     }
 
     private Car enlistCar(InitialInfoStringDto stringDto,
-                          CarBrandService carBrandService,
                           CarModelService carModelService,
                           UserInfo user) {
 
@@ -187,13 +177,34 @@ public class PolicyController {
         car.setCarModel(model);
         car.setRegDate(stringDto.getRegistrationDate());
         car.setCubicCap(stringDto.getCarCubic());
+        carService.create(car);
 
         return car;
     }
 
-    private void deletePolicy(Principal principal) {
+    private void cleanCachedInfo(Principal principal, HttpSession session) {
         String tokenValue = userService.getByEmail(principal.getName()).getToken().getTokenValue();
         InitialInfoStringDto infoDto = infoDtoService.getByTokenValue(tokenValue);
         infoDtoService.delete(infoDto);
+        session.removeAttribute("theToken");
+
+    }
+
+    private void handleFileUpload(Policy policy, MultipartFile file, int userId) {
+
+        Image picture = new Image();
+        if (file != null) {
+            picture.setName(file.getOriginalFilename());
+            picture.setPolicy(policy);
+            picture.setPath(
+                    MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+                            "serveFile", file.getOriginalFilename()).build().toUri().toString()
+
+            );
+            imageService.create(picture);
+            storageService.store(file);
+        } else {
+            picture = imageService.getById(30);
+        }
     }
 }
