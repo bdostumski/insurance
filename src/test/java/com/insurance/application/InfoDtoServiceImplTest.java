@@ -1,8 +1,5 @@
 package com.insurance.application;
 
-import com.insurance.application.exceptions.exceptionclasses.DuplicateEntityException;
-import com.insurance.application.models.Car;
-import com.insurance.application.models.Image;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.repositories.Impl.InfoDtoRepositoryImpl;
 import com.insurance.application.repositories.InfoDtoRepository;
