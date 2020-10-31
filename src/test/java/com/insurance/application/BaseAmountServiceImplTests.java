@@ -1,6 +1,5 @@
 package com.insurance.application;
 
-import com.insurance.application.models.BaseAmount;
 import com.insurance.application.repositories.BaseAmountRepository;
 import com.insurance.application.repositories.Impl.BaseAmountRepositoryImpl;
 import com.insurance.application.services.BaseAmountService;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-
 
 @ExtendWith(MockitoExtension.class)
 public class BaseAmountServiceImplTests {
