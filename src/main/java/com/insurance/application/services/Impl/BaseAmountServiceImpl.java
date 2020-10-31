@@ -19,4 +19,5 @@ public class BaseAmountServiceImpl implements BaseAmountService {
     public double getBaseAmount(int car_cubic, int car_age) {
         return repository.getBaseAmount(car_cubic, car_age);
     }
+
 }

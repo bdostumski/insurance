@@ -18,7 +18,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void create(Car car) {
         if (repository.getById(car.getId()) != null) {
-            throw new DuplicateEntityException("This car alsready exists");
+            throw new DuplicateEntityException("This car already exists");
         }
         repository.create(car);
     }
