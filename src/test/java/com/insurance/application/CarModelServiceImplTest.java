@@ -33,7 +33,7 @@ public class CarModelServiceImplTest {
     }
 
     @Test
-    public void create_Should_Return_CreateModel() {
+    public void getByModelName_Should_Return_CreateModel() {
         // Arrange
         CarModel model = new CarModel();
         model.setId(1);

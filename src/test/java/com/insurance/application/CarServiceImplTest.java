@@ -72,7 +72,7 @@ public class CarServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(car);
+                Mockito.times(1)).update(car);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class CarServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(car);
+                Mockito.times(1)).delete(car);
     }
 
 }

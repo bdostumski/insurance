@@ -1,14 +1,9 @@
 package com.insurance.application;
 
-import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.UserRole;
-import com.insurance.application.repositories.Impl.UserInfoRepositoryImpl;
 import com.insurance.application.repositories.Impl.UserRolesRepositoryImpl;
-import com.insurance.application.repositories.UserInfoRepository;
 import com.insurance.application.repositories.UserRolesRepository;
-import com.insurance.application.services.Impl.UserInfoServiceImpl;
 import com.insurance.application.services.Impl.UserRoleServiceImpl;
-import com.insurance.application.services.UserInfoService;
 import com.insurance.application.services.UserRolesService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

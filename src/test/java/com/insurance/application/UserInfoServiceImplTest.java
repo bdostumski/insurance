@@ -18,7 +18,7 @@ public class UserInfoServiceImplTest {
     UserInfoService mokModelService = new UserInfoServiceImpl(mokRepository);
 
     @Test
-    public void create_Should_User() {
+    public void should_Create_User() {
         // Arrange
         UserInfo user = new UserInfo();
         Mockito.when(mokRepository.getById(1)).thenReturn(user);
@@ -44,11 +44,11 @@ public class UserInfoServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(user);
+                Mockito.times(1)).update(user);
     }
 
     @Test
-    public void delete_Should_Delete_InfoDto() {
+    public void delete_Should_Delete_UserInfo() {
 
         // Arrange
         UserInfo user = new UserInfo();
@@ -62,11 +62,11 @@ public class UserInfoServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(user);
+                Mockito.times(1)).delete(user);
     }
 
     @Test
-    public void getById_Should_Return_InfoDto() {
+    public void getById_Should_Return_UserInfo() {
         // Arrange
         UserInfo user = new UserInfo();
         user.setId(1);
@@ -81,7 +81,7 @@ public class UserInfoServiceImplTest {
     }
 
     @Test
-    public void getLastName_Should_Return_InfoDto() {
+    public void getLastName_Should_Return_UserInfo() {
         // Arrange
         UserInfo user = new UserInfo();
         user.setId(1);

@@ -1,6 +1,5 @@
 package com.insurance.application;
 
-import com.insurance.application.models.Car;
 import com.insurance.application.models.Image;
 import com.insurance.application.repositories.ImageRepository;
 import com.insurance.application.repositories.Impl.ImageRepositoryImpl;
@@ -60,7 +59,7 @@ public class ImageServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(img);
+                Mockito.times(1)).update((int) img.getId());
     }
 
     @Test
@@ -76,6 +75,6 @@ public class ImageServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(img);
+                Mockito.times(1)).delete((int) img.getId());
     }
 }

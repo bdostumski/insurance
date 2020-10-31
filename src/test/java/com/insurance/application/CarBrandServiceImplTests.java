@@ -33,7 +33,7 @@ public class CarBrandServiceImplTests {
     }
 
     @Test
-    public void create_Should_Return_CreateModel() {
+    public void getByBrandName_Should_Return_CarBrand() {
         // Arrange
         CarBrand brand = new CarBrand();
         brand.setId(1);

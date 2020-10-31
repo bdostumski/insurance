@@ -59,7 +59,7 @@ public class InfoDtoServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(dto);
+                Mockito.times(1)).update(dto);
     }
 
 
@@ -76,6 +76,6 @@ public class InfoDtoServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(dto);
+                Mockito.times(1)).delete(dto);
     }
 }

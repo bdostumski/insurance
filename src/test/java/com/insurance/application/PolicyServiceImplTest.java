@@ -44,7 +44,7 @@ public class PolicyServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(policy);
+                Mockito.times(1)).update(policy);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class PolicyServiceImplTest {
 
         // Assert
         Mockito.verify(mokRepository,
-                Mockito.times(1)).create(policy);
+                Mockito.times(1)).delete(policy);
     }
 
     @Test
