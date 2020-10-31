@@ -1,9 +1,13 @@
 package com.insurance.application;
 
-import com.insurance.application.models.mappers.InitialStringMapper;
+import com.insurance.application.models.BaseAmount;
+import com.insurance.application.repositories.BaseAmountRepository;
+import com.insurance.application.repositories.Impl.BaseAmountRepositoryImpl;
+import com.insurance.application.services.BaseAmountService;
+import com.insurance.application.services.Impl.BaseAmountServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -11,13 +15,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class BaseAmountServiceImplTests {
 
-    @InjectMocks
-    InitialStringMapper mapper;
+    BaseAmountRepository mokRepository = Mockito.mock(BaseAmountRepositoryImpl.class);
+    BaseAmountService mokCarService = new BaseAmountServiceImpl(mokRepository);
 
     @Test
     public void baseAmountShouldBeCalculated(){
 
-        double baseAmount = 100;
+        Mockito.when(mokCarService.getBaseAmount(1000, 3)).thenReturn(403.25);
 
     }
 }
