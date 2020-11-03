@@ -9,7 +9,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -21,9 +21,10 @@ public class Image {
     @JoinColumn(name = "policy_id")
     private Policy policy;
 
-    public Image() {}
+    public Image() {
+    }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -39,7 +40,7 @@ public class Image {
         return policy;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

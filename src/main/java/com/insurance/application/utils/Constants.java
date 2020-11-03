@@ -18,6 +18,8 @@ public class Constants {
     public static final int USER_ROLE_AGENT = 2;
     public static final int USER_ROLE_USER = 3;
 
+    public static final int DEFAULT_IMAGE = 7;
+
     public static final String AUTHORITY_ADMIN = "ROLE_ADMIN";
     public static final String AUTHORITY_AGENT = "ROLE_AGENT";
     public static final String AUTHORITY_USER = "ROLE_USER";

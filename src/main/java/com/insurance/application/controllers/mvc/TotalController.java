@@ -4,6 +4,7 @@ import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
+import com.insurance.application.utils.CalcUtil;
 import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +83,7 @@ public class TotalController {
         model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
 
         String tokenValue = generateToken(principal);
-        double totalPremium = totalPremium(initialInfoDto);
+        double totalPremium = CalcUtil.calculateTtotalPremium(initialInfoDto, coefficientService, baseAmountService, policyPaymentService);
 
         InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
         InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto,
@@ -104,24 +105,7 @@ public class TotalController {
         return "total";
     }
 
-    private double totalPremium(InitialInfoDto dto) {
 
-        boolean hasAccident = dto.getHasAccidents();
-        boolean isDriverUnderLimitAge = isDriverUnderAge(dto.getDriverBirthDate(), coefficientService);
-
-        int carAge = calcAge(dateFormat(dto.getRegistrationDate()));
-        int carCubic = getCarCubic(dto.getCarCubic());
-
-        double taxAmount = coefficientService.getById(1).getTaxAmount();
-        double baseAmount = baseAmountService.getBaseAmount(carCubic, carAge);
-        double accidentCoefficient = coefficientService.getById(1).getAccident();
-        double driverAgeCoefficient =  coefficientService.getById(1).getAgeCoefficient();
-        double netPremium = policyPaymentService.netPremium(hasAccident, isDriverUnderLimitAge,
-                baseAmount, accidentCoefficient, driverAgeCoefficient);
-
-        double totalPremium = policyPaymentService.totalPremium(netPremium, taxAmount);
-        return totalPremium;
-    }
 
     private String generateToken(Principal principal){
 

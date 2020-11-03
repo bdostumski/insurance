@@ -9,6 +9,7 @@ import com.insurance.application.security.UserRegistrationHandler;
 import com.insurance.application.security.jwt.JwtResponse;
 import com.insurance.application.security.jwt.JwtTokenUtil;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
+import static com.insurance.application.utils.Constants.HAD_ACCIDENT_LAST_YEAR;
 import static com.insurance.application.utils.Constants.NO_ACCIDENT_LAST_YEAR;
 
 @RestController
@@ -59,16 +62,22 @@ public class UserRestController {
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader("userMail") String email,
                                                        @RequestHeader("userPass") String password) throws Exception {
 
-        authenticate(email, password);
+        try {
+            authenticate(email, password);
 
-        final UserInfo userDetails = userInfoService
-                .getByEmail(email);
+            final UserInfo userDetails = userInfoService.getByEmail(email);
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
+            final String token = jwtTokenUtil.generateToken(userDetails);
 
-        JwtResponse response = new JwtResponse(userDetails.getId());
+            JwtResponse response = new JwtResponse(userDetails.getId());
 
-        return ResponseEntity.ok().header("authToken", token).body(response);
+            return ResponseEntity.ok().header("authToken", token).body(response);
+
+        } catch (DisabledException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account has been disabled");
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong UserName or Password");
+        }
     }
 
     @GetMapping("/profile/{userId}")
@@ -78,6 +87,9 @@ public class UserRestController {
             UserInfo userInfo = userInfoService.getById(userId);
             UserProfileInfoDto userProfileInfo = new UserProfileInfoDto();
 
+            if (userInfo.getFirstname() == null || userInfo.getFirstname().trim().length() == 0) {
+                throw new EntityNotFoundException();
+            }
             userProfileInfo.setFirstname(userInfo.getFirstname());
             userProfileInfo.setLastname(userInfo.getLastname());
             userProfileInfo.setEmail(userInfo.getEmail());
@@ -88,20 +100,49 @@ public class UserRestController {
             String previousAccident = (userInfo.getPrevAccident() == NO_ACCIDENT_LAST_YEAR) ? "No" : "Yes";
             userProfileInfo.setAccidentLastYear(previousAccident);
             return userProfileInfo;
-        } catch (NullPointerException exception) {
-            throw new ResponseStatusException( HttpStatus.NO_CONTENT );
+        } catch (EntityNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @PutMapping("/profile/{userId}")
+    public ResponseEntity<UserProfileInfoDto> updateUserProfile(HttpServletRequest request,
+                                                                @PathVariable("userId") int userId,
+                                                                @RequestBody UserProfileInfoDto userInfoDto) {
+
+        try {
+            String email = Validator.getUserEmail(request, jwtTokenUtil);
+            UserInfo userInfo = userInfoService.getByEmail(email);
+
+            if (userInfo.getId() == userId) {
+
+                byte accidentsLastYear = (userInfoDto.getAccidentLastYear().equals("Yes")) ? HAD_ACCIDENT_LAST_YEAR : NO_ACCIDENT_LAST_YEAR;
+
+                userInfo.setFirstname(userInfoDto.getFirstname());
+                userInfo.setLastname(userInfoDto.getLastname());
+                userInfo.setAddress(userInfoDto.getAddress());
+                userInfo.setPhoneNumber(userInfoDto.getPhoneNumber());
+                userInfo.setBirthdate(userInfoDto.getBirthdate());
+                userInfo.setPrevAccident(accidentsLastYear);
+
+                userInfoService.update(userInfo);
+
+                return new ResponseEntity<UserProfileInfoDto>(HttpStatus.OK);
+
+            } else {
+                throw new IllegalAccessException(" User can't change other users data");
+            }
+
+        } catch (EntityNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        } catch (IllegalAccessException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can't change this profile");
         }
     }
 
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
+    private void authenticate(String username, String password) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
     }
 
 }

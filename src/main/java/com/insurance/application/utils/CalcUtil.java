@@ -1,6 +1,9 @@
 package com.insurance.application.utils;
 
+import com.insurance.application.models.dtos.InitialInfoDto;
+import com.insurance.application.services.BaseAmountService;
 import com.insurance.application.services.CoefficientService;
+import com.insurance.application.services.PolicyPaymentService;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -28,5 +31,25 @@ public class CalcUtil {
         int ageLimit = coefficientService.getById(COEFFICIENT_INDEX).getAgeLimit();
         int driverAge = calcAge(dateFormat(driverBirthdate));
         return  (driverAge <= ageLimit);
+    }
+
+    public static double calculateTtotalPremium(InitialInfoDto dto, CoefficientService coefficientService, BaseAmountService baseAmountService,
+                                PolicyPaymentService policyPaymentService) {
+
+        boolean hasAccident = dto.getHasAccidents();
+        boolean isDriverUnderLimitAge = isDriverUnderAge(dto.getDriverBirthDate(), coefficientService);
+
+        int carAge = calcAge(dateFormat(dto.getRegistrationDate()));
+        int carCubic = getCarCubic(dto.getCarCubic());
+
+        double taxAmount = coefficientService.getById(1).getTaxAmount();
+        double baseAmount = baseAmountService.getBaseAmount(carCubic, carAge);
+        double accidentCoefficient = coefficientService.getById(1).getAccident();
+        double driverAgeCoefficient =  coefficientService.getById(1).getAgeCoefficient();
+        double netPremium = policyPaymentService.netPremium(hasAccident, isDriverUnderLimitAge,
+                baseAmount, accidentCoefficient, driverAgeCoefficient);
+
+        double totalPremium = policyPaymentService.totalPremium(netPremium, taxAmount);
+        return totalPremium;
     }
 }

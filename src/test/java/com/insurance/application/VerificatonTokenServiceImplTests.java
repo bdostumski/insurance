@@ -1,27 +1,36 @@
 package com.insurance.application;
 
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
 import com.insurance.application.models.Token;
-import com.insurance.application.repositories.Impl.VerificationTokenRepositoryImpl;
 import com.insurance.application.repositories.VerificationTokenRepository;
 import com.insurance.application.services.Impl.VerificationTokenServiceImpl;
-import com.insurance.application.services.VerificationTokenService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+
+@ExtendWith(MockitoExtension.class)
 public class VerificatonTokenServiceImplTests {
+
+
+    @Mock
+    VerificationTokenRepository mockTokenRepository;
+
+    @InjectMocks
+    VerificationTokenServiceImpl tokenService;
 
     @Test
     public void findByTokenValueShouldReturnTokenWhenPresent(){
-
-        VerificationTokenRepository mokRepository = Mockito.mock(VerificationTokenRepositoryImpl.class);
-        VerificationTokenService tokenService = new VerificationTokenServiceImpl(mokRepository);
 
         Token token = new Token();
         token.setTokenValue("token");
         token.setId(1);
 
-        Mockito.when(mokRepository.findByToken("token")).thenReturn(token);
+        Mockito.when(mockTokenRepository.findByToken("token")).thenReturn(token);
 
         Token result = tokenService.findByToken("token");
 
@@ -29,4 +38,5 @@ public class VerificatonTokenServiceImplTests {
         Assertions.assertEquals("token", result.getTokenValue());
 
     }
+
 }

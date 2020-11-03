@@ -1,5 +1,6 @@
 package com.insurance.application.controllers.rest;
 
+import com.insurance.application.models.BaseAmount;
 import com.insurance.application.models.Car;
 import com.insurance.application.models.CarBrand;
 import com.insurance.application.models.CarModel;
@@ -19,6 +20,7 @@ public class CarController {
     private final CarService carService;
     private final CarModelService carModelService;
     private final CarBrandService carBrandService;
+
 
     @Autowired
     public CarController(CarService carService, CarModelService carModelService, CarBrandService carBrandService) {

@@ -1,13 +1,23 @@
 package com.insurance.application.controllers.rest;
 
 
-import com.insurance.application.models.Policy;
+import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
+import com.insurance.application.models.*;
+import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.PolicyRequestDto;
+import com.insurance.application.models.mappers.CarMapper;
+import com.insurance.application.models.mappers.ToInitialInfoDtoMapper;
 import com.insurance.application.security.jwt.JwtTokenUtil;
-import com.insurance.application.services.PolicyService;
+import com.insurance.application.services.*;
+import com.insurance.application.utils.CalcUtil;
+import com.insurance.application.utils.ConvertDate;
+import com.insurance.application.utils.Validator;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +29,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.insurance.application.utils.Constants.APPROVAL_STATUS_WITHDRAWN;
+import static com.insurance.application.utils.Constants.*;
 
 @RestController
 @RequestMapping("/v.1.0/api/policy")
@@ -27,16 +37,25 @@ public class PolicyRestController {
 
     private final PolicyService policyService;
     private final JwtTokenUtil jwtTokenUtil;
+    private final UserInfoService userInfoService;
+    private final CarModelService carModelService;
+    private final CarService carService;
+    private final ImageService imageService;
 
     @Autowired
-    public PolicyRestController(PolicyService policyService, JwtTokenUtil jwtTokenUtil) {
+    public PolicyRestController(PolicyService policyService, JwtTokenUtil jwtTokenUtil,
+                                UserInfoService userInfoService, CarModelService carModelService,
+                                CarService carService, ImageService imageService) {
         this.policyService = policyService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.userInfoService = userInfoService;
+        this.carModelService = carModelService;
+        this.carService = carService;
+        this.imageService = imageService;
     }
 
-
     @GetMapping("/profile/{userId}")
-    public List<PolicyRequestDto> getAllpoliciesOfUser(@PathVariable("userId") int userId) {
+    public List<PolicyRequestDto> getAllPoliciesOfUser(@PathVariable("userId") int userId) {
 
         List<PolicyRequestDto> policyRequestList = new ArrayList<PolicyRequestDto>();
         List<Policy> policiesList = policyService.getByUserId(userId);
@@ -48,16 +67,62 @@ public class PolicyRestController {
     }
 
     @PutMapping("/withdrawn/{policy-id}")
-    public void withdrawUserPendingPolicy( HttpServletRequest request, @PathVariable ("policy-id") int policyId){
-        String userMail = getUserEmail(request, jwtTokenUtil);
+    public void withdrawUserPendingPolicy(HttpServletRequest request, @PathVariable("policy-id") int policyId) {
+        String userMail = Validator.getUserEmail(request, jwtTokenUtil);
         Policy policy = policyService.getById(policyId);
-        if (policy.getUserInfo().getEmail().equals(userMail)){
+        if (policy.getUserInfo().getEmail().equals(userMail)) {
             policy.setApproval(APPROVAL_STATUS_WITHDRAWN);
             policyService.update(policy);
-        }else {
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
     }
+
+
+    @PostMapping
+    public ResponseEntity<PolicyRequestDto> createNewPolicy(HttpServletRequest request,
+                                                            @RequestBody PolicyRequestDto policyRequestDto
+    ) {
+
+        try {
+            String email = Validator.getUserEmail(request, jwtTokenUtil);
+            UserInfo userInfo = userInfoService.getByEmail(email);
+
+            InitialInfoDto initialInfoDto = ToInitialInfoDtoMapper.initialInfoDto(policyRequestDto, userInfo, carModelService);
+            Car car = CarMapper.enlistCar(initialInfoDto, carModelService, carService, userInfo);
+            Image image = imageService.getById(DEFAULT_IMAGE);
+
+            Policy policy = createNewPolicy(policyRequestDto, userInfo, car, image);
+            policyService.create(policy);
+            image.setPolicy(policy);
+            imageService.create(image);
+
+            return new ResponseEntity<PolicyRequestDto>(HttpStatus.OK);
+
+        } catch (EntityNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch (DisabledException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account has been disabled");
+        } catch (BadCredentialsException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong UserName or Password");
+        }
+    }
+
+
+    private Policy createNewPolicy(PolicyRequestDto infoDto, UserInfo user, Car car, Image image) {
+        Policy policy = new Policy();
+
+        policy.setApproval(APPROVAL_STATUS_PENDING);
+        policy.setStartTime(infoDto.getStartTime());
+        policy.setStartDate(infoDto.getStartDate());
+        policy.setTotalPrice(infoDto.getPolicyPrice());
+        policy.setUserInfo(user);
+        policy.setCar(car);
+        policy.setImage(image);
+
+        return policy;
+    }
+
 
     private PolicyRequestDto createPolicyRequestDto(Policy policy) {
         PolicyRequestDto policyRequestDto = new PolicyRequestDto();
@@ -71,27 +136,5 @@ public class PolicyRestController {
         policyRequestDto.setPolicyPrice(policy.getTotalPrice());
         policyRequestDto.setVehicleCubicCapacity(policy.getCar().getCubicCap());
         return policyRequestDto;
-    }
-
-
-    private String getUserEmail(HttpServletRequest request, JwtTokenUtil jwtTokenUtil) {
-        final String requestTokenHeader = request.getHeader("Authorization");
-
-        String email = null;
-        String jwtToken;
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get
-        // only the Token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")
-        ) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                email = jwtTokenUtil.getEmailFromToken(jwtToken);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
-            }
-        }
-        return email;
     }
 }

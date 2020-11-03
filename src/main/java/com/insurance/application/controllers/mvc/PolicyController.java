@@ -6,6 +6,7 @@ import com.insurance.application.imageprocessing.StorageService;
 import com.insurance.application.models.*;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.models.dtos.InitialPolicyDto;
+import com.insurance.application.models.mappers.CarMapper;
 import com.insurance.application.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -105,7 +106,7 @@ public class PolicyController {
 
         UserInfo user = configureUserDetails(principal, initialPolicyDto, stringDto);
 
-        Car car = enlistCar(stringDto, carModelService, user);
+        Car car = CarMapper.enlistCar(stringDto, carModelService, carService, user);
 
         Policy policy = generatePolicy(initialPolicyDto, stringDto, user, car);
         policyService.create(policy);
@@ -165,21 +166,6 @@ public class PolicyController {
         userService.update(user);
 
         return user;
-    }
-
-    private Car enlistCar(InitialInfoStringDto stringDto,
-                          CarModelService carModelService,
-                          UserInfo user) {
-
-        Car car = new Car();
-        CarModel model = carModelService.getByModelName(stringDto.getCarModel());
-        car.setUserInfo(user);
-        car.setCarModel(model);
-        car.setRegDate(stringDto.getRegistrationDate());
-        car.setCubicCap(stringDto.getCarCubic());
-        carService.create(car);
-
-        return car;
     }
 
     private void cleanCachedInfo(Principal principal, HttpSession session) {

@@ -1,7 +1,6 @@
 package com.insurance.application.exceptions;
 
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueResultException;
 import org.slf4j.Logger;
@@ -15,13 +14,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.RollbackException;
 
 @ControllerAdvice
-public class ExceptionHandler {
+public class MvcExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(MvcExceptionHandler.class);
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = {HibernateException.class})
     public ResponseEntity<Object> handleHibenateException(HibernateException ex) {
         logger.error("Hibernate Malfunction: ", ex.getMessage());
+        ex.printStackTrace();
         return new ResponseEntity<Object>("Somethnig went wrong, please try again later", HttpStatus.BAD_REQUEST);
 
     }
@@ -29,6 +29,7 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(value = {RollbackException.class})
     public ResponseEntity<Object> handleRollbackException(RollbackException ex) {
         logger.error("Hibernate Malfunction: ", ex.getMessage());
+        ex.printStackTrace();
         return new ResponseEntity<Object>("Update failed, please try again later", HttpStatus.BAD_REQUEST);
 
     }

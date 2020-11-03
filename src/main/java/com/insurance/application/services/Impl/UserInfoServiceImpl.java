@@ -50,14 +50,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo getById(int id) {
         UserInfo user = repository.getById(id);
-
         return user;
     }
 
     @Override
     public UserInfo getByLastName(String userName) {
         UserInfo user = repository.getByLastName(userName);
-
         return user;
     }
 
