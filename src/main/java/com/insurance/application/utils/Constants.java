@@ -24,6 +24,9 @@ public class Constants {
     public static final String AUTHORITY_AGENT = "ROLE_AGENT";
     public static final String AUTHORITY_USER = "ROLE_USER";
 
+    public static final String TOKEN = "theToken";
+
+
 
 
 

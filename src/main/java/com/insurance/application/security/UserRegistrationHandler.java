@@ -8,12 +8,15 @@ import com.insurance.application.models.dtos.AccountRegDto;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.services.UserRolesService;
 import com.insurance.application.services.VerificationTokenService;
+import com.insurance.application.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.insurance.application.utils.Constants.AUTHORITY_USER;
 
 @Component
 public class UserRegistrationHandler {
@@ -40,7 +43,7 @@ public class UserRegistrationHandler {
 
         UserInfo user = new UserInfo();
         user.setEnabled(false);
-        UserRole role = rolesService.getByValue("ROLE_USER");
+        UserRole role = rolesService.getByValue(AUTHORITY_USER);
         user.setUserRole(role);
         user.setPassword(encoder.encode(accountDto.getPassword()));
         user.setEmail(accountDto.getEmail());

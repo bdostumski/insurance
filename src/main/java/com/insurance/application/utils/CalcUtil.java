@@ -33,8 +33,8 @@ public class CalcUtil {
         return  (driverAge <= ageLimit);
     }
 
-    public static double calculateTtotalPremium(InitialInfoDto dto, CoefficientService coefficientService, BaseAmountService baseAmountService,
-                                PolicyPaymentService policyPaymentService) {
+    public static double calculateTotalPremium(InitialInfoDto dto, CoefficientService coefficientService, BaseAmountService baseAmountService,
+                                               PolicyPaymentService policyPaymentService) {
 
         boolean hasAccident = dto.getHasAccidents();
         boolean isDriverUnderLimitAge = isDriverUnderAge(dto.getDriverBirthDate(), coefficientService);
@@ -46,10 +46,10 @@ public class CalcUtil {
         double baseAmount = baseAmountService.getBaseAmount(carCubic, carAge);
         double accidentCoefficient = coefficientService.getById(1).getAccident();
         double driverAgeCoefficient =  coefficientService.getById(1).getAgeCoefficient();
-        double netPremium = policyPaymentService.netPremium(hasAccident, isDriverUnderLimitAge,
+        double netPremium = policyPaymentService.calculateNetPremium(hasAccident, isDriverUnderLimitAge,
                 baseAmount, accidentCoefficient, driverAgeCoefficient);
 
-        double totalPremium = policyPaymentService.totalPremium(netPremium, taxAmount);
+        double totalPremium = policyPaymentService.calculateTotalPremium(netPremium, taxAmount);
         return totalPremium;
     }
 }

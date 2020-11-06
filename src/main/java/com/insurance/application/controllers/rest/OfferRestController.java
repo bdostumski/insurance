@@ -1,8 +1,6 @@
 package com.insurance.application.controllers.rest;
 
-import com.insurance.application.exceptions.ErrorInformation;
 import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
-import com.insurance.application.models.CarModel;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.PolicyRequestDto;
@@ -11,14 +9,12 @@ import com.insurance.application.security.jwt.JwtTokenUtil;
 import com.insurance.application.services.*;
 import com.insurance.application.utils.CalcUtil;
 import com.insurance.application.utils.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -52,7 +48,7 @@ public class OfferRestController {
             String email = Validator.getUserEmail(request, jwtTokenUtil);
             UserInfo userInfo = userInfoService.getByEmail(email);
             InitialInfoDto initialInfoDto = ToInitialInfoDtoMapper.initialInfoDto(policyRequestDto, userInfo, carModelService);
-            double totalPrice = CalcUtil.calculateTtotalPremium(initialInfoDto, coefficientService, baseAmountService, paymentService);
+            double totalPrice = CalcUtil.calculateTotalPremium(initialInfoDto, coefficientService, baseAmountService, paymentService);
 
             policyRequestDto.setPolicyPrice(totalPrice);
 

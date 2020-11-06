@@ -9,8 +9,8 @@ import java.text.DecimalFormat;
 public class PolicyPaymentServiceImpl implements PolicyPaymentService {
 
     @Override
-    public double netPremium(boolean hasAccident, boolean isDriverUnderLimitAge,
-                             double netPremium, double accidentCoefficient, double driverAgeCoefficient) {
+    public double calculateNetPremium(boolean hasAccident, boolean isDriverUnderLimitAge,
+                                      double netPremium, double accidentCoefficient, double driverAgeCoefficient) {
 
         if(hasAccident)
             netPremium = netPremium + (netPremium * accidentCoefficient);
@@ -22,11 +22,12 @@ public class PolicyPaymentServiceImpl implements PolicyPaymentService {
     }
 
     @Override
-    public double totalPremium(double netPremium, double taxAmount) {
-        return doubleFormatting(netPremium + (taxAmount * netPremium));
+    public double calculateTotalPremium(double netPremium, double taxAmount) {
+        return roundUpFormat(netPremium + (taxAmount * netPremium));
     }
 
-    private static double doubleFormatting(double baseAmount) {
+    private static double roundUpFormat(double baseAmount) {
+        String sign = "#".repeat(2);
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.parseDouble(df.format(baseAmount));
     }

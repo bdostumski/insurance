@@ -1,15 +1,14 @@
 package com.insurance.application.controllers.mvc;
 
-import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
+import com.insurance.application.utils.Constants;
 import com.insurance.application.utils.CalcUtil;
 import com.insurance.application.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -17,9 +16,7 @@ import java.security.Principal;
 import java.util.UUID;
 
 import static com.insurance.application.models.mappers.InitialStringMapper.initialStringMapper;
-import static com.insurance.application.utils.CalcUtil.*;
 import static com.insurance.application.utils.ConvertDate.convertDate;
-import static com.insurance.application.utils.ConvertDate.dateFormat;
 
 @Controller
 @RequestMapping("/total")
@@ -83,7 +80,7 @@ public class TotalController {
         model.addAttribute("loggedUser", Validator.loadUser(principal, userService));
 
         String tokenValue = generateToken(principal);
-        double totalPremium = CalcUtil.calculateTtotalPremium(initialInfoDto, coefficientService, baseAmountService, policyPaymentService);
+        double totalPremium = CalcUtil.calculateTotalPremium(initialInfoDto, coefficientService, baseAmountService, policyPaymentService);
 
         InitialInfoStringDto initialInfoStringDto = new InitialInfoStringDto();
         InitialInfoStringDto infoStringDto = initialStringMapper(initialInfoStringDto,
@@ -91,7 +88,7 @@ public class TotalController {
         infoDtoService.create(infoStringDto);
 
         if (principal == null) {
-            session.setAttribute("theToken", tokenValue);
+            session.setAttribute(Constants.TOKEN, tokenValue);
         }
 
         String registrationDate = convertDate(initialInfoDto.getRegistrationDate());

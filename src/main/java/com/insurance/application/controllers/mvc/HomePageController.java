@@ -1,7 +1,6 @@
 package com.insurance.application.controllers.mvc;
 
 import com.insurance.application.models.UserInfo;
-import com.insurance.application.models.UserRole;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.InitialInfoStringDto;
 import com.insurance.application.services.*;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
-import static com.insurance.application.utils.Constants.USER_ROLE_ADMIN;
-import static com.insurance.application.utils.Constants.USER_ROLE_AGENT;
+import static com.insurance.application.utils.Constants.*;
 
 @Controller
 @RequestMapping("/")
@@ -44,18 +42,8 @@ public class HomePageController {
         this.carService = carService;
     }
 
-    //TODO - delete
-//    @Autowired
-//    UserRolesService rolesService;
-
-
     @GetMapping
     public String getIndex(Model model, HttpSession session, Principal principal) {
-
-        /**
-         * On login in index and total page, principal is not null
-         * When I go to total and register new user, and login principal is null
-         */
 
         UserInfo userInfo = Validator.loadUser(principal, userInfoService);
         model.addAttribute("loggedUser", userInfo);
@@ -66,20 +54,14 @@ public class HomePageController {
 
         if (principal != null) {
 
-
-//            //TODO - delete
-//            UserRole role = rolesService.getByValue("ROLE_NOUSER");
-
-
-
-            if (userRole(principal) == USER_ROLE_ADMIN)
+            if (checkUserHasRole(principal, USER_ROLE_ADMIN))
                 return "redirect:/admin-filter";
 
-            if (userRole(principal) == USER_ROLE_AGENT) {
+            if (checkUserHasRole(principal, USER_ROLE_AGENT)) {
                 return "redirect:/agent-filter";
             }
 
-            if (session.getAttribute("theToken") != null) {
+            if (session.getAttribute(TOKEN) != null) {
                 assignInitialnfoDtoToUser(session, principal);
                 return "redirect:policy";
             }
@@ -108,17 +90,17 @@ public class HomePageController {
         }
     }
 
-    private int userRole(Principal principal) {
-        return userInfoService.getByEmail(principal.getName()).getUserRole().getId();
+    private boolean checkUserHasRole(Principal principal, int roleToCheck) {
+        return userInfoService.getByEmail(principal.getName()).getUserRole().getId() == roleToCheck;
     }
 
     private void assignInitialnfoDtoToUser(HttpSession session, Principal principal) {
-        String token = (String) session.getAttribute("theToken");
+        String token = (String) session.getAttribute(TOKEN);
         InitialInfoStringDto initialInfoStringDto = infoDtoService.getByTokenValue(token);
         UserInfo user = userInfoService.getByEmail(principal.getName());
         String userToken = user.getToken().getTokenValue();
         initialInfoStringDto.setUserToken(userToken);
         infoDtoService.update(initialInfoStringDto);
-        session.removeAttribute("theToken");
+        session.removeAttribute(TOKEN);
     }
 }

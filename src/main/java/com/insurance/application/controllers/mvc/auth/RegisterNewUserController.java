@@ -4,6 +4,7 @@ package com.insurance.application.controllers.mvc.auth;
 import com.insurance.application.models.dtos.AccountRegDto;
 import com.insurance.application.security.UserRegistrationHandler;
 import com.insurance.application.services.UserInfoService;
+import com.insurance.application.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,7 @@ public class RegisterNewUserController {
 
         if (!userInfoService.emailAlreadyExists(accountDto.getEmail())) {
 
-            String sessionToken = (String) session.getAttribute("theToken");
+            String sessionToken = (String) session.getAttribute(Constants.TOKEN);
             /*
             If a session token has been saved in the session, it will be used as a maail confirmmation token.
             Else a new one would be generated
