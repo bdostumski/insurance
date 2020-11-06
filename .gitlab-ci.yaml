@@ -1,0 +1,13 @@
+image: gradle:6.6.1-jdk11
+
+stages:
+    - build
+    - test
+    
+build:
+    stage: build
+    script: gradle assemble
+    
+test:
+    stage: test
+    script: gradle clean test
