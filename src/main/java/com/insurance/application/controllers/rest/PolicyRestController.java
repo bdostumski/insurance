@@ -13,6 +13,7 @@ import com.insurance.application.utils.CalcUtil;
 import com.insurance.application.utils.ConvertDate;
 import com.insurance.application.utils.Validator;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class PolicyRestController {
     }
 
     @GetMapping("/profile/{userId}")
+    @ApiOperation(value = "Get all policies of user", response = List.class)
     public List<PolicyRequestDto> getAllPoliciesOfUser(@PathVariable("userId") int userId) {
 
         List<PolicyRequestDto> policyRequestList = new ArrayList<PolicyRequestDto>();
@@ -67,6 +69,7 @@ public class PolicyRestController {
     }
 
     @PutMapping("/withdrawn/{policy-id}")
+    @ApiOperation(value = "Withdraw user pending policy")
     public void withdrawUserPendingPolicy(HttpServletRequest request, @PathVariable("policy-id") int policyId) {
         String userMail = Validator.getUserEmail(request, jwtTokenUtil);
         Policy policy = policyService.getById(policyId);
@@ -80,6 +83,7 @@ public class PolicyRestController {
 
 
     @PostMapping
+    @ApiOperation(value = "Create new policy", response = Car.class)
     public ResponseEntity<PolicyRequestDto> createNewPolicy(HttpServletRequest request,
                                                             @RequestBody PolicyRequestDto policyRequestDto
     ) {

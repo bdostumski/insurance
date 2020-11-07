@@ -1,6 +1,7 @@
 package com.insurance.application.controllers.rest;
 
 import com.insurance.application.exceptions.exceptionclasses.EntityNotFoundException;
+import com.insurance.application.models.Car;
 import com.insurance.application.models.UserInfo;
 import com.insurance.application.models.dtos.InitialInfoDto;
 import com.insurance.application.models.dtos.PolicyRequestDto;
@@ -9,6 +10,7 @@ import com.insurance.application.security.jwt.JwtTokenUtil;
 import com.insurance.application.services.*;
 import com.insurance.application.utils.CalcUtil;
 import com.insurance.application.utils.Validator;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,7 @@ public class OfferRestController {
     }
 
     @PostMapping
+    @ApiOperation(value = "Request offer", response = List.class)
     public ResponseEntity<Double> requestOffer(HttpServletRequest request,
                                                @RequestBody PolicyRequestDto policyRequestDto
     ) {
@@ -59,6 +62,7 @@ public class OfferRestController {
     }
 
     @GetMapping("/maxcubics")
+    @ApiOperation(value = "Get max cubic", response = List.class)
     public List<Integer> getMaxCarCubicsValues() {
         return baseAmountService.getMaxCarCubics();
     }

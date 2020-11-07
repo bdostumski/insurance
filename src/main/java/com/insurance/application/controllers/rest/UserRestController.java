@@ -10,6 +10,7 @@ import com.insurance.application.security.jwt.JwtResponse;
 import com.insurance.application.security.jwt.JwtTokenUtil;
 import com.insurance.application.services.UserInfoService;
 import com.insurance.application.utils.Validator;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 import static com.insurance.application.utils.Constants.HAD_ACCIDENT_LAST_YEAR;
@@ -47,6 +49,7 @@ public class UserRestController {
 
 
     @PostMapping("/registration")
+    @ApiOperation(value = "Create new user")
     public void createNewRestUser(@Valid @RequestBody final AccountRegDto accountRegDto,
                                   HttpServletRequest request) {
 
@@ -59,6 +62,7 @@ public class UserRestController {
     }
 
     @RequestMapping("/authentication")
+    @ApiOperation(value = "Create authentication token", response = List.class)
     public ResponseEntity<?> createAuthenticationToken(@RequestHeader("userMail") String email,
                                                        @RequestHeader("userPass") String password) throws Exception {
 
@@ -81,6 +85,7 @@ public class UserRestController {
     }
 
     @GetMapping("/profile/{userId}")
+    @ApiOperation(value = "Get user profile details", response = UserProfileInfoDto.class)
     public UserProfileInfoDto getUserProfileDetails(@RequestHeader("Authorization") String token,
                                                     @PathVariable("userId") int userId) {
         try {
@@ -106,6 +111,7 @@ public class UserRestController {
     }
 
     @PutMapping("/profile/{userId}")
+    @ApiOperation(value = "Update user profile", response = List.class)
     public ResponseEntity<UserProfileInfoDto> updateUserProfile(HttpServletRequest request,
                                                                 @PathVariable("userId") int userId,
                                                                 @RequestBody UserProfileInfoDto userInfoDto) {
