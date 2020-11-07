@@ -8,6 +8,15 @@
 
 <a href="https://gitlab.com/dimilkin/carsafeandroidproject">CAR SAFE Android App</a>
 
+## Table of Content
+
+- [General Info](#general-info)
+- [Screenshots](#creenshots)
+- [Features](#features)
+- [Technical information](#technical-information)
+
+## General Info
+
 The **public part** of application is visible without authentication. It provides the following functionalities:
 
   - Simulate of car insurance offer based on some input criteria
@@ -56,7 +65,8 @@ The **administrator part** of the system should have permission to manage all ma
 <tr><td>Total Premium</td><td>The final amount of insurance policy to be paid by the client after taxes</td></tr>
 </table>
 
-## Functional Description
+
+## Features
 In the following sections different functionalities will be described in more details.
 
 ### Create Account
@@ -102,7 +112,6 @@ Example: cubic capacity = 1400, car age = 10 => base amount = 690.96.
 
 When the total premium amount is calculated, the user has the possibility to request this offer for approval. If the user has not been logged in, the system is requiring force him/her to log in. If the user is logged,
 he/she is automatically redirected to the page for policy request preparation.
-
 Business controls to check data validity are implemented in js, such as:
  * the driver can't be younger than 18 years.
  * The registration date of the car can't be in a future moment.
@@ -111,29 +120,23 @@ Business controls to check data validity are implemented in js, such as:
 This functionality is accessible only from **private part** of the application.
 
 In order to issue a final policy, additional details are needed. The user is redirected to a new page to gather the following information:
-
   - effective date of the policy
   - attachment of image of vehicle registration certificate
   - communication details: email, phone, postal address
 
 All details from the simulated offer are visible in this page, where the final policy is being requested.
-
 Once the policy is requested it is in the system for further management. At this stage the request becomes in state “pending” and should be treated by the administrators of the system.
-
 Business controls to check data validity are implemented in js, such as:
  * The policy can't be requested with past date and time regarding the time of the request.
  * An image must be uploaded for the policy to be requested successfully.
 
 ### User’s Request History
 This functionality is accessible only from **private part** of the application.
-
 A page displays a list of all policy requests for the logged user with their details. The history of all requests is shown (pending, approved and rejected) and chronologically sorted.
-
 The user can cancel requests which are pending (not treated by insurace agents). If that happens the insurance agent can't change the policy status.
 
 ### Manage Requests
 This functionality is accessible only from **insurance agent part** of the application.
-
 A page displays a list of all pending requests in the system with their details. The insurace agent is able to accept or reject the request.
 The insurance agent can filter requests by different criteria (user, request date, etc.)
 
@@ -141,9 +144,9 @@ The insurance agent can filter requests by different criteria (user, request dat
 
 ### This general guidelines were followed during development:
 
-  - Following **OOP** principles when coding
-  - Following **KISS, SOLID, DRY** principles when coding
-  - Following **REST API** design best practices when designing the REST API.
+  -  **OOP** principles when coding
+  -  **KISS, SOLID, DRY** principles when coding
+  -  **REST API** design best practices when designing the REST API.
 
 ### Database
 The data of the application is stored in a relational database – **MariaDB**.
