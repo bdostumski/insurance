@@ -2,26 +2,31 @@
 
 ## Project Description
 
-**SAFETY CAR** is a WEB and REST application. It is insurance-oriented application for the end users. It allows simulation of amount and request insurance policies online. The application functionalities are related to three different type of users: public, private and administrators.
+**SAFETY CAR** is a WEB and REST application. It is insurance-oriented application for the end users. It allows simulation of amount and request insurance policies online. The application functionalities are related to three different type of users: public and private, insurance agents and administrators.
 
 **CAR SAFE** is a Mobile application for Android that consumes the REST API, and was also developed for the project.
 
 <a href="https://gitlab.com/dimilkin/carsafeandroidproject">CAR SAFE Android App</a>
 
-The **public part** of application should be visible without authentication. It should provide the following functionalities:
+The **public part** of application is visible without authentication. It provides the following functionalities:
 
   - Simulate of car insurance offer based on some input criteria
   - Creation of new account and log-in functionality
 
-The **private part** of application is for registered users only and should be accessible after successful login. The main functionalities provided for this area are:
+The **private part** of application is for registered users only and is accessible after successful login. The main functionalities provided for this area are:
 
   - Send request for approval of offer (request policy)
   - List history of user’s requests
 
-The **administrators** of the system should have permission to manage all major information objects in thes ystem. The main functionalities provided for this area are:
+The **agents part** of the system should have permission to manage all user insurances in thes system. The main functionalities provided for this area are:
 
   - List of requests created in the system
   - Approval or rejection of the requests
+
+The **administrator part** of the system should have permission to manage all major information objects in thes system. The main functionalities provided for this area are:
+
+    - Register new insurance agents in the application
+    - Give or reject access to the application for any of the registered users and agents.
 
 ## Screenshots
 <table>
@@ -55,19 +60,18 @@ The **administrators** of the system should have permission to manage all major 
 In the following sections different functionalities will be described in more details.
 
 ### Create Account
-This functionality should be accessible only from **public part** of the application.
+This functionality is accessible only from **public part** of the application.
 
-Implement a page to register user in the system. The minimal data to be entered are a valid email address as username and password.
+A user can register in the system. The minimal data to be entered are a valid email address and password.
 
-**Optional functionalities:**
-   - Completion of registration via email confirmation link
-   - Provide constraints to create safe password
+### Completion of registration via email confirmation link
+ After a successful registration, an email is sent to the user for account confirmation.
 
 ### Simulate Offer
-This functionality should be accessible from **public and private part**.
-Implement a page – **simulation form**, where user should input specific parameters for its car and visualize the amount of expected total premium.
+This functionality is accessible from **public and private part**.
+There is a separate page – **simulation form**, where a user should input specific parameters for their car and visualize the amount of expected total premium.
 
-Simulation form should contain these business inputs:
+The simulation form contains these business inputs:
 
   - car (brand and model)
   - cubic capacity
@@ -75,7 +79,7 @@ Simulation form should contain these business inputs:
   - driver age
   - accidents in previous year (yes/no)
 
-After click on simulate button, the expected premium should be calculated and shown on the screen.
+After click on simulate button, the expected premium is calculated and shown on the screen.
 
 The calculation of premium amount (**totalPremium**), is based on the following rules:
 
@@ -90,63 +94,56 @@ The calculation of net premium (**netPremium**) is based on the following parame
   - **accidentCoeff** – increase amount with 20% if there is an accident in previous year. The answer of form input parameter to be used.
   - **driverAgeCoeff** - increase amount with 5% if driver is under 25 years old
 
-For the calculation of the base amount you can use the following values in the multicriteria range table:
+For the calculation of the base amount the following values in the multicriteria range table apply:
 
 <img src="documentation/images/BaseAmountRangeTable.png" alt="Base Amount Range Table"/>
 
 Example: cubic capacity = 1400, car age = 10 => base amount = 690.96.
 
-When the total premium amount is calculated, the user has the possibility to request this offer for approval. If the user has not been logged in, the system should force him to log in. If the user is logged,
-he automatically will be redirected to the page for policy request preparation.
+When the total premium amount is calculated, the user has the possibility to request this offer for approval. If the user has not been logged in, the system is requiring force him/her to log in. If the user is logged,
+he/she is automatically redirected to the page for policy request preparation.
 
-**Optional functionalities:**
-
-  - Apply business controls to check data validity
+Business controls to check data validity are implemented in js, such as:
+ * the driver can't be younger than 18 years.
+ * The registration date of the car can't be in a future moment.
 
 ### Request policy
-This functionality should be accessible only from **private part** of the application.
+This functionality is accessible only from **private part** of the application.
 
-In order to issue a final policy, additional details are needed. A new page to be created in order to gather the following information:
+In order to issue a final policy, additional details are needed. The user is redirected to a new page to gather the following information:
 
   - effective date of the policy
   - attachment of image of vehicle registration certificate
   - communication details: email, phone, postal address
 
-All details from the simulated offer should be visible in the page.
+All details from the simulated offer are visible in this page, where the final policy is being requested.
 
-Once the policy is requested it should be stored in the system for further management. At that stage request becomes in state “pending” and should be treated by the administrators of the system.
+Once the policy is requested it is in the system for further management. At this stage the request becomes in state “pending” and should be treated by the administrators of the system.
 
-**Optional functionalities:**
-
-  - Apply business controls to check data validity
+Business controls to check data validity are implemented in js, such as:
+ * The policy can't be requested with past date and time regarding the time of the request.
+ * An image must be uploaded for the policy to be requested successfully.
 
 ### User’s Request History
-This functionality should be accessible only from **private part** of the application.
+This functionality is accessible only from **private part** of the application.
 
-Implement a page to display list of all policy requests for the logged user with their details. The history of all requests to be shown (pending, approved and rejected) and chronologically sorted.
+A page displays a list of all policy requests for the logged user with their details. The history of all requests is shown (pending, approved and rejected) and chronologically sorted.
 
-**Optional functionalities:**
-
-  - The user can cancel requests which are pending (not treated by administrator)
+The user can cancel requests which are pending (not treated by insurace agents). If that happens the insurance agent can't change the policy status.
 
 ### Manage Requests
-This functionality should be accessible only from **administration part** of the application.
+This functionality is accessible only from **insurance agent part** of the application.
 
-Implement a page to display list of all pending requests in the system with their details. The administrator should be able to accept or reject the request.
+A page displays a list of all pending requests in the system with their details. The insurace agent is able to accept or reject the request.
+The insurance agent can filter requests by different criteria (user, request date, etc.)
 
-**Optional functionalities:**
+## Technical information:
 
-  - Possibility to filter requests by different criteria (user, request date, etc.)
-  - The data of multicriteria range table to be configured and loaded from external source
-  - Send email to the user in case of approval/rejection of the request
-
-## Technical Requirements
-
-### General guidelines
+### This general guidelines were followed during development:
 
   - Following **OOP** principles when coding
   - Following **KISS, SOLID, DRY** principles when coding
-  - Following **REST API** design best practices when designing the REST API (use Postman)
+  - Following **REST API** design best practices when designing the REST API.
 
 ### Database
 The data of the application is stored in a relational database – **MariaDB**.
@@ -156,7 +153,7 @@ The data of the application is stored in a relational database – **MariaDB**.
   - **JDK version 11**
   - **SpringMVC** and **SpringBoot** framework
   - **Hibernate** in the persistence (repository) layer
-  - **Spring Security** to handle user registration and user roles
+  - **Spring Security** to handle user authentication
 
 ### Frontend
 
@@ -166,8 +163,8 @@ The data of the application is stored in a relational database – **MariaDB**.
 
 ### Deliverables
 
-  - <a href="https://gitlab.com/b.dostumski/insurance">Use Git</a>  
-  - <a href="https://trello.com/b/1n3wCQk4/carsafe">Use Trello board</a>
+  - <a href="https://gitlab.com/b.dostumski/insurance"> Git</a>  
+  - <a href="https://trello.com/b/1n3wCQk4/carsafe"> Trello board</a>
   - <a href="https://www.youtube.com/watch?v=mUGKc6mLlOw&t=374s">Video</a>
 
 ## Team
