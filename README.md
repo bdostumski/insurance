@@ -38,7 +38,8 @@ The **administrators** of the system should have permission to manage all major 
 <td><img src="documentation/images/6.png"></td>
 </tr>
 <tr>
-<td colspan="2"><img src="documentation/images/insurance_info_db.png"></td>
+<td><img src="documentation/images/swagger.png"></td>
+<td><img src="documentation/images/insurance_info_db.png"></td>
 </table>
 
 ## Business Glossary
