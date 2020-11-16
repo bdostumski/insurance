@@ -34,8 +34,8 @@ The **agents part** of the system should have permission to manage all user insu
 
 The **administrator part** of the system should have permission to manage all major information objects in thes system. The main functionalities provided for this area are:
 
-    - Register new insurance agents in the application
-    - Give or reject access to the application for any of the registered users and agents.
+  - Register new insurance agents in the application
+  - Give or reject access to the application for any of the registered users and agents.
 
 ## Screenshots
 <table>
